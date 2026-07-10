@@ -334,6 +334,14 @@
   .btn-geral:hover { background: var(--alta-blue-xlight); }
   .btn-geral.active { background: var(--alta-blue); color: var(--white); }
   .btn-geral .bg-dot { width: 8px; height: 8px; border-radius: 2px; background: currentColor; flex-shrink: 0; }
+  /* Barra de 'copiado' — permite encerrar o modo colar */
+  .clip-bar { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); display: none; align-items: center; gap: 12px; background: var(--alta-blue); color: #fff; padding: 10px 12px 10px 16px; border-radius: 12px; box-shadow: 0 10px 34px rgba(0,0,0,.28); z-index: 600; font-size: 13px; font-weight: 500; max-width: 94vw; }
+  .clip-bar.show { display: flex; }
+  .clip-bar .clip-name { font-weight: 700; max-width: 240px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .clip-bar .clip-hint { opacity: .8; }
+  .clip-bar button { background: #fff; color: var(--alta-blue); border: none; border-radius: 8px; padding: 7px 14px; font-weight: 700; font-size: 12px; cursor: pointer; font-family: var(--font-main); white-space: nowrap; }
+  .clip-bar button:hover { background: #e8f0fd; }
+  @media (max-width: 640px) { .clip-bar { flex-wrap: wrap; bottom: 12px; } .clip-bar .clip-hint { display: none; } }
   .month-summary { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; padding: 12px 28px; background: var(--gray-100); border-bottom: 1px solid var(--gray-200); }
   .ms-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--gray-400); margin-right: 2px; }
   .ms-item { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--gray-700); font-weight: 500; }
@@ -645,6 +653,11 @@
 </div>
 
 <div class="toast" id="toast"></div>
+<div class="clip-bar" id="clip-bar">
+  <span>📋 Copiado: <span class="clip-name" id="clip-name"></span></span>
+  <span class="clip-hint">Clique em "Colar" nos dias que quiser.</span>
+  <button onclick="cancelCopy()">✓ Concluir</button>
+</div>
 
 <header>
   <div class="header-inner">
@@ -9994,6 +10007,8 @@ function setEditUI(active) {
   document.getElementById('btn-edit').classList.toggle('active', editMode);
   document.getElementById('edit-banner').classList.toggle('visible', editMode);
   document.getElementById('manage-panel').classList.toggle('visible', editMode);
+  if (!editMode) clipboardEvt = null;
+  updateClipBar();
 }
 
 // initPublicOrEditLink removido — botão visível para todos
@@ -10138,8 +10153,9 @@ function copyEvt(e, dia, idx) {
   const agBase = ano === '2027' ? AGENDA_2027 : AGENDA;
   const raw = agBase[tec][mes][dia][idx];
   clipboardEvt = raw;
+  updateClipBar();
   render();
-  showToast('Evento copiado — clique em "Colar" no dia desejado ✓','success');
+  showToast('Evento copiado — cole nos dias e clique em "Concluir" para encerrar ✓','success');
 }
 
 function pasteEvt(e, dia) {
@@ -10154,6 +10170,20 @@ function pasteEvt(e, dia) {
   agBase[tec][mes][dia].push(clipboardEvt);
   saveLocal(); render(); showToast('Evento colado ✓','success');
 }
+
+function updateClipBar() {
+  const bar = document.getElementById('clip-bar');
+  if (!bar) return;
+  if (clipboardEvt) { document.getElementById('clip-name').textContent = chipLabel(clipboardEvt); bar.classList.add('show'); }
+  else bar.classList.remove('show');
+}
+function cancelCopy() {
+  clipboardEvt = null;
+  updateClipBar();
+  render();
+  showToast('Cópia encerrada','');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && clipboardEvt) cancelCopy(); });
 
 // ── MANAGE ──
 function addTec() {
