@@ -62,13 +62,17 @@
   .month-badge, .empty-state h3 { font-family: var(--font-display); }
 
   /* ── HEADER ── */
-  header {
-    background: var(--alta-blue);
-    padding: 0;
+  .top-sticky {
     position: sticky;
     top: 0;
     z-index: 100;
     box-shadow: 0 2px 12px rgba(20,60,137,0.3);
+  }
+
+  header {
+    background: var(--alta-blue);
+    padding: 0;
+    position: relative;
   }
 
   .header-inner {
@@ -659,6 +663,7 @@
   <button onclick="cancelCopy()">✓ Concluir</button>
 </div>
 
+<div class="top-sticky">
 <header>
   <div class="header-inner">
     <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
@@ -712,6 +717,7 @@
     <button class="btn-geral" id="btn-geral" onclick="toggleGeral()"><span class="bg-dot"></span>Agenda Geral do Leite</button>
     <span class="filters-info" id="filtros-info"></span>
   </div>
+</div>
 </div>
 
 <main class="main">
@@ -2860,7 +2866,8 @@ const AGENDA = {
         "particular|Particular"
       ],
       "13": [
-        "Deslocamento"
+        "Deslocamento",
+        "Atendimento POA"
       ],
       "14": [
         "Atendimento POA"
@@ -2872,6 +2879,7 @@ const AGENDA = {
         "Atendimento POA"
       ],
       "17": [
+        "Atendimento POA",
         "Deslocamento"
       ],
       "20": [
@@ -2881,7 +2889,7 @@ const AGENDA = {
         "Home office"
       ],
       "22": [
-        "atendimento|Atendimento Santa Clara"
+        "Home office"
       ],
       "23": [
         "Home office"
@@ -3877,14 +3885,10 @@ const AGENDA = {
         "Home office"
       ],
       "14": [
-        "Deslocamento"
+        "Home office"
       ],
       "15": [
-        "Nsa. Sra. da Abadia",
-        "evento|Palestra COOMAFAR"
-      ],
-      "16": [
-        "Deslocamento"
+        "Nsa. Sra. da Abadia"
       ],
       "17": [
         "Home office"
@@ -4552,10 +4556,10 @@ const AGENDA = {
         "Particular"
       ],
       "15": [
-        "atendimento|Atendimento Ijuí"
+        "Particular"
       ],
       "16": [
-        "atendimento|Atendimento Ijuí"
+        "Particular"
       ],
       "17": [
         "Particular"
@@ -5481,16 +5485,16 @@ const AGENDA = {
         "Home office"
       ],
       "4": [
-        "deslocamento|Deslocamento"
+        "Home office"
       ],
       "5": [
-        "atendimento|Atendimento Guaratinguetá"
+        "Home office"
       ],
       "6": [
-        "atendimento|Atendimento Guaratinguetá"
+        "Home office"
       ],
       "7": [
-        "deslocamento|Deslocamento"
+        "Home office"
       ],
       "9": [
         "Dia dos Pais",
@@ -5538,20 +5542,19 @@ const AGENDA = {
         "deslocamento|Deslocamento"
       ],
       "24": [
-        "deslocamento|Deslocamento",
-        "atendimento|Blitz ACW - Distrital Peixoto"
+        "Home office"
       ],
       "25": [
-        "atendimento|Blitz ACW - Distrital Peixoto"
+        "Home office"
       ],
       "26": [
-        "atendimento|Blitz ACW - Distrital Peixoto"
+        "Home office"
       ],
       "27": [
-        "atendimento|Blitz ACW - Distrital Peixoto"
+        "Home office"
       ],
       "28": [
-        "deslocamento|Deslocamento"
+        "Home office"
       ]
     },
     "Setembro": {
@@ -5614,15 +5617,13 @@ const AGENDA = {
         "Home office"
       ],
       "23": [
-        "deslocamento|Deslocamento",
-        "evento|Feira em Maria da Fé"
+        "Home office"
       ],
       "24": [
-        "evento|Feira em Maria da Fé"
+        "Home office"
       ],
       "25": [
-        "evento|Feira em Maria da Fé",
-        "deslocamento|Deslocamento"
+        "Home office"
       ],
       "28": [
         "Home office"
@@ -6338,7 +6339,8 @@ const AGENDA = {
         "reuniao|WorkShop Concept Plus"
       ],
       "7": [
-        "reuniao|WorkShop Concept Plus"
+        "reuniao|WorkShop Concept Plus",
+        "Planejamento Neonatos 27"
       ],
       "8": [
         "Q3"
@@ -6347,7 +6349,7 @@ const AGENDA = {
         "Planejamento Neonatos 27"
       ],
       "10": [
-        "Planejamento Neonatos 27"
+        "particular|Particular"
       ],
       "12": [
         "Deslocamento"
@@ -6398,7 +6400,8 @@ const AGENDA = {
         "Planejamento Leite Uberaba"
       ],
       "31": [
-        "particular|Particular"
+        "Planejamento Leite Uberaba",
+        "Deslocamento"
       ]
     },
     "Agosto": {
@@ -6435,8 +6438,8 @@ const AGENDA = {
       ],
       "11": [
         "particular|Campo Grande",
-        "Coleta de dados Alta CRIA Beef",
-        "evento|Palestra em Três Lagoas"
+        "atendimento|A confirmar: Atendimento ADV. Corte",
+        "Coleta de dados Alta CRIA Beef"
       ],
       "12": [
         "particular|Campo Grande",
@@ -7320,9 +7323,6 @@ const AGENDA = {
       "11": [
         "particular|Aula Pós-Chapecó"
       ],
-      "12": [
-        "particular|Uberlândia"
-      ],
       "13": [
         "Questionário Alta CRIA Leite",
         "Home office"
@@ -7389,6 +7389,12 @@ const AGENDA = {
       ]
     },
     "Agosto": {
+      "1": [
+        "BD"
+      ],
+      "2": [
+        "BD"
+      ],
       "3": [
         "Deslocamento"
       ],
@@ -8389,7 +8395,7 @@ const AGENDA = {
         "Dia livre Megaleite"
       ],
       "12": [
-        "atendimento|Atendimento Cliente DINAMERICO"
+        "Home office"
       ],
       "13": [
         "Home office"
@@ -9687,23 +9693,14 @@ const AGENDA = {
       "8": [
         "evento|Evento cooperativa Dalia"
       ],
-      "20": [
-        "ferias|Férias Bertola"
-      ],
-      "21": [
-        "ferias|Férias Bertola"
-      ],
       "22": [
-        "evento|Calf University",
-        "ferias|Férias Bertola"
+        "evento|Calf University"
       ],
       "23": [
-        "evento|Calf University",
-        "ferias|Férias Bertola"
+        "evento|Calf University"
       ],
       "24": [
-        "evento|Calf University",
-        "ferias|Férias Bertola"
+        "evento|Calf University"
       ],
       "28": [
         "reuniao|Alinhamento técnico"
@@ -9731,9 +9728,6 @@ const AGENDA = {
       ],
       "7": [
         "evento|Agroleite"
-      ],
-      "12": [
-        "treinamento|Live HOL Provas novas"
       ],
       "15": [
         "evento|Expogenética"
@@ -9790,411 +9784,18 @@ const AGENDA = {
       ],
       "6": [
         "evento|Expointer"
-      ],
-      "14": [
-        "outros|Estação de vendas"
-      ],
-      "15": [
-        "outros|Estação de vendas"
-      ],
-      "16": [
-        "outros|Estação de vendas"
-      ],
-      "17": [
-        "outros|Estação de vendas"
-      ],
-      "18": [
-        "outros|Estação de vendas"
-      ],
-      "21": [
-        "treinamento|Alta U"
-      ],
-      "22": [
-        "treinamento|Alta U"
-      ],
-      "23": [
-        "treinamento|Alta U"
-      ],
-      "24": [
-        "treinamento|Alta U"
-      ],
-      "25": [
-        "treinamento|Alta U"
-      ],
-      "27": [
-        "evento|WDE Madison"
-      ],
-      "28": [
-        "evento|WDE Madison"
-      ],
-      "29": [
-        "evento|WDE Madison"
-      ],
-      "30": [
-        "evento|WDE Madison"
       ]
     },
     "Outubro": {
-      "1": [
-        "evento|WDE Madison"
-      ],
-      "2": [
-        "evento|WDE Madison"
-      ],
-      "3": [
-        "evento|WDE Madison"
-      ],
-      "4": [
-        "evento|WDE Madison"
-      ],
-      "13": [
-        "reuniao|Reunião Q4",
-        "evento|Expoleite e a Nacional do Gi"
-      ],
       "14": [
-        "evento|AltaIntegra",
-        "evento|Expoleite e a Nacional do Gi"
+        "evento|AltaIntegra"
       ],
       "15": [
-        "evento|AltaIntegra",
-        "evento|Expoleite e a Nacional do Gi"
-      ],
-      "16": [
-        "evento|Expoleite e a Nacional do Gi"
-      ],
-      "17": [
-        "evento|Expoleite e a Nacional do Gi"
-      ],
-      "18": [
-        "evento|Expoleite e a Nacional do Gi"
-      ],
-      "19": [
-        "evento|Expoleite e a Nacional do Gi"
-      ]
-    },
-    "Novembro": {
-      "2": [
-        "feriado|Feriado de finados"
-      ],
-      "3": [
-        "treinamento|Integra Leite Sul"
-      ],
-      "4": [
-        "treinamento|Integra Leite Sul"
-      ],
-      "5": [
-        "treinamento|Integra Leite Sul"
-      ],
-      "6": [
-        "treinamento|Integra Leite Sul"
-      ],
-      "9": [
-        "treinamento|Integra Leite Sul"
-      ],
-      "10": [
-        "treinamento|Integra Leite Sul"
-      ],
-      "11": [
-        "treinamento|Integra Leite Sul"
-      ],
-      "12": [
-        "evento|Expofrizia"
-      ],
-      "13": [
-        "evento|Expofrizia"
-      ],
-      "14": [
-        "evento|Expofrizia"
-      ],
-      "20": [
-        "feriado|Feriado consciência negra"
-      ]
-    },
-    "Dezembro": {
-      "1": [
-        "treinamento|Alinhamento técnico"
-      ],
-      "2": [
-        "treinamento|Alinhamento técnico"
-      ],
-      "3": [
-        "treinamento|Alinhamento técnico"
-      ],
-      "4": [
-        "reuniao|Reunião de Mercado",
-        "outros|Confraternização Alta"
-      ],
-      "15": [
-        "treinamento|Live HOL Provas novas"
-      ]
-    }
-  },
-  "Guilherme": {
-    "Julho": {
-      "15": [
-        "evento|Exposição Pompéu - Superleite"
-      ],
-      "16": [
-        "evento|Exposição Pompéu - Superleite"
-      ]
-    }
-  },
-  "Ricardo Bertola": {
-    "Julho": {
-      "14": [
-        "homeoffice|Home Office"
-      ],
-      "15": [
-        "homeoffice|Home Office"
-      ],
-      "16": [
-        "homeoffice|Home Office"
-      ],
-      "17": [
-        "homeoffice|Home Office"
-      ],
-      "20": [
-        "ferias|Férias"
-      ],
-      "21": [
-        "ferias|Férias"
-      ],
-      "22": [
-        "ferias|Férias"
-      ],
-      "23": [
-        "ferias|Férias"
-      ],
-      "24": [
-        "ferias|Férias"
-      ],
-      "27": [
-        "deslocamento|Deslocamento"
-      ],
-      "28": [
-        "outros|Alta Uberaba",
-        "reuniao|Alinhamento técnico"
-      ],
-      "29": [
-        "outros|Alta Uberaba",
-        "reuniao|Alinhamento técnico",
-        "reuniao|Planejamento 2027 leite"
-      ],
-      "30": [
-        "outros|Alta Uberaba",
-        "reuniao|Planejamento 2027 leite"
-      ],
-      "31": [
-        "deslocamento|Deslocamento"
-      ]
-    },
-    "Agosto": {
-      "2": [
-        "deslocamento|Deslocamento"
-      ],
-      "3": [
-        "evento|Agroleite"
-      ],
-      "4": [
-        "evento|Agroleite"
-      ],
-      "5": [
-        "evento|Agroleite"
-      ],
-      "6": [
-        "evento|Agroleite"
-      ],
-      "7": [
-        "evento|Agroleite"
-      ],
-      "8": [
-        "deslocamento|Deslocamento"
-      ],
-      "10": [
-        "homeoffice|Home Office"
-      ],
-      "11": [
-        "homeoffice|Home Office",
-        "atendimento|Visita Edson Gontijo"
-      ],
-      "12": [
-        "homeoffice|Home Office",
-        "atendimento|Visita Effa",
-        "treinamento|Live HOL Provas novas"
-      ],
-      "13": [
-        "homeoffice|Home Office"
-      ],
-      "14": [
-        "homeoffice|Home Office"
-      ],
-      "17": [
-        "deslocamento|Deslocamento"
-      ],
-      "18": [
-        "outros|Alta Uberaba"
-      ],
-      "19": [
-        "outros|Alta Uberaba"
-      ],
-      "20": [
-        "outros|Alta Uberaba"
-      ],
-      "21": [
-        "deslocamento|Deslocamento"
-      ],
-      "24": [
-        "homeoffice|Home Office"
-      ],
-      "25": [
-        "homeoffice|Home Office"
-      ],
-      "26": [
-        "homeoffice|Home Office"
-      ],
-      "27": [
-        "homeoffice|Home Office"
-      ],
-      "28": [
-        "homeoffice|Home Office"
-      ],
-      "31": [
-        "deslocamento|Deslocamento"
-      ]
-    },
-    "Setembro": {
-      "1": [
-        "outros|Alta Uberaba"
-      ],
-      "2": [
-        "outros|Alta Uberaba"
-      ],
-      "3": [
-        "outros|Alta Uberaba"
-      ],
-      "4": [
-        "deslocamento|Deslocamento"
-      ],
-      "7": [
-        "feriado|Feriado"
-      ],
-      "8": [
-        "homeoffice|Home Office"
-      ],
-      "9": [
-        "homeoffice|Home Office"
-      ],
-      "10": [
-        "homeoffice|Home Office"
-      ],
-      "11": [
-        "homeoffice|Home Office"
-      ],
-      "14": [
-        "homeoffice|Home Office"
-      ],
-      "15": [
-        "homeoffice|Home Office"
-      ],
-      "16": [
-        "homeoffice|Home Office"
-      ],
-      "17": [
-        "homeoffice|Home Office"
-      ],
-      "18": [
-        "homeoffice|Home Office"
-      ],
-      "21": [
-        "deslocamento|Deslocamento"
-      ],
-      "22": [
-        "outros|Alta Uberaba"
-      ],
-      "23": [
-        "outros|Alta Uberaba"
-      ],
-      "24": [
-        "outros|Alta Uberaba"
-      ],
-      "25": [
-        "deslocamento|Deslocamento"
-      ],
-      "27": [
-        "evento|WDE Madison"
-      ],
-      "28": [
-        "evento|WDE Madison"
-      ],
-      "29": [
-        "evento|WDE Madison"
-      ],
-      "30": [
-        "evento|WDE Madison"
-      ]
-    },
-    "Outubro": {
-      "1": [
-        "evento|WDE Madison"
-      ],
-      "2": [
-        "evento|WDE Madison"
-      ],
-      "3": [
-        "evento|WDE Madison"
-      ],
-      "4": [
-        "evento|WDE Madison"
-      ],
-      "5": [
-        "homeoffice|Home Office"
-      ],
-      "6": [
-        "homeoffice|Home Office"
-      ],
-      "7": [
-        "homeoffice|Home Office"
-      ],
-      "8": [
-        "homeoffice|Home Office"
-      ],
-      "9": [
-        "homeoffice|Home Office"
-      ],
-      "12": [
-        "deslocamento|Deslocamento"
-      ],
-      "13": [
-        "reuniao|Reunião Q4"
-      ],
-      "14": [
-        "treinamento|Alta Integra"
-      ],
-      "15": [
-        "treinamento|Alta Integra"
-      ],
-      "16": [
-        "deslocamento|Deslocamento"
-      ],
-      "19": [
-        "homeoffice|Home Office"
-      ],
-      "20": [
-        "homeoffice|Home Office"
-      ],
-      "21": [
-        "homeoffice|Home Office"
-      ],
-      "22": [
-        "homeoffice|Home Office"
-      ],
-      "23": [
-        "homeoffice|Home Office"
+        "evento|AltaIntegra"
       ]
     }
   }
 };
-
 // Configuração dos meses
 const MESES = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
 const DIAS_MES = {Janeiro:31,Fevereiro:28,Março:31,Abril:30,Maio:31,Junho:30,Julho:31,Agosto:31,Setembro:30,Outubro:31,Novembro:30,Dezembro:31};
@@ -10202,758 +9803,7 @@ const DIAS_MES = {Janeiro:31,Fevereiro:28,Março:31,Abril:30,Maio:31,Junho:30,Ju
 // ═══════════════════════════════════════════════════════
 //  DADOS 2027 — feriados pré-carregados
 // ═══════════════════════════════════════════════════════
-let AGENDA_2027 = {
-  "Alexandre Scarpa": {
-    "Janeiro": {
-      "1": [
-        "Feriado|Ano Novo"
-      ]
-    },
-    "Fevereiro": {
-      "8": [
-        "Feriado|Carnaval"
-      ],
-      "9": [
-        "Feriado|Carnaval"
-      ],
-      "10": [
-        "Feriado|Cinzas"
-      ]
-    },
-    "Março": {
-      "2": [
-        "Feriado|Aniversário de Uberaba"
-      ],
-      "26": [
-        "Feriado|Sexta-feira Santa"
-      ],
-      "28": [
-        "Feriado|Páscoa"
-      ]
-    },
-    "Abril": {
-      "21": [
-        "Feriado|Tiradentes"
-      ]
-    },
-    "Maio": {
-      "1": [
-        "Feriado|Dia do Trabalhador"
-      ],
-      "27": [
-        "Feriado|Corpus Christi"
-      ]
-    },
-    "Junho": {},
-    "Julho": {},
-    "Agosto": {
-      "15": [
-        "Feriado|Nsa. Sra. da Abadia"
-      ]
-    },
-    "Setembro": {
-      "7": [
-        "Feriado|Independência do Brasil"
-      ]
-    },
-    "Outubro": {
-      "12": [
-        "Feriado|Nsa Sra. Aparecida"
-      ]
-    },
-    "Novembro": {
-      "2": [
-        "Feriado|Finados"
-      ],
-      "15": [
-        "Feriado|Proclamação da República"
-      ],
-      "20": [
-        "Feriado|Consciência Negra"
-      ]
-    },
-    "Dezembro": {
-      "25": [
-        "Feriado|Natal"
-      ]
-    }
-  },
-  "Alice Arantes": {
-    "Janeiro": {
-      "1": [
-        "Feriado|Ano Novo"
-      ]
-    },
-    "Fevereiro": {
-      "8": [
-        "Feriado|Carnaval"
-      ],
-      "9": [
-        "Feriado|Carnaval"
-      ],
-      "10": [
-        "Feriado|Cinzas"
-      ]
-    },
-    "Março": {
-      "2": [
-        "Feriado|Aniversário de Uberaba"
-      ],
-      "26": [
-        "Feriado|Sexta-feira Santa"
-      ],
-      "28": [
-        "Feriado|Páscoa"
-      ]
-    },
-    "Abril": {
-      "21": [
-        "Feriado|Tiradentes"
-      ]
-    },
-    "Maio": {
-      "1": [
-        "Feriado|Dia do Trabalhador"
-      ],
-      "27": [
-        "Feriado|Corpus Christi"
-      ]
-    },
-    "Junho": {},
-    "Julho": {},
-    "Agosto": {
-      "15": [
-        "Feriado|Nsa. Sra. da Abadia"
-      ]
-    },
-    "Setembro": {
-      "7": [
-        "Feriado|Independência do Brasil"
-      ]
-    },
-    "Outubro": {
-      "12": [
-        "Feriado|Nsa Sra. Aparecida"
-      ]
-    },
-    "Novembro": {
-      "2": [
-        "Feriado|Finados"
-      ],
-      "15": [
-        "Feriado|Proclamação da República"
-      ],
-      "20": [
-        "Feriado|Consciência Negra"
-      ]
-    },
-    "Dezembro": {
-      "25": [
-        "Feriado|Natal"
-      ]
-    }
-  },
-  "Bianca": {
-    "Janeiro": {
-      "1": [
-        "Feriado|Ano Novo"
-      ]
-    },
-    "Fevereiro": {
-      "8": [
-        "Feriado|Carnaval"
-      ],
-      "9": [
-        "Feriado|Carnaval"
-      ],
-      "10": [
-        "Feriado|Cinzas"
-      ]
-    },
-    "Março": {
-      "2": [
-        "Feriado|Aniversário de Uberaba"
-      ],
-      "26": [
-        "Feriado|Sexta-feira Santa"
-      ],
-      "28": [
-        "Feriado|Páscoa"
-      ]
-    },
-    "Abril": {
-      "21": [
-        "Feriado|Tiradentes"
-      ]
-    },
-    "Maio": {
-      "1": [
-        "Feriado|Dia do Trabalhador"
-      ],
-      "27": [
-        "Feriado|Corpus Christi"
-      ]
-    },
-    "Junho": {},
-    "Julho": {},
-    "Agosto": {
-      "15": [
-        "Feriado|Nsa. Sra. da Abadia"
-      ]
-    },
-    "Setembro": {
-      "7": [
-        "Feriado|Independência do Brasil"
-      ]
-    },
-    "Outubro": {
-      "12": [
-        "Feriado|Nsa Sra. Aparecida"
-      ]
-    },
-    "Novembro": {
-      "2": [
-        "Feriado|Finados"
-      ],
-      "15": [
-        "Feriado|Proclamação da República"
-      ],
-      "20": [
-        "Feriado|Consciência Negra"
-      ]
-    },
-    "Dezembro": {
-      "25": [
-        "Feriado|Natal"
-      ]
-    }
-  },
-  "Fábio Fogaça": {
-    "Janeiro": {
-      "1": [
-        "Feriado|Ano Novo"
-      ]
-    },
-    "Fevereiro": {
-      "8": [
-        "Feriado|Carnaval"
-      ],
-      "9": [
-        "Feriado|Carnaval"
-      ],
-      "10": [
-        "Feriado|Cinzas"
-      ]
-    },
-    "Março": {
-      "2": [
-        "Feriado|Aniversário de Uberaba"
-      ],
-      "26": [
-        "Feriado|Sexta-feira Santa"
-      ],
-      "28": [
-        "Feriado|Páscoa"
-      ]
-    },
-    "Abril": {
-      "21": [
-        "Feriado|Tiradentes"
-      ]
-    },
-    "Maio": {
-      "1": [
-        "Feriado|Dia do Trabalhador"
-      ],
-      "27": [
-        "Feriado|Corpus Christi"
-      ]
-    },
-    "Junho": {},
-    "Julho": {},
-    "Agosto": {
-      "15": [
-        "Feriado|Nsa. Sra. da Abadia"
-      ]
-    },
-    "Setembro": {
-      "7": [
-        "Feriado|Independência do Brasil"
-      ]
-    },
-    "Outubro": {
-      "12": [
-        "Feriado|Nsa Sra. Aparecida"
-      ]
-    },
-    "Novembro": {
-      "2": [
-        "Feriado|Finados"
-      ],
-      "15": [
-        "Feriado|Proclamação da República"
-      ],
-      "20": [
-        "Feriado|Consciência Negra"
-      ]
-    },
-    "Dezembro": {
-      "25": [
-        "Feriado|Natal"
-      ]
-    }
-  },
-  "Felipe Secco": {
-    "Janeiro": {
-      "1": [
-        "Feriado|Ano Novo"
-      ]
-    },
-    "Fevereiro": {
-      "8": [
-        "Feriado|Carnaval"
-      ],
-      "9": [
-        "Feriado|Carnaval"
-      ],
-      "10": [
-        "Feriado|Cinzas"
-      ]
-    },
-    "Março": {
-      "2": [
-        "Feriado|Aniversário de Uberaba"
-      ],
-      "26": [
-        "Feriado|Sexta-feira Santa"
-      ],
-      "28": [
-        "Feriado|Páscoa"
-      ]
-    },
-    "Abril": {
-      "21": [
-        "Feriado|Tiradentes"
-      ]
-    },
-    "Maio": {
-      "1": [
-        "Feriado|Dia do Trabalhador"
-      ],
-      "27": [
-        "Feriado|Corpus Christi"
-      ]
-    },
-    "Junho": {},
-    "Julho": {},
-    "Agosto": {
-      "15": [
-        "Feriado|Nsa. Sra. da Abadia"
-      ]
-    },
-    "Setembro": {
-      "7": [
-        "Feriado|Independência do Brasil"
-      ]
-    },
-    "Outubro": {
-      "12": [
-        "Feriado|Nsa Sra. Aparecida"
-      ]
-    },
-    "Novembro": {
-      "2": [
-        "Feriado|Finados"
-      ],
-      "15": [
-        "Feriado|Proclamação da República"
-      ],
-      "20": [
-        "Feriado|Consciência Negra"
-      ]
-    },
-    "Dezembro": {
-      "25": [
-        "Feriado|Natal"
-      ]
-    }
-  },
-  "Itamar Aguiar": {
-    "Janeiro": {
-      "1": [
-        "Feriado|Ano Novo"
-      ]
-    },
-    "Fevereiro": {
-      "8": [
-        "Feriado|Carnaval"
-      ],
-      "9": [
-        "Feriado|Carnaval"
-      ],
-      "10": [
-        "Feriado|Cinzas"
-      ]
-    },
-    "Março": {
-      "2": [
-        "Feriado|Aniversário de Uberaba"
-      ],
-      "26": [
-        "Feriado|Sexta-feira Santa"
-      ],
-      "28": [
-        "Feriado|Páscoa"
-      ]
-    },
-    "Abril": {
-      "21": [
-        "Feriado|Tiradentes"
-      ]
-    },
-    "Maio": {
-      "1": [
-        "Feriado|Dia do Trabalhador"
-      ],
-      "27": [
-        "Feriado|Corpus Christi"
-      ]
-    },
-    "Junho": {},
-    "Julho": {},
-    "Agosto": {
-      "15": [
-        "Feriado|Nsa. Sra. da Abadia"
-      ]
-    },
-    "Setembro": {
-      "7": [
-        "Feriado|Independência do Brasil"
-      ]
-    },
-    "Outubro": {
-      "12": [
-        "Feriado|Nsa Sra. Aparecida"
-      ]
-    },
-    "Novembro": {
-      "2": [
-        "Feriado|Finados"
-      ],
-      "15": [
-        "Feriado|Proclamação da República"
-      ],
-      "20": [
-        "Feriado|Consciência Negra"
-      ]
-    },
-    "Dezembro": {
-      "25": [
-        "Feriado|Natal"
-      ]
-    }
-  },
-  "Paula Tiveron": {
-    "Janeiro": {
-      "1": [
-        "Feriado|Ano Novo"
-      ]
-    },
-    "Fevereiro": {
-      "8": [
-        "Feriado|Carnaval"
-      ],
-      "9": [
-        "Feriado|Carnaval"
-      ],
-      "10": [
-        "Feriado|Cinzas"
-      ]
-    },
-    "Março": {
-      "2": [
-        "Feriado|Aniversário de Uberaba"
-      ],
-      "26": [
-        "Feriado|Sexta-feira Santa"
-      ],
-      "28": [
-        "Feriado|Páscoa"
-      ]
-    },
-    "Abril": {
-      "21": [
-        "Feriado|Tiradentes"
-      ]
-    },
-    "Maio": {
-      "1": [
-        "Feriado|Dia do Trabalhador"
-      ],
-      "27": [
-        "Feriado|Corpus Christi"
-      ]
-    },
-    "Junho": {},
-    "Julho": {},
-    "Agosto": {
-      "15": [
-        "Feriado|Nsa. Sra. da Abadia"
-      ]
-    },
-    "Setembro": {
-      "7": [
-        "Feriado|Independência do Brasil"
-      ]
-    },
-    "Outubro": {
-      "12": [
-        "Feriado|Nsa Sra. Aparecida"
-      ]
-    },
-    "Novembro": {
-      "2": [
-        "Feriado|Finados"
-      ],
-      "15": [
-        "Feriado|Proclamação da República"
-      ],
-      "20": [
-        "Feriado|Consciência Negra"
-      ]
-    },
-    "Dezembro": {
-      "25": [
-        "Feriado|Natal"
-      ]
-    }
-  },
-  "Rafael Azevedo": {
-    "Janeiro": {
-      "1": [
-        "Feriado|Ano Novo"
-      ]
-    },
-    "Fevereiro": {
-      "8": [
-        "Feriado|Carnaval"
-      ],
-      "9": [
-        "Feriado|Carnaval"
-      ],
-      "10": [
-        "Feriado|Cinzas"
-      ]
-    },
-    "Março": {
-      "2": [
-        "Feriado|Aniversário de Uberaba"
-      ],
-      "26": [
-        "Feriado|Sexta-feira Santa"
-      ],
-      "28": [
-        "Feriado|Páscoa"
-      ]
-    },
-    "Abril": {
-      "21": [
-        "Feriado|Tiradentes"
-      ]
-    },
-    "Maio": {
-      "1": [
-        "Feriado|Dia do Trabalhador"
-      ],
-      "27": [
-        "Feriado|Corpus Christi"
-      ]
-    },
-    "Junho": {},
-    "Julho": {},
-    "Agosto": {
-      "15": [
-        "Feriado|Nsa. Sra. da Abadia"
-      ]
-    },
-    "Setembro": {
-      "7": [
-        "Feriado|Independência do Brasil"
-      ]
-    },
-    "Outubro": {
-      "12": [
-        "Feriado|Nsa Sra. Aparecida"
-      ]
-    },
-    "Novembro": {
-      "2": [
-        "Feriado|Finados"
-      ],
-      "15": [
-        "Feriado|Proclamação da República"
-      ],
-      "20": [
-        "Feriado|Consciência Negra"
-      ]
-    },
-    "Dezembro": {
-      "25": [
-        "Feriado|Natal"
-      ]
-    }
-  },
-  "Rayce Ferreira": {
-    "Janeiro": {
-      "1": [
-        "Feriado|Ano Novo"
-      ]
-    },
-    "Fevereiro": {
-      "8": [
-        "Feriado|Carnaval"
-      ],
-      "9": [
-        "Feriado|Carnaval"
-      ],
-      "10": [
-        "Feriado|Cinzas"
-      ]
-    },
-    "Março": {
-      "2": [
-        "Feriado|Aniversário de Uberaba"
-      ],
-      "26": [
-        "Feriado|Sexta-feira Santa"
-      ],
-      "28": [
-        "Feriado|Páscoa"
-      ]
-    },
-    "Abril": {
-      "21": [
-        "Feriado|Tiradentes"
-      ]
-    },
-    "Maio": {
-      "1": [
-        "Feriado|Dia do Trabalhador"
-      ],
-      "27": [
-        "Feriado|Corpus Christi"
-      ]
-    },
-    "Junho": {},
-    "Julho": {},
-    "Agosto": {
-      "15": [
-        "Feriado|Nsa. Sra. da Abadia"
-      ]
-    },
-    "Setembro": {
-      "7": [
-        "Feriado|Independência do Brasil"
-      ]
-    },
-    "Outubro": {
-      "12": [
-        "Feriado|Nsa Sra. Aparecida"
-      ]
-    },
-    "Novembro": {
-      "2": [
-        "Feriado|Finados"
-      ],
-      "15": [
-        "Feriado|Proclamação da República"
-      ],
-      "20": [
-        "Feriado|Consciência Negra"
-      ]
-    },
-    "Dezembro": {
-      "25": [
-        "Feriado|Natal"
-      ]
-    }
-  },
-  "Reginaldo Santos": {
-    "Janeiro": {
-      "1": [
-        "Feriado|Ano Novo"
-      ]
-    },
-    "Fevereiro": {
-      "8": [
-        "Feriado|Carnaval"
-      ],
-      "9": [
-        "Feriado|Carnaval"
-      ],
-      "10": [
-        "Feriado|Cinzas"
-      ]
-    },
-    "Março": {
-      "2": [
-        "Feriado|Aniversário de Uberaba"
-      ],
-      "26": [
-        "Feriado|Sexta-feira Santa"
-      ],
-      "28": [
-        "Feriado|Páscoa"
-      ]
-    },
-    "Abril": {
-      "21": [
-        "Feriado|Tiradentes"
-      ]
-    },
-    "Maio": {
-      "1": [
-        "Feriado|Dia do Trabalhador"
-      ],
-      "27": [
-        "Feriado|Corpus Christi"
-      ]
-    },
-    "Junho": {},
-    "Julho": {},
-    "Agosto": {
-      "15": [
-        "Feriado|Nsa. Sra. da Abadia"
-      ]
-    },
-    "Setembro": {
-      "7": [
-        "Feriado|Independência do Brasil"
-      ]
-    },
-    "Outubro": {
-      "12": [
-        "Feriado|Nsa Sra. Aparecida"
-      ]
-    },
-    "Novembro": {
-      "2": [
-        "Feriado|Finados"
-      ],
-      "15": [
-        "Feriado|Proclamação da República"
-      ],
-      "20": [
-        "Feriado|Consciência Negra"
-      ]
-    },
-    "Dezembro": {
-      "25": [
-        "Feriado|Natal"
-      ]
-    }
-  }
-};
+let AGENDA_2027 = {"Alexandre Scarpa": {"Janeiro": {"1": ["Feriado|Ano Novo"]}, "Fevereiro": {"8": ["Feriado|Carnaval"], "9": ["Feriado|Carnaval"], "10": ["Feriado|Cinzas"]}, "Março": {"2": ["Feriado|Aniversário de Uberaba"], "26": ["Feriado|Sexta-feira Santa"], "28": ["Feriado|Páscoa"]}, "Abril": {"21": ["Feriado|Tiradentes"]}, "Maio": {"1": ["Feriado|Dia do Trabalhador"], "27": ["Feriado|Corpus Christi"]}, "Junho": {}, "Julho": {}, "Agosto": {"15": ["Feriado|Nsa. Sra. da Abadia"]}, "Setembro": {"7": ["Feriado|Independência do Brasil"]}, "Outubro": {"12": ["Feriado|Nsa Sra. Aparecida"]}, "Novembro": {"2": ["Feriado|Finados"], "15": ["Feriado|Proclamação da República"], "20": ["Feriado|Consciência Negra"]}, "Dezembro": {"25": ["Feriado|Natal"]}}, "Alice Arantes": {"Janeiro": {"1": ["Feriado|Ano Novo"]}, "Fevereiro": {"8": ["Feriado|Carnaval"], "9": ["Feriado|Carnaval"], "10": ["Feriado|Cinzas"]}, "Março": {"2": ["Feriado|Aniversário de Uberaba"], "26": ["Feriado|Sexta-feira Santa"], "28": ["Feriado|Páscoa"]}, "Abril": {"21": ["Feriado|Tiradentes"]}, "Maio": {"1": ["Feriado|Dia do Trabalhador"], "27": ["Feriado|Corpus Christi"]}, "Junho": {}, "Julho": {}, "Agosto": {"15": ["Feriado|Nsa. Sra. da Abadia"]}, "Setembro": {"7": ["Feriado|Independência do Brasil"]}, "Outubro": {"12": ["Feriado|Nsa Sra. Aparecida"]}, "Novembro": {"2": ["Feriado|Finados"], "15": ["Feriado|Proclamação da República"], "20": ["Feriado|Consciência Negra"]}, "Dezembro": {"25": ["Feriado|Natal"]}}, "Bianca": {"Janeiro": {"1": ["Feriado|Ano Novo"]}, "Fevereiro": {"8": ["Feriado|Carnaval"], "9": ["Feriado|Carnaval"], "10": ["Feriado|Cinzas"]}, "Março": {"2": ["Feriado|Aniversário de Uberaba"], "26": ["Feriado|Sexta-feira Santa"], "28": ["Feriado|Páscoa"]}, "Abril": {"21": ["Feriado|Tiradentes"]}, "Maio": {"1": ["Feriado|Dia do Trabalhador"], "27": ["Feriado|Corpus Christi"]}, "Junho": {}, "Julho": {}, "Agosto": {"15": ["Feriado|Nsa. Sra. da Abadia"]}, "Setembro": {"7": ["Feriado|Independência do Brasil"]}, "Outubro": {"12": ["Feriado|Nsa Sra. Aparecida"]}, "Novembro": {"2": ["Feriado|Finados"], "15": ["Feriado|Proclamação da República"], "20": ["Feriado|Consciência Negra"]}, "Dezembro": {"25": ["Feriado|Natal"]}}, "Fábio Fogaça": {"Janeiro": {"1": ["Feriado|Ano Novo"]}, "Fevereiro": {"8": ["Feriado|Carnaval"], "9": ["Feriado|Carnaval"], "10": ["Feriado|Cinzas"]}, "Março": {"2": ["Feriado|Aniversário de Uberaba"], "26": ["Feriado|Sexta-feira Santa"], "28": ["Feriado|Páscoa"]}, "Abril": {"21": ["Feriado|Tiradentes"]}, "Maio": {"1": ["Feriado|Dia do Trabalhador"], "27": ["Feriado|Corpus Christi"]}, "Junho": {}, "Julho": {}, "Agosto": {"15": ["Feriado|Nsa. Sra. da Abadia"]}, "Setembro": {"7": ["Feriado|Independência do Brasil"]}, "Outubro": {"12": ["Feriado|Nsa Sra. Aparecida"]}, "Novembro": {"2": ["Feriado|Finados"], "15": ["Feriado|Proclamação da República"], "20": ["Feriado|Consciência Negra"]}, "Dezembro": {"25": ["Feriado|Natal"]}}, "Felipe Secco": {"Janeiro": {"1": ["Feriado|Ano Novo"]}, "Fevereiro": {"8": ["Feriado|Carnaval"], "9": ["Feriado|Carnaval"], "10": ["Feriado|Cinzas"]}, "Março": {"2": ["Feriado|Aniversário de Uberaba"], "26": ["Feriado|Sexta-feira Santa"], "28": ["Feriado|Páscoa"]}, "Abril": {"21": ["Feriado|Tiradentes"]}, "Maio": {"1": ["Feriado|Dia do Trabalhador"], "27": ["Feriado|Corpus Christi"]}, "Junho": {}, "Julho": {}, "Agosto": {"15": ["Feriado|Nsa. Sra. da Abadia"]}, "Setembro": {"7": ["Feriado|Independência do Brasil"]}, "Outubro": {"12": ["Feriado|Nsa Sra. Aparecida"]}, "Novembro": {"2": ["Feriado|Finados"], "15": ["Feriado|Proclamação da República"], "20": ["Feriado|Consciência Negra"]}, "Dezembro": {"25": ["Feriado|Natal"]}}, "Itamar Aguiar": {"Janeiro": {"1": ["Feriado|Ano Novo"]}, "Fevereiro": {"8": ["Feriado|Carnaval"], "9": ["Feriado|Carnaval"], "10": ["Feriado|Cinzas"]}, "Março": {"2": ["Feriado|Aniversário de Uberaba"], "26": ["Feriado|Sexta-feira Santa"], "28": ["Feriado|Páscoa"]}, "Abril": {"21": ["Feriado|Tiradentes"]}, "Maio": {"1": ["Feriado|Dia do Trabalhador"], "27": ["Feriado|Corpus Christi"]}, "Junho": {}, "Julho": {}, "Agosto": {"15": ["Feriado|Nsa. Sra. da Abadia"]}, "Setembro": {"7": ["Feriado|Independência do Brasil"]}, "Outubro": {"12": ["Feriado|Nsa Sra. Aparecida"]}, "Novembro": {"2": ["Feriado|Finados"], "15": ["Feriado|Proclamação da República"], "20": ["Feriado|Consciência Negra"]}, "Dezembro": {"25": ["Feriado|Natal"]}}, "Paula Tiveron": {"Janeiro": {"1": ["Feriado|Ano Novo"]}, "Fevereiro": {"8": ["Feriado|Carnaval"], "9": ["Feriado|Carnaval"], "10": ["Feriado|Cinzas"]}, "Março": {"2": ["Feriado|Aniversário de Uberaba"], "26": ["Feriado|Sexta-feira Santa"], "28": ["Feriado|Páscoa"]}, "Abril": {"21": ["Feriado|Tiradentes"]}, "Maio": {"1": ["Feriado|Dia do Trabalhador"], "27": ["Feriado|Corpus Christi"]}, "Junho": {}, "Julho": {}, "Agosto": {"15": ["Feriado|Nsa. Sra. da Abadia"]}, "Setembro": {"7": ["Feriado|Independência do Brasil"]}, "Outubro": {"12": ["Feriado|Nsa Sra. Aparecida"]}, "Novembro": {"2": ["Feriado|Finados"], "15": ["Feriado|Proclamação da República"], "20": ["Feriado|Consciência Negra"]}, "Dezembro": {"25": ["Feriado|Natal"]}}, "Rafael Azevedo": {"Janeiro": {"1": ["Feriado|Ano Novo"]}, "Fevereiro": {"8": ["Feriado|Carnaval"], "9": ["Feriado|Carnaval"], "10": ["Feriado|Cinzas"]}, "Março": {"2": ["Feriado|Aniversário de Uberaba"], "26": ["Feriado|Sexta-feira Santa"], "28": ["Feriado|Páscoa"]}, "Abril": {"21": ["Feriado|Tiradentes"]}, "Maio": {"1": ["Feriado|Dia do Trabalhador"], "27": ["Feriado|Corpus Christi"]}, "Junho": {}, "Julho": {}, "Agosto": {"15": ["Feriado|Nsa. Sra. da Abadia"]}, "Setembro": {"7": ["Feriado|Independência do Brasil"]}, "Outubro": {"12": ["Feriado|Nsa Sra. Aparecida"]}, "Novembro": {"2": ["Feriado|Finados"], "15": ["Feriado|Proclamação da República"], "20": ["Feriado|Consciência Negra"]}, "Dezembro": {"25": ["Feriado|Natal"]}}, "Rayce Ferreira": {"Janeiro": {"1": ["Feriado|Ano Novo"]}, "Fevereiro": {"8": ["Feriado|Carnaval"], "9": ["Feriado|Carnaval"], "10": ["Feriado|Cinzas"]}, "Março": {"2": ["Feriado|Aniversário de Uberaba"], "26": ["Feriado|Sexta-feira Santa"], "28": ["Feriado|Páscoa"]}, "Abril": {"21": ["Feriado|Tiradentes"]}, "Maio": {"1": ["Feriado|Dia do Trabalhador"], "27": ["Feriado|Corpus Christi"]}, "Junho": {}, "Julho": {}, "Agosto": {"15": ["Feriado|Nsa. Sra. da Abadia"]}, "Setembro": {"7": ["Feriado|Independência do Brasil"]}, "Outubro": {"12": ["Feriado|Nsa Sra. Aparecida"]}, "Novembro": {"2": ["Feriado|Finados"], "15": ["Feriado|Proclamação da República"], "20": ["Feriado|Consciência Negra"]}, "Dezembro": {"25": ["Feriado|Natal"]}}, "Reginaldo Santos": {"Janeiro": {"1": ["Feriado|Ano Novo"]}, "Fevereiro": {"8": ["Feriado|Carnaval"], "9": ["Feriado|Carnaval"], "10": ["Feriado|Cinzas"]}, "Março": {"2": ["Feriado|Aniversário de Uberaba"], "26": ["Feriado|Sexta-feira Santa"], "28": ["Feriado|Páscoa"]}, "Abril": {"21": ["Feriado|Tiradentes"]}, "Maio": {"1": ["Feriado|Dia do Trabalhador"], "27": ["Feriado|Corpus Christi"]}, "Junho": {}, "Julho": {}, "Agosto": {"15": ["Feriado|Nsa. Sra. da Abadia"]}, "Setembro": {"7": ["Feriado|Independência do Brasil"]}, "Outubro": {"12": ["Feriado|Nsa Sra. Aparecida"]}, "Novembro": {"2": ["Feriado|Finados"], "15": ["Feriado|Proclamação da República"], "20": ["Feriado|Consciência Negra"]}, "Dezembro": {"25": ["Feriado|Natal"]}}};
 const DIAS_MES_2027 = {"Janeiro": 31, "Fevereiro": 28, "Março": 31, "Abril": 30, "Maio": 31, "Junho": 30, "Julho": 31, "Agosto": 31, "Setembro": 30, "Outubro": 31, "Novembro": 30, "Dezembro": 31};
 const PRIMEIRO_DIA_2027 = {"Janeiro": 5, "Fevereiro": 1, "Março": 1, "Abril": 4, "Maio": 6, "Junho": 2, "Julho": 4, "Agosto": 0, "Setembro": 3, "Outubro": 5, "Novembro": 1, "Dezembro": 3};
 const PRIMEIRO_DIA = {Janeiro:4,Fevereiro:0,Março:0,Abril:3,Maio:5,Junho:1,Julho:3,Agosto:6,Setembro:2,Outubro:4,Novembro:0,Dezembro:2}; // 2026
@@ -11385,7 +10235,7 @@ function saveLocal() {
   } catch(e) {}
 }
 function loadLocal() {
-  // Visitantes do link público NÃO carregam localStorage, evitando versão antiga no navegador.
+  // Somente carrega localStorage no modo edição para não sobrescrever dados publicados
   if (!editMode) return;
   try {
     const s = localStorage.getItem('agenda_alta_2026');
