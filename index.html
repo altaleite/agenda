@@ -84,26 +84,11 @@
     gap: 20px;
   }
 
-  .logo-area {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-  }
-
-  .logo-text {
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--white);
-    letter-spacing: -0.4px;
-    line-height: 1.1;
-  }
-
-  .logo-sub {
-    font-size: 10px;
-    font-weight: 500;
-    color: rgba(255,255,255,0.65);
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
+  .logo-img {
+    height: 36px;
+    width: auto;
+    display: block;
+    flex-shrink: 0;
   }
 
   .header-divider {
@@ -292,11 +277,35 @@
     gap: 4px;
   }
 
-  .today-dot {
-    width: 6px; height: 6px;
+  .today-badge {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .4px;
+    color: #fff;
     background: var(--alta-blue);
-    border-radius: 50%;
-    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 20px;
+    line-height: 1.4;
+  }
+
+  .day-cell.has-feriado { background: #fef2f2; }
+  .day-cell.has-feriado:hover { background: #fde5e5; }
+  .day-cell.has-feriado .day-num span:first-child { color: #b91c1c; }
+
+  .day-cell.has-aniversario-hoje {
+    background: linear-gradient(135deg, #fefce8, #fef3c7);
+    box-shadow: inset 0 0 0 2px #eab308;
+  }
+
+  .aniversario-hoje-banner {
+    font-size: 11px;
+    font-weight: 700;
+    color: #854d0e;
+    background: #fde68a;
+    border-radius: 6px;
+    padding: 3px 6px;
+    margin-bottom: 5px;
+    text-align: center;
   }
 
   .day-events {
@@ -315,6 +324,12 @@
     background: var(--bg, #eceff3);
     color: var(--fg, #334155);
     border-left: 3px solid var(--c, #64748b);
+    display: block;
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  .event-chip:hover {
+    transform: translateX(1px) translateY(-1px);
+    box-shadow: 0 3px 8px rgba(15,23,42,.14);
   }
 
   /* Categorias — matizes bem separados. Cada uma define acento (--c),
@@ -330,6 +345,7 @@
   .chip-livre        { --c:#84cc16; --bg:#eef7db; --fg:#4d7c0f; }
   .chip-particular   { --c:#a8a29e; --bg:#f1efed; --fg:#57534e; }
   .chip-outros       { --c:#64748b; --bg:#eceff3; --fg:#334155; }
+  .chip-aniversario  { --c:#eab308; --bg:#fef7d6; --fg:#854d0e; }
 
   /* ── EYEBROW + RESUMO DO MÊS ── */
   .ch-eyebrow { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.2px; color: rgba(255,255,255,0.6); display: block; margin-bottom: 3px; }
@@ -351,6 +367,8 @@
   .ms-item { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--gray-700); font-weight: 500; }
   .ms-item b { font-weight: 700; color: var(--gray-900); }
   .ms-dot { width: 9px; height: 9px; border-radius: 3px; flex-shrink: 0; }
+  .mes-aniversariantes { padding: 8px 28px; background: #fef7d6; color: #854d0e; font-size: 12.5px; font-weight: 500; border-bottom: 1px solid var(--gray-200); }
+  .mes-aniversariantes b { font-weight: 700; }
 
   /* ── LEGENDA ── */
   .legend {
@@ -570,6 +588,7 @@
   /* Celular: troca a GRADE por uma AGENDA em lista (uma linha por dia) */
   @media (max-width: 640px) {
     .header-inner { padding: 12px 16px; gap: 12px; }
+    .logo-img { height: 26px; }
     .filters-bar { padding: 12px 16px; }
     .filters-inner { padding: 0; gap: 12px; }
     .filter-group { flex: 1; }
@@ -650,6 +669,7 @@
       <option value="livre">🌿 Dia livre</option>
       <option value="particular">⚪ Particular</option>
       <option value="outros">◾ Outros</option>
+      <option value="aniversario">🎂 Aniversário</option>
     </select>
     <label>Descrição do evento</label>
     <input type="text" id="ev-input" placeholder="Ex: Uberaba" onkeydown="if(event.key==='Enter')saveEvt()">
@@ -679,14 +699,7 @@
 <div class="top-sticky">
 <header>
   <div class="header-inner">
-    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
-      <rect width="40" height="40" rx="8" fill="white" fill-opacity="0.12"/>
-      <text x="50%" y="56%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="14" font-weight="900" font-family="Segoe UI, sans-serif">A</text>
-    </svg>
-    <div class="logo-area">
-      <span class="logo-text">Alta Genetics</span>
-      <span class="logo-sub">Brasil</span>
-    </div>
+    <img class="logo-img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeUAAABsCAYAAABU+KrGAAAKMWlDQ1BJQ0MgUHJvZmlsZQAAeJydlndUU9kWh8+9N71QkhCKlNBraFICSA29SJEuKjEJEErAkAAiNkRUcERRkaYIMijggKNDkbEiioUBUbHrBBlE1HFwFBuWSWStGd+8ee/Nm98f935rn73P3Wfvfda6AJD8gwXCTFgJgAyhWBTh58WIjYtnYAcBDPAAA2wA4HCzs0IW+EYCmQJ82IxsmRP4F726DiD5+yrTP4zBAP+flLlZIjEAUJiM5/L42VwZF8k4PVecJbdPyZi2NE3OMErOIlmCMlaTc/IsW3z2mWUPOfMyhDwZy3PO4mXw5Nwn4405Er6MkWAZF+cI+LkyviZjg3RJhkDGb+SxGXxONgAoktwu5nNTZGwtY5IoMoIt43kA4EjJX/DSL1jMzxPLD8XOzFouEiSniBkmXFOGjZMTi+HPz03ni8XMMA43jSPiMdiZGVkc4XIAZs/8WRR5bRmyIjvYODk4MG0tbb4o1H9d/JuS93aWXoR/7hlEH/jD9ld+mQ0AsKZltdn6h21pFQBd6wFQu/2HzWAvAIqyvnUOfXEeunxeUsTiLGcrq9zcXEsBn2spL+jv+p8Of0NffM9Svt3v5WF485M4knQxQ143bmZ6pkTEyM7icPkM5p+H+B8H/nUeFhH8JL6IL5RFRMumTCBMlrVbyBOIBZlChkD4n5r4D8P+pNm5lona+BHQllgCpSEaQH4eACgqESAJe2Qr0O99C8ZHA/nNi9GZmJ37z4L+fVe4TP7IFiR/jmNHRDK4ElHO7Jr8WgI0IABFQAPqQBvoAxPABLbAEbgAD+ADAkEoiARxYDHgghSQAUQgFxSAtaAYlIKtYCeoBnWgETSDNnAYdIFj4DQ4By6By2AE3AFSMA6egCnwCsxAEISFyBAVUod0IEPIHLKFWJAb5AMFQxFQHJQIJUNCSAIVQOugUqgcqobqoWboW+godBq6AA1Dt6BRaBL6FXoHIzAJpsFasBFsBbNgTzgIjoQXwcnwMjgfLoK3wJVwA3wQ7oRPw5fgEVgKP4GnEYAQETqiizARFsJGQpF4JAkRIauQEqQCaUDakB6kH7mKSJGnyFsUBkVFMVBMlAvKHxWF4qKWoVahNqOqUQdQnag+1FXUKGoK9RFNRmuizdHO6AB0LDoZnYsuRlegm9Ad6LPoEfQ4+hUGg6FjjDGOGH9MHCYVswKzGbMb0445hRnGjGGmsVisOtYc64oNxXKwYmwxtgp7EHsSewU7jn2DI+J0cLY4X1w8TogrxFXgWnAncFdwE7gZvBLeEO+MD8Xz8MvxZfhGfA9+CD+OnyEoE4wJroRIQiphLaGS0EY4S7hLeEEkEvWITsRwooC4hlhJPEQ8TxwlviVRSGYkNimBJCFtIe0nnSLdIr0gk8lGZA9yPFlM3kJuJp8h3ye/UaAqWCoEKPAUVivUKHQqXFF4pohXNFT0VFysmK9YoXhEcUjxqRJeyUiJrcRRWqVUo3RU6YbStDJV2UY5VDlDebNyi/IF5UcULMWI4kPhUYoo+yhnKGNUhKpPZVO51HXURupZ6jgNQzOmBdBSaaW0b2iDtCkVioqdSrRKnkqNynEVKR2hG9ED6On0Mvph+nX6O1UtVU9Vvuom1TbVK6qv1eaoeajx1UrU2tVG1N6pM9R91NPUt6l3qd/TQGmYaYRr5Grs0Tir8XQObY7LHO6ckjmH59zWhDXNNCM0V2ju0xzQnNbS1vLTytKq0jqj9VSbru2hnaq9Q/uE9qQOVcdNR6CzQ+ekzmOGCsOTkc6oZPQxpnQ1df11Jbr1uoO6M3rGelF6hXrtevf0Cfos/ST9Hfq9+lMGOgYhBgUGrQa3DfGGLMMUw12G/YavjYyNYow2GHUZPTJWMw4wzjduNb5rQjZxN1lm0mByzRRjyjJNM91tetkMNrM3SzGrMRsyh80dzAXmu82HLdAWThZCiwaLG0wS05OZw2xljlrSLYMtCy27LJ9ZGVjFW22z6rf6aG1vnW7daH3HhmITaFNo02Pzq62ZLde2xvbaXPJc37mr53bPfW5nbse322N3055qH2K/wb7X/oODo4PIoc1h0tHAMdGx1vEGi8YKY21mnXdCO3k5rXY65vTW2cFZ7HzY+RcXpkuaS4vLo3nG8/jzGueNueq5clzrXaVuDLdEt71uUnddd457g/sDD30PnkeTx4SnqWeq50HPZ17WXiKvDq/XbGf2SvYpb8Tbz7vEe9CH4hPlU+1z31fPN9m31XfKz95vhd8pf7R/kP82/xsBWgHcgOaAqUDHwJWBfUGkoAVB1UEPgs2CRcE9IXBIYMj2kLvzDecL53eFgtCA0O2h98KMw5aFfR+OCQ8Lrwl/GGETURDRv4C6YMmClgWvIr0iyyLvRJlESaJ6oxWjE6Kbo1/HeMeUx0hjrWJXxl6K04gTxHXHY+Oj45vipxf6LNy5cDzBPqE44foi40V5iy4s1licvvj4EsUlnCVHEtGJMYktie85oZwGzvTSgKW1S6e4bO4u7hOeB28Hb5Lvyi/nTyS5JpUnPUp2Td6ePJninlKR8lTAFlQLnqf6p9alvk4LTduf9ik9Jr09A5eRmHFUSBGmCfsytTPzMoezzLOKs6TLnJftXDYlChI1ZUPZi7K7xTTZz9SAxESyXjKa45ZTk/MmNzr3SJ5ynjBvYLnZ8k3LJ/J9879egVrBXdFboFuwtmB0pefK+lXQqqWrelfrry5aPb7Gb82BtYS1aWt/KLQuLC98uS5mXU+RVtGaorH1futbixWKRcU3NrhsqNuI2ijYOLhp7qaqTR9LeCUXS61LK0rfb+ZuvviVzVeVX33akrRlsMyhbM9WzFbh1uvb3LcdKFcuzy8f2x6yvXMHY0fJjpc7l+y8UGFXUbeLsEuyS1oZXNldZVC1tep9dUr1SI1XTXutZu2m2te7ebuv7PHY01anVVda926vYO/Ner/6zgajhop9mH05+x42Rjf2f836urlJo6m06cN+4X7pgYgDfc2Ozc0tmi1lrXCrpHXyYMLBy994f9Pdxmyrb6e3lx4ChySHHn+b+O31w0GHe4+wjrR9Z/hdbQe1o6QT6lzeOdWV0iXtjusePhp4tLfHpafje8vv9x/TPVZzXOV42QnCiaITn07mn5w+lXXq6enk02O9S3rvnIk9c60vvG/wbNDZ8+d8z53p9+w/ed71/LELzheOXmRd7LrkcKlzwH6g4wf7HzoGHQY7hxyHui87Xe4Znjd84or7ldNXva+euxZw7dLI/JHh61HXb95IuCG9ybv56Fb6ree3c27P3FlzF3235J7SvYr7mvcbfjT9sV3qID0+6j068GDBgztj3LEnP2X/9H686CH5YcWEzkTzI9tHxyZ9Jy8/Xvh4/EnWk5mnxT8r/1z7zOTZd794/DIwFTs1/lz0/NOvm1+ov9j/0u5l73TY9P1XGa9mXpe8UX9z4C3rbf+7mHcTM7nvse8rP5h+6PkY9PHup4xPn34D94Tz+6TMXDkAADKeSURBVHja7X17uGRVce+vanefMzMwwAzI0wsiIPgWBD+JEkXhGkCjPBXw/U4+cwFRb758UdCYm5ubG0Gj3htzjaI8B0ETRRAw4JMoqIAIiqg8REFhZs4Z5jy6d1XdP06tcdHTj93du/t096z6vv7OmZ4+vfdeq1b91q+qVhWQZGTFzDIA2Lx5816Li4vPjN9LkmQC9Ps4Mzslz/NTzGytv0dpXCyL1/nDDz+8vZmdJSKfMTNKY5QkyTIC8saNG9eKyC0i8vvFxcVn+P9V0gglGWPAoVqt9kKLJM/zv96WddvBNosB18z2zvP8r83sp2ZmInKTv89Jk5IkGaKsW7cu88W3VkRuDoZLRB6OGHMC5iTjCD4MACLyZdfpeTMTM/uFmU1va0zQzLhxLZvZC83sMyIyG+1bRERuTKCcJMkyMWQzWyMi3/fVWBeR3H//bQLmJOPMkhcXF59tZrmZiapa0O16vf6n24Je+8aj0sCKdzKzN4nIt+zxSFwXkZr//o0EykmSLA8gr40BWVUtNl5mloA5ydjqt4h8LtZtEan7v78yqaBzzjnnsAMxN4zJc83sI2b2QATEKiK5iGi87hMoJ0myDAbLY8hbAXIjMIvIb80sxZiTjIt+szPEJ4vIvANPAB01MxWRRTPbf1KAxz0DzYD4iWb252b2LVWNWXEuInmbNZ9AOUmSUWDICZiTTBBL/mgz/Y7Y8ocnUZ8diF8vIl80s5kAxOHZwwalw3pPoJwkyagBchNX9m9SVnaSEddxMjN67LHHdheRGWfF2qDP4rp/n5mtDH835s98lJl9wMyua0jaasmKEygnSTKGgNwMmBNjTjLCel5xlnxuOx2P9PnEcdXlsJEws0xEft0MiNux4gTKSdLkLiMgE5GY2VpVvYaZD1PVnIgKGyIiylRVAOyhqtctLi4+g4jyBMxJRgykZP369TsCeCcA62B3DMDb/Xcd88efAVBT1ZqqGhFl/krFP5IkUB5VQAZwdS+A3AjMzLz71NTUtWb29ATMSUZIMiKyNWvWvIGZd1NVISJupcv+65ELCwtPJSIdc1a4GsAUM08REYVjYGZmSS2SJFAeTUC+BsDzegXkVow5AXOSUWLJZrZCVc8owJLhelytVqtvGnMbZQBuBvArVZ0hIjBzhZkzB+gEzEmSjICRYv/ZUwy5i9hTSv5KMgr6XvGfrwsx1QI6HBK+HvSazzTmCV9VM9vdzA41s7ea2Rf9CJgVjS2nmHKSJANiyAGQzax0QG4GzGb29ATMSZaTKXvC022ecd1VtnGe56eOs/622kzUarUjzOz+sAlJoJwkljS5QwJkIpKNGzeuVdVrABzWr8u6lUQx5j0ApBhzkuXUecvz/FhmfhYAjWLGRXV5rBO+3EtN/goVvapTU1PfqtfrrzGznDmZ4CQJlJcFkM1s7Y477nhNP0ld3QIzgD09KzsBc5Khqz4AMPP7AEBVu9VfA3CEmT2TiDQ0aRlHYPaXElFORHUzq0xNTX0XwI0A2MwkqUuSBMoTxpDbMWbPyn5aAuYkQ9R7rdVqf8zML1TVrlkyAGHmTFXfAgAnn3zypI0RAfhOvIFJkiSB8oQx5HaMGcB1CZiTDFOyLHuvr4VeQCeA+GvWr1+/o6+liTnf667t3yctSZJAeQwZsp9t1B4X/+Nc2REwZ2mmkgxC9wHo4uLic5j5GFU1Zs560FtyT89ua9aseVUDUE/KpiW5rZMkUB4mQ169enXfDNnMlJkzZuZ+gZmZY8YsiTEnGRQLrFQqZzuI9g08qvq28Gsa3SQJlJP0BMi9ls5s+L6cmVlVLwJwvQNzXgZjXlhYSK7sJGXrPwNQM9sPwEmerJU1fMaKurNDwhczH25mh3iFr+ThSZJAOcmyAXJFVS/Jsuy1AF4F4DvMXOkXmJl5z2q1moA5yQBIMpmqnsHMKwBIY51nZiZm7qailQBgVX1ruEYa5iQJlJN0A8hfKwGQ6wGQmfl0//7NAI4tE5inp6evNbOnJmBOUiJL3h3AG7CUUZzFDNkB+xcAzuoCmMN3nGJma1xXEzAnSaCcpDBDPrQEhlwFcDEzn+7MQM2MiWgWwLGq+t0ygBnAXqp6fcrKTlKGLXHQ/TNm3sEbT1AD4yUAFxLR+QAe9BrQ2ol6+yZyZxE5qQGokyRJoJxkOAyZiAIghwIEW4DZs1pLY8xYqvyVGHOSXtdBaDyxI4B3NGPJfuZ4EzN/2j9/gWO2dqGzb/W/TQlfSRIoJ9nKEPEgGHLksmYARkQaGaUtwDwzM3NcmYwZS1nZCZiT9CIZERmAN3p7Rm3Bkj9PRA8AwMLCwmdUtcbMWSc3dpTwdRiA56WEryQJlJM0Y8g6CIacZdlpMUNuYqDUzHjt2rUzMzMzpcWYAzB7H9sEzEm6Zclxe0aKWbKz5kVmPt8/n61cufIeANf6Z4swXwFA0fGoJEkSKCfZuh/ygBgyYobcApiztWvXzqDkGHO1Wk2MOUkvLPkUZt7XWXJsV4SZCcCVRPTzyOYQM/9z+L3IdfznibOzs0+YtApfSZIkUC4BkNF/pa6cmSsALomSuqwdIEdAKpEru8ys7MSYk3TDkoMr+Ww0r+GcORP+xwhExT3W16rqPUUK40QJXzutWrXqlAagTpIkgXIC5P4AmYiCy/pSADEgWxffscWVPQjGnIA5SQGWrHmeHwfgWY2NJ8wssORriegHjq3iOp4RUY2ZP+sf7ybh6y3uUUplKoe8CfP2k2kzlEB58hgygKqqXsrMp/UCyI3APAjGnIA5SQdRAGDm97ZSJ//5Dw3/jkH486o630XClzLzwQD+aIlgJ4AYlvgpkJyI0mYogfJoAHIZzSVihtwvILdizGUCsxcYOSgBc5Im60LNrGl7RmfJrKrfA3BDOK3QoLMZEd0P4CpfB0WMvQKAqr69t+ZTSXpkyGRmu5jZq83spWlUkiyb4fGfa83s+2ZmIlJXVevlJSJ1L/17sSs5l5msEpLEzGxHM/t2Cfeb+3f82swO8u9OwJxki66JyFdcR/JmulOv109spTdmlvk6OMq/QwropPrPWa8etuVexmjsKv7znUXWaLQOv7EczxvuV0Su8Pu4M4B1WgmJKS8XQ/4a+ndZ1z2pK44hox+G3IoxE1HpjNnbPh6U2j4m8fk3M3sOM/8JgEaWrM6S76pUKv8ejk010a/w3o2qemeXCV+rReTUZMcGD8i+5t/AzCf4PM6lkUmgvCyAPDMzszNKOPbkLuuqJ3XFLuvSKxPFMWYApRUYYeYneknOg1LbxyReUvM9ADJVbdRjA0Bmdh4R1fGHY1PNJHOj/6/+7yInD8KG9s2+QUgxzsHZwXxxcfEZAD7uSaCZv0olFEmSdGIBMLO1InJzWS5rEbkkclnzEJ4juLJ3KNmV/cDCwkJyZW+764PNjObn5/cXkQUR0eBSdj0RM1MRud/MtgvxyAJ6uru7pB/3fW30Udw9/hK/RjZGYzjy7uswzxs3blxjZj/169f854/SSkhMeagMueTSmc2SurThc6UblZgxb9iwoVTGPD09fd3CwkJyZW+zJJlsamrqDGaextbtGdVZ8ie8s1k7lhwnfD3EzF9ClwlflUrlbYmxlW4HyeeBV69evQ7AgRFLBlL7zCRjypBrRRhyzCIGkTgxSMZsZgcmxrztsWQz28PMZhpZrYiov/eIme3ciSXHa8/MqFarHeGJkIUTvszsMTPba1gMctKZcjiLDAAi8rn4/oJ3QkRuTashMeWBG5sBlc7sxJB5qXudbW9mb/ffqUxwbogxHwug1BhzxJgTMG8D9iK0ZwSwg4g0bTzBzJ8mokc7seRIpwQAqtXqd1T1RwDYzKQjXV/S4e1E5LXJnpXGkDMiykXkPGZ+XQs7mJhyksEz5JmZmZ2HzJAD65iOjpWcFzOHxJiTjJLB9tdOIvKwM2JpwpI3z83N7R10vwf2+OfOlutF48oicpeZVcve0G5LTDkOoYnIh5vdVzTet6UVkWSggFz2OeRuANnMrvK/WfCfHx0gMIfn3UFEvlMWMJvZ/QmYJ36tBCA5s8W55KD7/y/WtS5ZGsxsFxFZ799VOOHLzF42LglfowbKcb0EM/tfre4pGuvbJkCfKbbRTV6UzmEvIyAPKMu66aRGjHVKRK5qiNnUhwDMAykwYmb3LywsJGCebJa8UkR+2YIli5nVzOxp3bLkJmvyU0X1MlozV/SyGdjWQTka8ykRuaCdlyJiyreXcOmhgV4EvhV/cbdjFP1tlsB6DADZjZGZ2SXtKnUFZbj77runGwG5SdWv88eNMfsxmATMk8uS39CBJfcFjJFeHtbF0Sg1MzWzOTPbZ1Du3UkE5eg+9hKRb3S6l5JBeRjjzK3skJlVNm7cuGZubm7vhYWFp5jZU83sQDPbf25ubh8z2+XBBx9c1em7x62a3EgDcokx5GYu664YcptynIME5i2MuWxXdmLME8eS2cwqInJ7I0uOzybXarXD+2WrUfnOm5ptANqtlzzP3z8OerfcoBy7+Wu12ovM7L6C9xHc17eXoVfOlquDIB2Np1rM7Ol5nr/ZzD4uIl8XkZ+JyKMiMicidVmSXERq/t5GM3tARH4kIl8VkY+Z2dvN7PlmtmMTgE5HQ/sB5I0bN5bKkEXk0k6ATETwpK6rCi6AAPbnNyhy6cC8fv36HQfAmJ8CADfccEMC5glgyfV6/ZXtalyLyH+UBBgVAHADWhSUA4O7x/M0RjoeuJygHIOHmZ0R2Zm8i3W+ICI/EZE7W7zuKvD6iZn91F3mpRRUarS/ZnaIiPwPEbk12lCUIb81s3/3+duncQObrMZ4MuRal9c4z8xWlt3AYpCMOQbmxJjHet0E5vrtFqAcKmsd0y9LjjeeGzZs2ElEftdtwle9Xn/FqOvccoFydN01Hmozr8gmXZKRMuW/luBdeVyCX71ef4WIXOuhjS3ijLjujFhCNbo2L4kYdPjbxgHYZGZfMLOjmm18knQA5AEUBrm0YJb1VFGG3CReFuLVLxrUhA8wK/u+yJWdFHV8182LmnVx8nlWEflBmeVjo6M5H+si4Svcy5dHXd+WA5Sj7OojzOxnEUhpj2u8Z8nzvOZ5AJeXFe5wV/zhZnZ9QMtAbAIAR/ddbwDovOE9aTcuDth5ZOeCXGNmz4s2CikhbBgMudukrl4Ycjzxfq2/GLRrJDHmJG1Y8lXtXNd5np9W5vyG6y4uLj7bzPKiwOGGfsHM9ivDlT4poBwlJZ1tZvV+13Y/r8BAfZ4O7MeuRZvGqoj8nZmFcZJmutqE5baVANBF7HTkHq+b2bmNm6FupDLhRqXsWtZ1Iqpiqf1iqNS1VbcUVzK7++67pwFcwczH+nWrBa9jAJSZMxE5q1Kp/JPHpXVQYxW3fTSzY1T1amb+o17HK6r89V8AXGdmRxPR3WFOEuSNxWZWzexgAC9D6/aM92RZdkWr9ox96uJtIvJtZn6Rqkp8/Wbi+jatqm8E8H4sVfjSbXwe2cdzXwD/O4xTrzawBBHvB/CpLMt+1qs9iGz7EwFczMxHqKphqRb74/SUiJiZM3/2nwP4PjPfAeDBPM8fq1QqEJHVAHYnogMBPAfAM5m5GsYLS9XsqImuErwmeKgPzszniMizH3roodMBzJsZpfrsGFwMecgM+Yx2DGTAtbJ3NLPEmLfx9SMiF7U4uhdY8rsGMadRwtdpPSR83es5GCPpQhwmU47W8wEistnMGt22ebcx5dh92+Wr5td/1Mx27TXkETHkp4nIr9oUO8kj1nuRh2GmCl7jQDN7r1eLs2bhmzZjE8KbV6ezzVtP2rLFkM3sK73EkCNjd2YRQB4kMA8gK/u+hYWFlJU9BuzK9Xh/dzM2bc9oZr/xsq00gAREAoCHH354exH5dRdGMRjiE0Z1A7hMoHxgO1ftkBO93tPr3MSbDDN7sBMgi8idIR8nxoeGYiDxvysNn12Z5/mZIjLTTZa6mS36s/5TjEnbpPs6dlmjxOYSABqbSzR1WQOoArgSwHGqWu/DZX2+mVWIKG9msML1QxOLZm70klzZxwL4akmu7L297ePRK1asSK7s0RUiIhWRM90d3DjvCqAiIv+3UqnMDmIeXa8rRPSYmV0E4H1+3SKAZKr6dl+Huo3PZbAJs6p6JYAKM5uqso+lAdiTiA4xNyydvlBVNwH4JjN3ex8ZgPUAPtFLuCMC5J0AfBnAns1skodWMgDfZuZXEtF6B1vDUhhGCl6LiWgewPlmdp2qrmPmpxUMpVQB5Mz8rnq9/iUi+vo2ae8G2FyimyzrQTPkcK3MzL4iIp+Kdn/jco75PjM7oNsdZJKhsuQ9RGS2TXvGjWa22yATECMjfJAnWBaq8uUsvmZmB3XLLCeNKReRer3+8iIscLkbUkQe0C+0q8/tOvAzB+++vCWu31X/fbfgzu7Ga+OFcHibO8M8wHPIvRx7qg0akEXkiijWcf6ggHndunVhIZQdY97iyk4x5tEDDBH5m3ZlYOv1+keHsamKMsCv6bbCl4j8/Sjq1zKeU84aXlNmluV5fkqXoPzjJt/VzYt6te95np/aoRqieBb24WXOfTRnTxWRxzodm2pSBe3wYayXkQNkb6w+8Qw5ALKXhKsPGpgHWJLz3oWFhQMSMI/MOurYntFf82b25GFUMIqM4fE9JHz92sy2C8+WmHJzu1mv10/qFpSXSS+38yS+pgVPog3jJYOwKYEx53n+Vz1sEP+h6D3xBBiSxx17AlBKDFlVL/vQhz4UH3vSRqDy96oArmTm47q5bpcx5BD7YY9rnBCOWBFRRVVzZj5DRM73mEWplb88xpwR0QwzHwvgu8xc8SbzvXxf5scH9pmenr7OzA4gojwlfy27ZERkIvImZt5VVZWIYhshzEzMfDkR/RJLMbdBx2zFdflqVb2XmTMz0w76xZ7DsJeIvCI8W5resdfLU5l5nyZ6uQXPzAxm9jHXmbKPIeVmxlmWfUJVf++62OkawQ4fHvQ5MeT+Xdadjj0tB0OuT1gTi8SYR4clr/RjJs0aT6iq2uLi4iHr1q3LvJkAD+E1ZWbUyqXeocJXKTW5E1NeVqYcQhjf8TnN29zbTwdpQ6Kjgp8uOHcaeW1WjprXZlCAXHpziXPOOYfbAfIQjz01dVkXbWIxhH7MpQJzSv4aCaB4Y4fGE5ct1z1u3rx5TzPb3E1bRxHJFxcXnwn8IT8igfL4gHJ41rm5uX1EZKFVLfSIlPzrIDf3fmyK8jw/veCYBVCeNbM9ioByZUwNSEZEMjMzs3NJlbpyIqqq6mXMfOq5557b8tiTu3KnVHXQLmtq5bJu47aLXdkgojMd2Ef6uJSISJZl+wC4bmFh4Wgi+nmrcUkyUDdxRVXPZuaWp2OY+dcLCwsHTU9PGwBdXFwc+I1NT0+HX3dT1VlmXlXQNSnMXKlUKm8GcNbJJ5+cahGPnzAAXbly5aEAplW1RkQtC4CIyB0Dvh/143p3R/dXRKr+Ci5tmxhQLrt0JhGFs8SXReeQW5bOLAOQAXQdQwZQ6MyzA3PNgdmI6CzfEZcWy4hjzOvXrz92zZo1fQEzM4dzzPtUq9XrzOwoIronnWMeHnMjorxer7+8Uqk8w8Esa9w8+ebu3dVq9UwvaYhqtTrw+1PVLXrCzPD7KAKw4RlOfeSRR84hotlU8nD81DPSA2XmKdc9bTgrTACQZdmDw7ipxcXF2enpaXHbZQX1sfAuZFwZ8tfKAGQAVVW9DMCp4TLNkrqYWf2zAZDrvTJkIuo6qStk/hW4lhLRlKrOM/N3BpTwAN8Y8dq1a2cAlJb85Ykc15vZ/n6NFGMevCgAYub3xiDYAiCNlyQb9svDTN3oFLlO7bbTTju9qgGok4yBuA0gIrpCRJ6PpV4CFBL+zCzetFue5wuNYD4g742EjekgXANjx5C33377UppLOMiua8iybsqQVXXKFeK4XptL9MGQi4K/EhGb2aKqnkhEXwi2aUALZosre8OGDYMC5jzFmAe+rtTMXuTeDm1XrciBzpbj1QcbMSJ6W7QBSTJewGwAMDU1dTMRnQTgj7EUNuMoGz8HQJVKZW3MnMdReIwMR2kMueHY06nnnntuS4bsIFn1EnUvH3GGzES0qKrHV6vVq82sOugjKwGYA2NW1ZvKAmYAiTEPyT2oqu8ryjBomaQPfQIz/5GZHRxCL2nax3IDyU4CvkVEx2Gpe9kNDs7TAOYBPDQo72AC5SaAXBJDzpm5Ao8hOyA3ZcjBZb0cDLnLePUWQM7zPAByxd3zjZ+lso1SzJiZ+RiUeI4ZS20fE2Me0NoCYIuLi4egSXvGCRLxtfXWNOtjzZg12Bq3N9cS0UsAHA/gAgDPJ6Kr/bNjm4vCo240nCWVCsgeQz4tcm01ZciqOhUx5HyIDLneJyBX2zWyCHGaQQEzSowxA3hSQ4w5AXO582aVSuU93htZ2+m0x/BG4WU92rlTzGynQeh/kmUB58xt2peI6I1EdPskJPKNLCjHgIxyuj3VHZDXMfOpsVFqAZKNDHmgWdbO3E/oko1vAWQAnRhy5qn8e5vZe/z3QVT+Kh2YPcZ8nZntl4C5PFcgAPWz4Sd60krW5HMCAJ5cMypCoex7QT0KFb52EZGT/O2kQ+MPzuJ2LNTU5knIrK+MqsEo+xyyt1+87EMf+tBp5557Lp177rn44Ac/2DaGHGVZ9+Sy7pEhdw3IDS7rvM0GZ1dV/Tdmfo6Z7UFEZ7sya5nnmNetW5eFc8yqejUzH15C28cnYSnGfBQR/SIdlypjqra0Z5xqNT/haJSqPsLMj7n3YlkMHzNDVQnAambeFUDWpuRiq4d+K4BPIyV8TRQ4p1EYMEP2n2U3l7gsKiXYqbnEl/up1GVmZ/p3Fmm/+IUerhXaky2Y2TEdrhXGc1cRudWvFSrjnBc+My6Vv7wE5H7xsyXpfm7MjDZv3rxnq/aMkY79o5kdbGY7mdkKL625nK+pDRs27GRmR5jZdUXb6PmziLu/n7ec+pMqeo29hwlmtn9UQVELVPSaN7O9y5y/oQJy2e0XzezSuJZuB0D+yjIAcq1bQBaRhXq9XgiQN23aFANyvaEk5yCBeUvbRxH5bgLmkVlnARSa1pL21ndmZn8+ys/h9bdv6KFjz78kUE6g3OVYhV4IVS+1eeDEg/IAm0vEDJlGhSGLyHIw5HqLTctYMub5+fn92o1BkpbGhcxsjZk1a88YGjnc5J+vBr0YsVdoPH+QiCyGtpIF6xCvn52d3SWMRwLlBMot1knmANws12LXiQblATaXuCxiyJ2aS3y5z+YSZ3UByFf0ypDLAuQmm5ehAHNizCPDkt/dYqOWe0/aE1xfK6P+LCJyUZfdo8zM/my5NnQJlEc2pBNAuBVW7GNmR5vZGWZ2adGmKGMHyjFDLtNlXZQh33HHHX0DcgGGTGUwZBFZjFzW1U6AbGY/KrjoH9ddahAMomzGnOd5GPtfmtmTEzB3xZKbtmd0o6sicpczZBp12+HP87wiTLkB4H7g3eASU94GQbmBCTfDh93r9fpLzey/i8jlInKniMxZJEVxYqxAuewYchOGPPCkrmEy5Hq9fmwRhtwshtzFZuajZrZqEIozqBizA3NizMXB4E3t2jPmef7OcQkLuJ6SiHyvi9iyuN68YDl0JoHysgNxM3f0PmZ2ooicLyI3iciMNRFZknoRPRs7UB4kQ+7UDxkAmVk1AuTaqMeQu2HI3QJyuFZYdIuLi88elPIMIMZcb8KYU4y5tVGqiMgdjc3iI5b8oJmtbuVhGuGNxju7cGEHnflsAuXJB2Uz4xtuuKHS8N52ZnakiPydiHyvkQU3ArD/rsH+Txwoxwy5zGNPZnZZ0SxrM/v3YTHkkGVtZl0xZD++UWoMuQ0gqxurPx204oRm8wOIMSdXdmcDfLzrYt4CqD4wThubsHGYnZ19gplt6JR4E9ax/5wxs90GEa5JoDwyrJii91ab2StE5F/N7L4mIJxHIBwAOABzPQDsxLmvB5xlXSSpa2gMed26dX3HkCNALi2G3Az8/dleNSxAG1TyV2LM7cc7Guu8wXCog9TurcI+o77hMLPP9sCWzxi2riRQHjwYN7x3uJl9TEQeB8R5nquDrTQB4byF+3qju7cvK6hnow3KDS7rW0osDLLOzDi4rdsB8jAZcgDkbhlytzHkfhmymdUjQG77XGMCzL9IjLmpnhzZrNhGtLH9xDiOWbjfWq32oqLFRCKgu30QJw4SKC+fHvjvK/I8f52IfKuFS1oa7OBWTNjfu8uz+8/wgjW7RTZ3vI9ETQJD7gKQ2cwuL+kccieG/AQRKYshV9uB5zgw5pCVnVzZTVny1a7HeRMdXzSzp4wbS25kSCLy4y6AWfz415GD6J6WQHmocx/syLSZvcNPEARw1SZArCKS53neCMR3m9lnzOwNZnZgi6QwGvviIYNmyJ2yrP3Y09AZci8g2SVDfkKvLuvAkOv1+vGdnstZyGGRQo4NY56fn9+mgTk6NnSIl5lsxZLXjfM4RUD3nh5c2BcP89kTKA+GHdfr9Vea2W0NMeK8TRgyyI9F5G/dzT3VYg1V4sztsS6zGRncUhlylNRF55xzDo8gQ66NKkNu4rJueq1bbrklVE061cnH+bGhHwdg3tYZc3hmEbmkRUlNMTOt1WrPHyZbHKCdeaKIbI4TujolfJnZps2bN+81LIOZQLlc3X7sscd2F5GLG8BY2mzWzbOtL6zX60c12vUIhLfyvo597etBMeQYkEcphtyry7pbhrxp06Zdh8CQKwCQ5/lrg6KPa+UvjzHvu60Bc9DNhYWFpzQrRRnp+A0jFevqfwPyBQ/NdMOW39tuPSRQHi1QDmNYr9dfbGb3tgPjBltQM7NPmtmBjd9XxKaNNSgPqrlEQwx5YhhyUUCenZ3tmyEXAORqAyAHGdsmFtuiKzsCqU+2KKkZimgcNwnjEunOMd3Glc3sJ62qOyVQHi1Qjsbv9KhgVL2NPQ/3/R9mdkgDI+7KhvUDynNzc/ssGygPMoYcSuMVAOSRZ8hR6czCMeQSXNaFGLIr/Ja/nZBa2dsMY470c08za9aeMTSeuC00iJ+AZ6aoUt89PQDzkcPQjQTK/d9znuenRUlc0saeq9vzcxpYMfdpm8YHlOPmEiVnWa8bNZd1v+eQl5EhV9sx5FaA3MTl95FhMGYzS67sHg2/J7C0bDxhZm8cltt2yM/9wW4TvkTkswmURxeUI0B8vjNkaQfI3oJUzez1kd3OSrqH8QDlAZbOjAG507GnQQNy3FxiLBiyP1tfDHk5u0tt2LBhpzKPS5nZPfPz8xMLzHF7RhH5XZvGE/d5nfOxKKnZjc54HL22VHipcIGHR81sbRjDBMqjA8pRmHA7M7u70/1G9vwdgXCUMafDAGUuE5CJSGZmZnZW1a8x86GqmhNRTztwIqozc0VVL2fm1wCwpbfJmgySAaio6hXM/IpurmtmBkCZOQPw7kqlcp6ZVYgobzUhl19+OavqZcx8kqrWu7iWEhET0SIzH1+tVr/a5loZEYmZPUFVr2Xm53T5XAqAmFmY+WQi+mKba1WJKHdAvlBV1cea2sxPRVVzZj7TzD5CRAKg1AIjRKRmlq1Zs2YjMx8D4CZmrphZ3sv3MXOmqgJgv6mpqevNbF8f40kD5oyITETezMxPUFUhonitK5bqv3+SiObC5yfhwV1neMWKFXcDCAls0uFvSFWFmdcCeEUYQyQZNZ1WEXk3gAPcFmYtbJ/4Wv9cpVL5Z7dv9UnR8a4Z8rBd1vhDc4mhM+Q8z/tlyB2PPZnZD/thyPV6/YQiDLkhqUt7mKuxYcyR+33iGHNDe8Z7m7BkdZfeo2a2yySx5CZMtBADbGCjXx+0izEx5e512n/u1Mzz04SZqohsMLPdWiUETzRTjhjdzqr6NQBlM+Qtm9lmDNnM+mbI9Xr97CIM2cfrUmY+CUCdmQuzVmYmIlpU1Zgh1zsxZAAH98OQq9Xqlbfccku1xXNViCjP8/z0LMs+D0DNrC1DbseYReS8cWDMfs8CYL8VK1ZcN2GMObDeU5l5H1XVBpYsAEhVP0tEjwDgCWQQgRl/VVUfYObM10UnW2gAjjCzAwPjTgR1NHTafx7rnp9GnW6cewJwERE97Pqt4/SwfSldDMgArmHm5/YLyACqANZFgGytALnBZV3vBZBF5N1TU1Mf6QDI5obsUgAnqWreiuW2clmraj3P8xMckKudXNYAvtaHy1rzPH91cFkfeuih9VaAbGanZ1l2oS4JMTP1MG/DAGZZt25dRkQzGzduPLYEYM5UNQewH4DrzOxJEwLM6hvVd7vePk7v3a23wMwf9/mZOJceEZnr9xyAS8K4FHRhV1X19LJIS5JyCGoAZf/dOmEaM18xqfpdyGW9HKUzy3BZm1k3pTMv77W5hLusj+twrdKOPRVwWYdzyKfHddp7nbsmruxBZmUP6rjU2LuyIx06vpk7MpqfC8f5ObvRk8XFxWeEVnxFj0Z5FbjpQbn2k/u6J9c1ex9w6+C6Di05d43/fuLd12UzZDPLfYcau6wxaIZMROcVZcie1NU1Qzazmid1XTUshlytVq9sc60KEdXzPD+dmbcw5DbuoF4Y81kDdmUzEc3Mzs6WwphFRJh5v6mpqXFnzEFf39fqcZ1FXGxmdOONN05ULLmZnkxPT98B4LvMTAUSvtjZ8r4AjnW3/raQ8CVjcI9rAOwV63EbRv17AOvHdTK6NsRlx5AdkBuzrNFFlnVRkOw2y9oasqy7Akk3AjVVPYGIBh5DdvfcKQ7Ira4VsqxPY+YL3XB1FUMeEVe2mhmvWbNmI4BjVLWUrGxmHltXtuuR1uv1I5n5+b7Typq4rjcBuIWI7MUvfrFgsiW4Mi9pMNpF5F1F3N4TInOjvL+KQHn7gut5YdAbjcXFxQwDCm9wlwufS2bI6oB8JTO/1nelFSxlVFeieqRV9HnsiYjIGfL7nCGvCMyxxbXoxBNPvLSHY0/GzAxAVfVkZ8gr/L+2uhYRyezsbK8M2XhJyMxOI6IrW1yrEo4F5Hl+OoALPUOxpxhyH8BciYq99/VyHZkCsMn14WYHZu3xnkOMeX9VvX4MgdncIL2vBQCFf/+SiH7XbOM7gRJ04cuqOuf6YQX0wFT1SDM7zNfSRLPlSqWysR/P6ZBkJRFVOkzf0qSrTg3wWcjMaHp6eldm5uBmXLaduP8sK4YsHh74VMHr9xRDjq41l+f5m4tuPnosDKIe2324Vqu9oOC1ej32FGq6PmJmLylyrTzPTw+dgcqIIXd7XGoIOnpVu+MSXRYY+fn8/PyTYt0fZZbs8c/nNmvP2BCX/Oo4PFOJYxN6SV9f9HhU0IE8z68cxFiNUEw5xEf39X7aneKjIab8KzOb9r+lYcyfmT3blirBFCkC85CZrR7E/UVz91cF567rmHJRRhYXBumbIfuOlFW1DmBHEbl4aZPPIQPYol1PYJ37M/NhXgih0sUgmn/xZiJ6oYi8zN3Y1uZa+7oLULp9Rr/WTJZlbxaRM5g5b7xOw7Wey8xP6eNaswBOF5F3NruWqgalrAI4gYjgm7uB7+78ecQZ8zMA/N6ZeSkMLTyrqmbMXFNVuEcERXbUHVzZ+3uBkaOI6N6wBkbWx7dULOS9rhN5qxwBZq5h2xLGUkb6tQBeWkT3PMSlRPRKMzuUiG4ZxPyLCGVZV3hf9poNY/EQgN8BeGLwEna4/p7++pW/NwyPS11V1fXbWtkvX/c7A9gdwKYy7y9kc5tZVVXfsOQQLczIaeXKlcU8F0UBeXZ2dpftttuuFECOlL8K4JSG99Dq341xsoLGiswMzLwLgDcN6VoHADig1XVKvta+APYt8kxmhnYKPUAWp8x8VOnW1p8t/mlmfe+O3YUpzLyfql7nwHzfKAKz77rVW9Edr6ptk5NUdXUL9/bEkmUAyLLse924aFU1xOD/3sG87HkjADt0CcY7lnnMx4+OMRHNi8hPI1BuaXN8XUyJyJEOyow+4+7BE9Fubc3Nzc2uWLFiEcDKDjZRmLmS5/mzzOyeMu4vkioR1fI8PzvLskCksoJ2egrA6r5BOWbIZQNyAAnPiCyiZNxPhrAbKymur5QN6VpDeS4HrGw54h8hq3UIQNDXvDUCs4hIlmX7A7h+fn7+6BFlzBkR1UXkw8w8FUoMtjHs+4b8Ak+1mHRwNgBYWFh4YGpqqsbMU0U2ptHG7CVm9hoiurRVYmgv9+Sejac127C3mbsnA9gVwO8cTMsAm7Cp+zaAo4qu0SzL3mVmnwkbjG71yDcX7B4J6TR/q1atelRVHy3A5kNuxauI6IpePWZN7rdKRLV6vX5klmV/46WIueDfituTZ5jZTzptFLgTIJvZzttvv/3XygbkWPmJqFLgxX1ehwpep9KvYe/yWkN5Ljcoy3YEpot57udVauzPEwMFwP5+XGqfUUr+MrMpB9dTvMpcK0AOGyNj5n0APMsZ9jZRHMNrYVsPzxtONZz/2GOP7eEnFyp93ks4d7siYuDcaY37BmF7ETnBAbAsO6wOslc5gHVifqF+/MGqeq5vUqhIL+qo1W2FiIyIhIisVqsdYWYfffjhh7ePx6iRzQP4ZQEvT+b/f7yZ7Q2gr/Ua2pr6OntJpVL5IpZCgV2HALMse53PXdvz79yJIXtziYEAcpIkoy5xjNmzspcdmCPDVvOEwk8vOU20E+gIAFbVvwwsaxAFXkYJjN3lqCLyMj/pIUWNadjIANht5cqVl5vZdg7M1V6SraL7Ec832atJs5CWqugM/wObN29+IhHVer2PhmdUn/8fmtkP3aPW6Tx3WBMf8D7FRkR5ANAmpyWywKYdiHMzq9br9Vea2TXVavWbAP7b2rVrj/KpyVrg1Hc7gbJvYJSZt1PVjzsIdpVBH20eMr9fNbO/AHA1gB2Dp8WTZrXAGGfOrI/N8/wUP66atVp71I4hJ0BOkmTLusi91vnPARw9zBhz5Oqj2H1qZq8G8C8AVouIFTne5vF9BvB+IvpwvO7dHtgoJ7R1MVZbYpRm9kJV/TcsnXVFtwwn6jp0EzO/kYjujq6VRUDxuJLAoWGOvyS4ePM8f02WZZ9T1awbxhXN3U8AnEpEP47+rxLdh3bjTm6ogX9hUXsf3c9NAM4H8HUierTN53cA8DRVPYaZTwTwdCztJnNmJlW9NsuyYxtd8xEmHe7A3LEueRTG+SSAd/mGgSImbU2wcCv992t+EMDRHm61KHYdTiQVGePwoUUze0ulUrm42doD8HiUToCcJEmhhT50YG64jxcAOAvAiW7UukreC8ZUVa9m5vMBfNvrRE+UzM/P7zs1NfVOAGcWjSUXAOZZAB9n5s8T0U+7/I6DAfwFgDfFBr7L7whAOKeq/8zMFxDRbSV5FVhVvxudcsm6WBNQ1d8z850AfqmqG7DkGl8FYC2AvQE8mZl3D3/r7NGWHFIsWHLJH0xEtzYBZva/+T4zH1IkOTa6t28A+AARfbPgWKzK8/xIZn4rM78SS1XyJGLsoQjVb0XkbCL6W2Z+kmNvu5BwvHH+N98wbLX2KAFykiS9Meb5+fmjV61aNTBg/sOm3FYBOERVjwbwcmY+JDJqPR1vi4w73Ij+p5ndlGXZzQBuJaLFMWTIALBWRI4mohMAHMPM2/eycek0Zn6c8zZmvgXA7Xme/6xSqdwH4AEAoZrefgAOAXA4gBf68Udylzj62CDE96EAbgPwn8x8c71ev6tard5JRLPdJGBF9v9ZAL4HYMqPGHKR+wFgrfIZYokSU9nLEKuDXEVV763X638yPT19Nxo6A0b393IsFYMpyubjTcPNAK5X1VvM7P5qtbp+bm5ucdWqVVUsHaF6KoAXqOqRzPzkwILdnc9Yytmo+Hd9iZnPIKL7ReRvmPmvi9yTM2Zrsva+n2XZ7QDuoQTISZKMJmOO3Iqvz7LsggbDpv0mtrmxIW5IAc7z/DjvZpaNiys76nr2fgAfisYqAACVdJ24XG+j5ACOIqJvmNmUqt7OzAdGf7slE7ek+5Bm7WNF5C8rlcrfd5stHuY7z/NXZ1l2abf3G8YGzWO+FM9DDMY+T9cw81uI6DetNhPh/kTk88z8WlWtEdFUwU3DVtULVbXuz8d+ZAlNWDzF9wngfmfdF4R7ckD/KYDtQq2EXteeqt7KZTeXSJJk0iUqyXmAn2Pee8DJX1UApqoLoaxfGYbdM+LZm5Lkqrrohmic134GQFR10dlxVnJtd4pKcYZxy10fKj5XQdjvpaaeFVTikT3ycrbxfSz4/FV7/E4xs0qlUrkMSzHr+ZDoWDChidqcssgct/PA9J0d/1JE3ppl2TEOyO36e6uZ8UMPPfQOVf2mHwGsd7o3IuKQwe7jJH52uJpl2YoQ2oj+f8vGItwngI0A/ieA5xLRBZ7QFnIXHszz/HIHcOlx7dV8Q1Ot+ETsqKpfZeZDfWKrvRb3T5JkW8FmVV30QjHXmNnRRPRgiedHH0d+osWuvdb37uJa49yEIZyHNywdhxnWddWZcjx29Yg1hmz3YTx/z94N9zZkfi77bgAfy7LsBRHTz/GHpCgKYNzAlhHNQXDVV5wVBmZ4q4h8OsuyC4hok4cfqN3a8VAO9tprrzkzO05VP+NHAeGbImrnFWncEIUwQnS/CEAcvf9bVf18rVb7PytXrrw3ZuzhdzOjWq32MQCvDxuPPnSoXjGzpwD4ihsXMPOKZG+TJCnMyoClWNStZnYUgNsHAMwrAVSauSpLlvD9U2M8J9sNaazaeTWC7Oz3Mqxrh7rM2/XJwsWB54cAXpjn+WuzLPszIvqjTh7UCBCbAePdAK4HcAWAGyuVijaAnBW4t5Af9xiAk/M8fxsR/ZUnWsVgq23uIwbh4EKOP5cD+A6AizZt2vTFHXbY4ZFwn2goduJjxdPT07eKyI3M3G/1t50rInJKlmV3qOr3XIEsqpecJEmSFhKtlZyZVwE4AcCdvqjLEHNjcBeASzw+Osjz0SEr+95G9jAGEo4b3VypVMJYVQrOI1rYPOrisyGL+DcR67kIwB7Y+gy5NeqRgwmimvxbT07newy5Drf0O38BbIhIK5XKhVjqLPccAC9V1cMBHIil6mI7+EYktNbNAcwx86Oq+iAz3wXgBwBuBnBHw5G+rUCu4L2F400gon8xs0sBnATgZACHeUnlwuvE3dW/xtJZ7euzLLueiH7WcJ/tjgqGYiDvB/BQqNHd4lotNwnMTMz8QALfJEmSJEnSHCn+cLZX4livv78LgJ1qtdr2U1NT1Xq9LtVqdTOWGkE8SkQLTb6vgh7OUre5v6zhXPEeAA4G8BxVfQoz76GqawGscFZcAzCDpSYc94nIXVmW/QTAz4hoU6fnHob8f3riSRbIUBeyAAAAAElFTkSuQmCC" alt="Alta Genetics Brasil">
     <div class="header-divider"></div>
     <div class="header-title" style="flex:1">
       <h1>Agenda de Campo</h1>
@@ -757,7 +770,7 @@
 
 <footer>
   <span>Alta Genetics Brasil · Programas e Serviços · Leite</span>
-  <span id="last-update">Atualizado em: junho/2026</span>
+  <span id="last-update">Atualizado em: 03/set/2026 às 00:00</span>
 </footer>
 
 <script>
@@ -1436,21 +1449,27 @@ const AGENDA = {
       "11": [
         "Particular"
       ],
+      "13": [
+        "Deslocamento"
+      ],
       "14": [
-        "Particular"
+        "Atendimento Sergipe"
       ],
       "15": [
         "Niver Naiara",
-        "Particular"
+        "Atendimento Sergipe"
       ],
       "16": [
-        "Particular"
+        "Atendimento Sergipe"
       ],
       "17": [
-        "Particular"
+        "Atendimento Sergipe"
       ],
       "18": [
-        "Particular"
+        "Atendimento Sergipe"
+      ],
+      "19": [
+        "Deslocamento"
       ],
       "21": [
         "Particular"
@@ -1467,28 +1486,22 @@ const AGENDA = {
       "25": [
         "Particular"
       ],
-      "27": [
-        "Deslocamento"
-      ],
       "28": [
-        "Atendimento Sergipe"
+        "Particular"
       ],
       "29": [
-        "Atendimento Sergipe"
+        "Particular"
       ],
       "30": [
-        "Atendimento Sergipe"
+        "Particular"
       ]
     },
     "Outubro": {
       "1": [
-        "Atendimento Sergipe"
+        "Particular"
       ],
       "2": [
-        "Atendimento Sergipe"
-      ],
-      "3": [
-        "Deslocamento"
+        "Particular"
       ],
       "5": [
         "Particular",
@@ -2333,15 +2346,19 @@ const AGENDA = {
         "feriado|Independência do Brasil"
       ],
       "8": [
+        "Análise de dados Alta CRIA Beef",
         "Deslocamento"
       ],
       "9": [
+        "Análise de dados Alta CRIA Beef",
         "Atendimento Adv. Corte"
       ],
       "10": [
+        "Análise de dados Alta CRIA Beef",
         "Atendimento Adv. Corte"
       ],
       "11": [
+        "Análise de dados Alta CRIA Beef",
         "Deslocamento"
       ],
       "14": [
@@ -2444,19 +2461,21 @@ const AGENDA = {
         "Deslocamento"
       ],
       "19": [
-        "Home office"
+        "deslocamento|Deslocamento",
+        "Atendimento Leopoldina"
       ],
       "20": [
-        "Home office"
+        "Atendimento Leopoldina"
       ],
       "21": [
-        "Home office"
+        "Atendimento Leopoldina"
       ],
       "22": [
-        "Home office"
+        "Atendimento Leopoldina"
       ],
       "23": [
-        "Home office"
+        "Atendimento Leopoldina",
+        "deslocamento|Deslocamento"
       ],
       "26": [
         "Deslocamento",
@@ -2496,35 +2515,37 @@ const AGENDA = {
         "Home office"
       ],
       "9": [
-        "Home office"
+        "Deslocamento",
+        "Atendimento C. Oeste de MG"
       ],
       "10": [
-        "Home office"
+        "Atendimento C. Oeste de MG"
       ],
       "11": [
-        "Home office"
+        "Atendimento C. Oeste de MG"
       ],
       "12": [
-        "Home office"
+        "Atendimento C. Oeste de MG"
       ],
       "13": [
-        "Home office"
+        "Atendimento C. Oeste de MG",
+        "Deslocamento"
       ],
       "15": [
         "feriado|Proclamação da República"
       ],
       "16": [
-        "Home office"
+        "Atendimento G. Valadares + Viçosa"
       ],
       "17": [
-        "Home office"
+        "Atendimento G. Valadares + Viçosa"
       ],
       "18": [
         "Niver Alice",
-        "Home office"
+        "Atendimento G. Valadares + Viçosa"
       ],
       "19": [
-        "Home office"
+        "Atendimento G. Valadares + Viçosa"
       ],
       "20": [
         "feriado|Consciência Negra"
@@ -2816,34 +2837,31 @@ const AGENDA = {
         "homeoffice|Home Office"
       ],
       "13": [
-        "deslocamento|Deslocamento"
+        "homeoffice|Home Office"
       ],
       "14": [
-        "treinamento|Integra Leite"
+        "homeoffice|Home Office"
       ],
       "15": [
-        "treinamento|Integra Leite",
-        "deslocamento|Deslocamento"
+        "homeoffice|Home Office"
       ],
       "16": [
         "homeoffice|Home Office"
       ],
       "19": [
-        "deslocamento|Deslocamento",
-        "Atendimento Leopoldina"
+        "homeoffice|Home Office"
       ],
       "20": [
-        "Atendimento Leopoldina"
+        "homeoffice|Home Office"
       ],
       "21": [
-        "Atendimento Leopoldina"
+        "homeoffice|Home Office"
       ],
       "22": [
-        "Atendimento Leopoldina"
+        "homeoffice|Home Office"
       ],
       "23": [
-        "Atendimento Leopoldina",
-        "deslocamento|Deslocamento"
+        "homeoffice|Home Office"
       ],
       "26": [
         "deslocamento|Deslocamento",
@@ -3379,15 +3397,13 @@ const AGENDA = {
       ],
       "19": [
         "Niver Rafael",
-        "deslocamento|Deslocamento",
-        "atendimento|Atendimento Frederico Westphalen"
+        "Home office"
       ],
       "20": [
-        "atendimento|Atendimento Frederico Westphalen"
+        "Home office"
       ],
       "21": [
-        "atendimento|Atendimento Frederico Westphalen",
-        "deslocamento|Deslocamento"
+        "Home office"
       ],
       "24": [
         "Home office"
@@ -3446,28 +3462,22 @@ const AGENDA = {
         "Home office"
       ],
       "15": [
-        "Niver Naiara",
-        "Home office"
+        "Niver Naiara"
       ],
       "16": [
-        "Home office",
-        "reuniao|Concept Plus"
+        "Home office"
       ],
       "17": [
-        "Home office",
-        "reuniao|Concept Plus"
+        "Home office"
       ],
       "18": [
-        "Home office",
-        "reuniao|Concept Plus"
+        "Home office"
       ],
       "21": [
-        "deslocamento|Deslocamento",
-        "atendimento|Atendimento ACW Lucas Pastore"
+        "Home office"
       ],
       "22": [
-        "atendimento|Atendimento ACW Lucas Pastores",
-        "deslocamento|Deslocamento"
+        "Home office"
       ],
       "23": [
         "Home office"
@@ -4153,16 +4163,13 @@ const AGENDA = {
         "Particular"
       ],
       "26": [
-        "atendimento|Atendimento Ijui"
+        "Particular"
       ],
       "27": [
-        "atendimento|Atendimento Ijui"
+        "Particular"
       ],
       "28": [
         "Particular"
-      ],
-      "31": [
-        "evento|Expointer"
       ]
     },
     "Setembro": {
@@ -5510,45 +5517,6 @@ const AGENDA = {
       ],
       "15": [
         "feriado|Nsa. Sra. da Abadia"
-      ],
-      "16": [
-        "evento|Expogenética"
-      ],
-      "17": [
-        "evento|Expogenética"
-      ],
-      "18": [
-        "evento|Expogenética"
-      ],
-      "19": [
-        "evento|Expogenética"
-      ],
-      "20": [
-        "evento|Expogenética"
-      ],
-      "21": [
-        "evento|Expogenética"
-      ],
-      "22": [
-        "evento|Expogenética"
-      ],
-      "24": [
-        "homeoffice|Home Office"
-      ],
-      "25": [
-        "homeoffice|Home Office"
-      ],
-      "26": [
-        "homeoffice|Home Office"
-      ],
-      "27": [
-        "homeoffice|Home Office"
-      ],
-      "28": [
-        "homeoffice|Home Office"
-      ],
-      "31": [
-        "Home office"
       ]
     },
     "Setembro": {
@@ -6191,9 +6159,6 @@ const AGENDA = {
       ],
       "28": [
         "deslocamento|Deslocamento"
-      ],
-      "31": [
-        "Home office"
       ]
     },
     "Setembro": {
@@ -6201,15 +6166,13 @@ const AGENDA = {
         "Home office"
       ],
       "2": [
-        "atendimento|Atendimento Itanhandu"
+        "Home office"
       ],
       "3": [
-        "deslocamento|Deslocamento",
-        "atendimento|Atendimento São João Del Rei"
+        "Home office"
       ],
       "4": [
-        "atendimento|Atendimento São João Del Rei",
-        "deslocamento|Deslocamento"
+        "Home office"
       ],
       "7": [
         "feriado|Independência do Brasil"
@@ -7488,46 +7451,60 @@ const AGENDA = {
         "particular|Campo Grande"
       ],
       "10": [
-        "particular|Campo Grande"
+        "particular|Campo Grande",
+        "Coleta de dados Alta CRIA Beef"
       ],
       "11": [
         "particular|Campo Grande",
+        "Coleta de dados Alta CRIA Beef",
         "evento|Palestra em Três Lagoas",
         "deslocamento|Deslocamento"
       ],
       "12": [
-        "particular|Campo Grande"
+        "particular|Campo Grande",
+        "atendimento|A confirmar: Atendimento ADV. Corte",
+        "Coleta de dados Alta CRIA Beef",
+        "deslocamento|Deslocamento"
       ],
       "13": [
-        "particular|Campo Grande"
+        "particular|Campo Grande",
+        "Coleta de dados Alta CRIA Beef"
       ],
       "14": [
-        "particular|Campo Grande"
+        "particular|Campo Grande",
+        "Coleta de dados Alta CRIA Beef"
       ],
       "15": [
-        "feriado|Nsa. Sra. da Abadia"
+        "feriado|Nsa. Sra. da Abadia",
+        "particular|Campo Grande",
+        "Expogenética"
+      ],
+      "16": [
+        "Expogenética"
       ],
       "17": [
+        "Expogenética",
         "Coleta de dados Alta CRIA Beef"
       ],
       "18": [
+        "Expogenética",
         "Coleta de dados Alta CRIA Beef"
       ],
       "19": [
         "Niver Rafael",
+        "Expogenética",
         "Coleta de dados Alta CRIA Beef"
       ],
       "20": [
+        "Expogenética",
         "Coleta de dados Alta CRIA Beef"
       ],
       "21": [
+        "Expogenética",
         "Coleta de dados Alta CRIA Beef"
       ],
       "22": [
         "Expogenética"
-      ],
-      "23": [
-        "ferias|Férias"
       ],
       "24": [
         "ferias|Férias"
@@ -7542,12 +7519,6 @@ const AGENDA = {
         "ferias|Férias"
       ],
       "28": [
-        "ferias|Férias"
-      ],
-      "29": [
-        "ferias|Férias"
-      ],
-      "30": [
         "ferias|Férias"
       ],
       "31": [
@@ -7592,8 +7563,9 @@ const AGENDA = {
         "Análise de dados Alta CRIA Beef"
       ],
       "15": [
+        "Home office",
         "Niver Naiara",
-        "atendimento|Atendimento Ituiutaba"
+        "Análise de dados Alta CRIA Beef"
       ],
       "16": [
         "Home office",
@@ -7605,18 +7577,18 @@ const AGENDA = {
         "Envio de relatórios Alta CRIA Leite"
       ],
       "18": [
-        "particular|Particular"
+        "Análise de dados Alta CRIA Beef",
+        "Envio de relatórios Alta CRIA Leite",
+        "Home office"
       ],
       "21": [
         "Home office"
       ],
       "22": [
-        "deslocamento|Deslocamento",
-        "atendimento|Atendimento Uberlândia"
+        "Home office"
       ],
       "23": [
-        "atendimento|Atendimento Uberlândia",
-        "deslocamento|Deslocamento"
+        "Home office"
       ],
       "24": [
         "Home office"
@@ -7628,15 +7600,15 @@ const AGENDA = {
         "Home office"
       ],
       "29": [
-        "deslocamento|Deslocamento"
+        "Home office"
       ],
       "30": [
-        "atendimento|Atendimento Oeste Bahia"
+        "Home office"
       ]
     },
     "Outubro": {
       "1": [
-        "deslocamento|Deslocamento"
+        "Home office"
       ],
       "2": [
         "Home office"
@@ -8523,14 +8495,23 @@ const AGENDA = {
       ],
       "3": [
         "Home office",
-        "Coleta de dados Alta CRIA Leite"
+        "Coleta de dados Alta CRIA Leite",
+        "outros|Leo em Udia"
       ],
       "4": [
         "Home office",
-        "Coleta de dados Alta CRIA Leite"
+        "Coleta de dados Alta CRIA Leite",
+        "outros|Leo em Udia"
+      ],
+      "5": [
+        "outros|Leo em Udia"
+      ],
+      "6": [
+        "outros|Leo em Udia"
       ],
       "7": [
-        "feriado|Independência do Brasil"
+        "feriado|Independência do Brasil",
+        "outros|Leo em Udia"
       ],
       "8": [
         "Home office",
@@ -8547,7 +8528,8 @@ const AGENDA = {
         "Análise Geral Alta CRIA Leite"
       ],
       "14": [
-        "atendimento|Atendimento Elisio"
+        "Home office",
+        "Análise Geral Alta CRIA Leite"
       ],
       "15": [
         "Home office",
@@ -8555,9 +8537,13 @@ const AGENDA = {
         "Análise Geral Alta CRIA Leite"
       ],
       "16": [
+        "Home office",
+        "Análise Geral Alta CRIA Leite",
         "Deslocamento"
       ],
       "17": [
+        "Home office",
+        "Análise Geral Alta CRIA Leite",
         "Atendimento Figueiredo",
         "Deslocamento"
       ],
@@ -9622,16 +9608,19 @@ const AGENDA = {
         "feriado|Finados"
       ],
       "3": [
-        "homeoffice|Home Office"
+        "deslocamento|Deslocamento"
       ],
       "4": [
-        "homeoffice|Home Office"
+        "atendimento|Atendimento Santa Inês"
       ],
       "5": [
-        "homeoffice|Home Office"
+        "atendimento|Atendimento Santa Inês"
       ],
       "6": [
-        "homeoffice|Home Office"
+        "atendimento|Atendimento Santa Inês"
+      ],
+      "7": [
+        "atendimento|Atendimento Santa Inês"
       ],
       "9": [
         "Deslocamento",
@@ -10785,68 +10774,66 @@ const AGENDA = {
         "feriado|Nsa. Sra. da Abadia"
       ],
       "17": [
-        "homeoffice|Home Office"
-      ],
-      "18": [
-        "homeoffice|Home Office"
-      ],
-      "19": [
-        "homeoffice|Home Office"
-      ],
-      "20": [
-        "homeoffice|Home Office"
-      ],
-      "21": [
-        "homeoffice|Home Office"
-      ],
-      "24": [
-        "deslocamento|Deslocamento",
-        "outros|Uberaba"
-      ],
-      "25": [
-        "outros|Uberaba"
-      ],
-      "26": [
-        "outros|Uberaba"
-      ],
-      "27": [
-        "outros|Uberaba"
-      ],
-      "28": [
-        "outros|Uberaba",
         "deslocamento|Deslocamento"
       ],
-      "31": [
+      "18": [
+        "outros|Alta Uberaba"
+      ],
+      "19": [
+        "outros|Alta Uberaba"
+      ],
+      "20": [
+        "outros|Alta Uberaba"
+      ],
+      "21": [
+        "deslocamento|Deslocamento"
+      ],
+      "24": [
         "homeoffice|Home Office"
+      ],
+      "25": [
+        "homeoffice|Home Office"
+      ],
+      "26": [
+        "homeoffice|Home Office"
+      ],
+      "27": [
+        "homeoffice|Home Office"
+      ],
+      "28": [
+        "homeoffice|Home Office"
+      ],
+      "31": [
+        "deslocamento|Deslocamento"
       ]
     },
     "Setembro": {
       "1": [
-        "homeoffice|Home Office"
+        "outros|Alta Uberaba"
       ],
       "2": [
-        "homeoffice|Home Office"
+        "outros|Alta Uberaba"
       ],
       "3": [
-        "homeoffice|Home Office"
+        "outros|Alta Uberaba"
       ],
       "4": [
-        "homeoffice|Home Office"
+        "deslocamento|Deslocamento"
       ],
       "7": [
         "feriado|Independência do Brasil"
       ],
       "8": [
-        "homeoffice|Home Office"
+        "deslocamento|Deslocamento"
       ],
       "9": [
-        "homeoffice|Home Office"
+        "treinamento|Treinamento NEDAP"
       ],
       "10": [
-        "evento|Expomig"
+        "treinamento|Treinamento NEDAP"
       ],
       "11": [
-        "evento|Expomig"
+        "deslocamento|Deslocamento"
       ],
       "14": [
         "homeoffice|Home Office"
@@ -10855,10 +10842,10 @@ const AGENDA = {
         "homeoffice|Home Office"
       ],
       "16": [
-        "atendimento|Visita Felipe Baeta"
+        "homeoffice|Home Office"
       ],
       "17": [
-        "atendimento|Atendimento Edson Gontijo"
+        "homeoffice|Home Office"
       ],
       "18": [
         "homeoffice|Home Office"
@@ -10873,11 +10860,10 @@ const AGENDA = {
         "outros|Alta Uberaba"
       ],
       "24": [
-        "outros|Alta Uberaba",
-        "deslocamento|Deslocamento"
+        "outros|Alta Uberaba"
       ],
       "25": [
-        "atendimento|Visita em Ibertioga - Guilherme Pontes"
+        "deslocamento|Deslocamento"
       ],
       "27": [
         "evento|WDE Madison"
@@ -10909,7 +10895,7 @@ const AGENDA = {
         "homeoffice|Home Office"
       ],
       "6": [
-        "reuniao|Reunião Q4"
+        "homeoffice|Home Office"
       ],
       "7": [
         "homeoffice|Home Office"
@@ -10921,11 +10907,11 @@ const AGENDA = {
         "homeoffice|Home Office"
       ],
       "12": [
+        "deslocamento|Deslocamento",
         "feriado|Nsa Sra. Aparecida"
       ],
       "13": [
-        "deslocamento|Deslocamento",
-        "outros|Uberaba"
+        "reuniao|Reunião Q4"
       ],
       "14": [
         "treinamento|Alta Integra"
@@ -10949,21 +10935,6 @@ const AGENDA = {
         "homeoffice|Home Office"
       ],
       "23": [
-        "homeoffice|Home Office"
-      ],
-      "26": [
-        "homeoffice|Home Office"
-      ],
-      "27": [
-        "homeoffice|Home Office"
-      ],
-      "28": [
-        "homeoffice|Home Office"
-      ],
-      "29": [
-        "homeoffice|Home Office"
-      ],
-      "30": [
         "homeoffice|Home Office"
       ]
     },
@@ -10971,154 +10942,16 @@ const AGENDA = {
       "2": [
         "feriado|Finados"
       ],
-      "3": [
-        "Deslocamento para POA",
-        "Integra Leite Lajeado ou Carlos Barbosa"
-      ],
-      "4": [
-        "Integra Leite Não-Me-Toque ou Passo Fundo"
-      ],
-      "5": [
-        "Integra Leite Pinhalzinho/Chapecó"
-      ],
-      "6": [
-        "Integra Leite Treze Tílias"
-      ],
-      "7": [
-        "Deslocamento para o Castro"
-      ],
-      "8": [
-        "Dia livre em Castro"
-      ],
-      "9": [
-        "Castro"
-      ],
-      "10": [
-        "Integra Leite PR – Técnicos e Cooperativas"
-      ],
-      "11": [
-        "Integra Leite PR – Clientes"
-      ],
-      "12": [
-        "Expofrízia"
-      ],
-      "13": [
-        "Expofrízia",
-        "Deslocamento para Curitiba"
-      ],
-      "14": [
-        "Deslocamento final"
-      ],
       "15": [
         "feriado|Proclamação da República"
       ],
-      "16": [
-        "homeoffice|Home Office"
-      ],
-      "17": [
-        "homeoffice|Home Office"
-      ],
-      "18": [
-        "homeoffice|Home Office"
-      ],
-      "19": [
-        "homeoffice|Home Office"
-      ],
       "20": [
         "feriado|Consciência Negra"
-      ],
-      "23": [
-        "homeoffice|Home Office"
-      ],
-      "24": [
-        "homeoffice|Home Office"
-      ],
-      "25": [
-        "homeoffice|Home Office"
-      ],
-      "26": [
-        "homeoffice|Home Office"
-      ],
-      "27": [
-        "homeoffice|Home Office"
-      ],
-      "30": [
-        "deslocamento|Deslocamento"
       ]
     },
     "Dezembro": {
-      "1": [
-        "Alinhamento técnico"
-      ],
-      "2": [
-        "Alinhamento técnico"
-      ],
-      "3": [
-        "Alinhamento técnico"
-      ],
-      "4": [
-        "Reunião mercado",
-        "Confraternização"
-      ],
-      "5": [
-        "deslocamento|Deslocamento"
-      ],
-      "7": [
-        "homeoffice|Home office"
-      ],
-      "8": [
-        "homeoffice|Home office"
-      ],
-      "9": [
-        "homeoffice|Home office"
-      ],
-      "10": [
-        "homeoffice|Home office"
-      ],
-      "11": [
-        "homeoffice|Home office"
-      ],
-      "14": [
-        "homeoffice|Home office"
-      ],
-      "15": [
-        "homeoffice|Home office"
-      ],
-      "16": [
-        "homeoffice|Home office"
-      ],
-      "17": [
-        "homeoffice|Home office"
-      ],
-      "18": [
-        "homeoffice|Home office"
-      ],
-      "21": [
-        "homeoffice|Home office"
-      ],
-      "22": [
-        "homeoffice|Home office"
-      ],
-      "23": [
-        "homeoffice|Home office"
-      ],
-      "24": [
-        "homeoffice|Home office"
-      ],
       "25": [
         "feriado|Natal"
-      ],
-      "28": [
-        "homeoffice|Home office"
-      ],
-      "29": [
-        "homeoffice|Home office"
-      ],
-      "30": [
-        "homeoffice|Home office"
-      ],
-      "31": [
-        "homeoffice|Home office"
       ]
     }
   }
@@ -11131,1054 +10964,7 @@ const DIAS_MES = {Janeiro:31,Fevereiro:28,Março:31,Abril:30,Maio:31,Junho:30,Ju
 // ═══════════════════════════════════════════════════════
 //  DADOS 2027 — feriados pré-carregados
 // ═══════════════════════════════════════════════════════
-let AGENDA_2027 = {
-  "Alexandre Scarpa": {
-    "Janeiro": {
-      "1": [
-        "feriado|Ano Novo"
-      ]
-    },
-    "Fevereiro": {
-      "8": [
-        "feriado|Carnaval"
-      ],
-      "9": [
-        "feriado|Carnaval"
-      ],
-      "10": [
-        "feriado|Cinzas"
-      ]
-    },
-    "Março": {
-      "2": [
-        "feriado|Aniversário de Uberaba"
-      ],
-      "26": [
-        "feriado|Sexta-feira Santa"
-      ],
-      "28": [
-        "feriado|Páscoa"
-      ]
-    },
-    "Abril": {
-      "21": [
-        "feriado|Tiradentes"
-      ]
-    },
-    "Maio": {
-      "1": [
-        "feriado|Dia do Trabalhador"
-      ],
-      "27": [
-        "feriado|Corpus Christi"
-      ]
-    },
-    "Junho": {},
-    "Julho": {},
-    "Agosto": {
-      "15": [
-        "feriado|Nsa. Sra. da Abadia"
-      ]
-    },
-    "Setembro": {
-      "7": [
-        "feriado|Independência do Brasil"
-      ]
-    },
-    "Outubro": {
-      "12": [
-        "feriado|Nsa Sra. Aparecida"
-      ]
-    },
-    "Novembro": {
-      "2": [
-        "feriado|Finados"
-      ],
-      "15": [
-        "feriado|Proclamação da República"
-      ],
-      "20": [
-        "feriado|Consciência Negra"
-      ]
-    },
-    "Dezembro": {
-      "25": [
-        "feriado|Natal"
-      ]
-    }
-  },
-  "Alice Arantes": {
-    "Janeiro": {
-      "1": [
-        "feriado|Ano Novo"
-      ]
-    },
-    "Fevereiro": {
-      "8": [
-        "feriado|Carnaval"
-      ],
-      "9": [
-        "feriado|Carnaval"
-      ],
-      "10": [
-        "feriado|Cinzas"
-      ]
-    },
-    "Março": {
-      "2": [
-        "feriado|Aniversário de Uberaba"
-      ],
-      "26": [
-        "feriado|Sexta-feira Santa"
-      ],
-      "28": [
-        "feriado|Páscoa"
-      ]
-    },
-    "Abril": {
-      "21": [
-        "feriado|Tiradentes"
-      ]
-    },
-    "Maio": {
-      "1": [
-        "feriado|Dia do Trabalhador"
-      ],
-      "27": [
-        "feriado|Corpus Christi"
-      ]
-    },
-    "Junho": {},
-    "Julho": {},
-    "Agosto": {
-      "15": [
-        "feriado|Nsa. Sra. da Abadia"
-      ]
-    },
-    "Setembro": {
-      "7": [
-        "feriado|Independência do Brasil"
-      ]
-    },
-    "Outubro": {
-      "12": [
-        "feriado|Nsa Sra. Aparecida"
-      ]
-    },
-    "Novembro": {
-      "2": [
-        "feriado|Finados"
-      ],
-      "15": [
-        "feriado|Proclamação da República"
-      ],
-      "20": [
-        "feriado|Consciência Negra"
-      ]
-    },
-    "Dezembro": {
-      "25": [
-        "feriado|Natal"
-      ]
-    }
-  },
-  "Ana Luíza": {
-    "Janeiro": {
-      "1": [
-        "feriado|Ano Novo"
-      ]
-    },
-    "Fevereiro": {
-      "8": [
-        "feriado|Carnaval"
-      ],
-      "9": [
-        "feriado|Carnaval"
-      ],
-      "10": [
-        "feriado|Cinzas"
-      ]
-    },
-    "Março": {
-      "2": [
-        "feriado|Aniversário de Uberaba"
-      ],
-      "26": [
-        "feriado|Sexta-feira Santa"
-      ],
-      "28": [
-        "feriado|Páscoa"
-      ]
-    },
-    "Abril": {
-      "21": [
-        "feriado|Tiradentes"
-      ]
-    },
-    "Maio": {
-      "1": [
-        "feriado|Dia do Trabalhador"
-      ],
-      "27": [
-        "feriado|Corpus Christi"
-      ]
-    },
-    "Agosto": {
-      "15": [
-        "feriado|Nsa. Sra. da Abadia"
-      ]
-    },
-    "Setembro": {
-      "7": [
-        "feriado|Independência do Brasil"
-      ]
-    },
-    "Outubro": {
-      "12": [
-        "feriado|Nsa Sra. Aparecida"
-      ]
-    },
-    "Novembro": {
-      "2": [
-        "feriado|Finados"
-      ],
-      "15": [
-        "feriado|Proclamação da República"
-      ],
-      "20": [
-        "feriado|Consciência Negra"
-      ]
-    },
-    "Dezembro": {
-      "25": [
-        "feriado|Natal"
-      ]
-    }
-  },
-  "Bianca": {
-    "Janeiro": {
-      "1": [
-        "feriado|Ano Novo"
-      ]
-    },
-    "Fevereiro": {
-      "8": [
-        "feriado|Carnaval"
-      ],
-      "9": [
-        "feriado|Carnaval"
-      ],
-      "10": [
-        "feriado|Cinzas"
-      ]
-    },
-    "Março": {
-      "2": [
-        "feriado|Aniversário de Uberaba"
-      ],
-      "26": [
-        "feriado|Sexta-feira Santa"
-      ],
-      "28": [
-        "feriado|Páscoa"
-      ]
-    },
-    "Abril": {
-      "21": [
-        "feriado|Tiradentes"
-      ]
-    },
-    "Maio": {
-      "1": [
-        "feriado|Dia do Trabalhador"
-      ],
-      "27": [
-        "feriado|Corpus Christi"
-      ]
-    },
-    "Junho": {},
-    "Julho": {},
-    "Agosto": {
-      "15": [
-        "feriado|Nsa. Sra. da Abadia"
-      ]
-    },
-    "Setembro": {
-      "7": [
-        "feriado|Independência do Brasil"
-      ]
-    },
-    "Outubro": {
-      "12": [
-        "feriado|Nsa Sra. Aparecida"
-      ]
-    },
-    "Novembro": {
-      "2": [
-        "feriado|Finados"
-      ],
-      "15": [
-        "feriado|Proclamação da República"
-      ],
-      "20": [
-        "feriado|Consciência Negra"
-      ]
-    },
-    "Dezembro": {
-      "25": [
-        "feriado|Natal"
-      ]
-    }
-  },
-  "Felipe Secco": {
-    "Janeiro": {
-      "1": [
-        "feriado|Ano Novo"
-      ]
-    },
-    "Fevereiro": {
-      "8": [
-        "feriado|Carnaval"
-      ],
-      "9": [
-        "feriado|Carnaval"
-      ],
-      "10": [
-        "feriado|Cinzas"
-      ]
-    },
-    "Março": {
-      "2": [
-        "feriado|Aniversário de Uberaba"
-      ],
-      "26": [
-        "feriado|Sexta-feira Santa"
-      ],
-      "28": [
-        "feriado|Páscoa"
-      ]
-    },
-    "Abril": {
-      "21": [
-        "feriado|Tiradentes"
-      ]
-    },
-    "Maio": {
-      "1": [
-        "feriado|Dia do Trabalhador"
-      ],
-      "27": [
-        "feriado|Corpus Christi"
-      ]
-    },
-    "Junho": {},
-    "Julho": {},
-    "Agosto": {
-      "15": [
-        "feriado|Nsa. Sra. da Abadia"
-      ]
-    },
-    "Setembro": {
-      "7": [
-        "feriado|Independência do Brasil"
-      ]
-    },
-    "Outubro": {
-      "12": [
-        "feriado|Nsa Sra. Aparecida"
-      ]
-    },
-    "Novembro": {
-      "2": [
-        "feriado|Finados"
-      ],
-      "15": [
-        "feriado|Proclamação da República"
-      ],
-      "20": [
-        "feriado|Consciência Negra"
-      ]
-    },
-    "Dezembro": {
-      "25": [
-        "feriado|Natal"
-      ]
-    }
-  },
-  "Fábio Fogaça": {
-    "Janeiro": {
-      "1": [
-        "feriado|Ano Novo"
-      ]
-    },
-    "Fevereiro": {
-      "8": [
-        "feriado|Carnaval"
-      ],
-      "9": [
-        "feriado|Carnaval"
-      ],
-      "10": [
-        "feriado|Cinzas"
-      ]
-    },
-    "Março": {
-      "2": [
-        "feriado|Aniversário de Uberaba"
-      ],
-      "26": [
-        "feriado|Sexta-feira Santa"
-      ],
-      "28": [
-        "feriado|Páscoa"
-      ]
-    },
-    "Abril": {
-      "21": [
-        "feriado|Tiradentes"
-      ]
-    },
-    "Maio": {
-      "1": [
-        "feriado|Dia do Trabalhador"
-      ],
-      "27": [
-        "feriado|Corpus Christi"
-      ]
-    },
-    "Junho": {},
-    "Julho": {},
-    "Agosto": {
-      "15": [
-        "feriado|Nsa. Sra. da Abadia"
-      ]
-    },
-    "Setembro": {
-      "7": [
-        "feriado|Independência do Brasil"
-      ]
-    },
-    "Outubro": {
-      "12": [
-        "feriado|Nsa Sra. Aparecida"
-      ]
-    },
-    "Novembro": {
-      "2": [
-        "feriado|Finados"
-      ],
-      "15": [
-        "feriado|Proclamação da República"
-      ],
-      "20": [
-        "feriado|Consciência Negra"
-      ]
-    },
-    "Dezembro": {
-      "25": [
-        "feriado|Natal"
-      ]
-    }
-  },
-  "Guilherme": {
-    "Janeiro": {
-      "1": [
-        "feriado|Ano Novo"
-      ]
-    },
-    "Fevereiro": {
-      "8": [
-        "feriado|Carnaval"
-      ],
-      "9": [
-        "feriado|Carnaval"
-      ],
-      "10": [
-        "feriado|Cinzas"
-      ]
-    },
-    "Março": {
-      "2": [
-        "feriado|Aniversário de Uberaba"
-      ],
-      "26": [
-        "feriado|Sexta-feira Santa"
-      ],
-      "28": [
-        "feriado|Páscoa"
-      ]
-    },
-    "Abril": {
-      "21": [
-        "feriado|Tiradentes"
-      ]
-    },
-    "Maio": {
-      "1": [
-        "feriado|Dia do Trabalhador"
-      ],
-      "27": [
-        "feriado|Corpus Christi"
-      ]
-    },
-    "Junho": {},
-    "Julho": {},
-    "Agosto": {
-      "15": [
-        "feriado|Nsa. Sra. da Abadia"
-      ]
-    },
-    "Setembro": {
-      "7": [
-        "feriado|Independência do Brasil"
-      ]
-    },
-    "Outubro": {
-      "12": [
-        "feriado|Nsa Sra. Aparecida"
-      ]
-    },
-    "Novembro": {
-      "2": [
-        "feriado|Finados"
-      ],
-      "15": [
-        "feriado|Proclamação da República"
-      ],
-      "20": [
-        "feriado|Consciência Negra"
-      ]
-    },
-    "Dezembro": {
-      "25": [
-        "feriado|Natal"
-      ]
-    }
-  },
-  "Itamar Aguiar": {
-    "Janeiro": {
-      "1": [
-        "feriado|Ano Novo"
-      ]
-    },
-    "Fevereiro": {
-      "8": [
-        "feriado|Carnaval"
-      ],
-      "9": [
-        "feriado|Carnaval"
-      ],
-      "10": [
-        "feriado|Cinzas"
-      ]
-    },
-    "Março": {
-      "2": [
-        "feriado|Aniversário de Uberaba"
-      ],
-      "26": [
-        "feriado|Sexta-feira Santa"
-      ],
-      "28": [
-        "feriado|Páscoa"
-      ]
-    },
-    "Abril": {
-      "21": [
-        "feriado|Tiradentes"
-      ]
-    },
-    "Maio": {
-      "1": [
-        "feriado|Dia do Trabalhador"
-      ],
-      "27": [
-        "feriado|Corpus Christi"
-      ]
-    },
-    "Junho": {},
-    "Julho": {},
-    "Agosto": {
-      "15": [
-        "feriado|Nsa. Sra. da Abadia"
-      ]
-    },
-    "Setembro": {
-      "7": [
-        "feriado|Independência do Brasil"
-      ]
-    },
-    "Outubro": {
-      "12": [
-        "feriado|Nsa Sra. Aparecida"
-      ]
-    },
-    "Novembro": {
-      "2": [
-        "feriado|Finados"
-      ],
-      "15": [
-        "feriado|Proclamação da República"
-      ],
-      "20": [
-        "feriado|Consciência Negra"
-      ]
-    },
-    "Dezembro": {
-      "25": [
-        "feriado|Natal"
-      ]
-    }
-  },
-  "Leite Geral": {
-    "Janeiro": {
-      "1": [
-        "feriado|Ano Novo"
-      ]
-    },
-    "Fevereiro": {
-      "8": [
-        "feriado|Carnaval"
-      ],
-      "9": [
-        "feriado|Carnaval"
-      ],
-      "10": [
-        "feriado|Cinzas"
-      ]
-    },
-    "Março": {
-      "2": [
-        "feriado|Aniversário de Uberaba"
-      ],
-      "26": [
-        "feriado|Sexta-feira Santa"
-      ],
-      "28": [
-        "feriado|Páscoa"
-      ]
-    },
-    "Abril": {
-      "21": [
-        "feriado|Tiradentes"
-      ]
-    },
-    "Maio": {
-      "1": [
-        "feriado|Dia do Trabalhador"
-      ],
-      "27": [
-        "feriado|Corpus Christi"
-      ]
-    },
-    "Agosto": {
-      "15": [
-        "feriado|Nsa. Sra. da Abadia"
-      ]
-    },
-    "Setembro": {
-      "7": [
-        "feriado|Independência do Brasil"
-      ]
-    },
-    "Outubro": {
-      "12": [
-        "feriado|Nsa Sra. Aparecida"
-      ]
-    },
-    "Novembro": {
-      "2": [
-        "feriado|Finados"
-      ],
-      "15": [
-        "feriado|Proclamação da República"
-      ],
-      "20": [
-        "feriado|Consciência Negra"
-      ]
-    },
-    "Dezembro": {
-      "25": [
-        "feriado|Natal"
-      ]
-    }
-  },
-  "Paula Tiveron": {
-    "Janeiro": {
-      "1": [
-        "feriado|Ano Novo"
-      ]
-    },
-    "Fevereiro": {
-      "8": [
-        "feriado|Carnaval"
-      ],
-      "9": [
-        "feriado|Carnaval"
-      ],
-      "10": [
-        "feriado|Cinzas"
-      ]
-    },
-    "Março": {
-      "2": [
-        "feriado|Aniversário de Uberaba"
-      ],
-      "26": [
-        "feriado|Sexta-feira Santa"
-      ],
-      "28": [
-        "feriado|Páscoa"
-      ]
-    },
-    "Abril": {
-      "21": [
-        "feriado|Tiradentes"
-      ]
-    },
-    "Maio": {
-      "1": [
-        "feriado|Dia do Trabalhador"
-      ],
-      "27": [
-        "feriado|Corpus Christi"
-      ]
-    },
-    "Junho": {},
-    "Julho": {},
-    "Agosto": {
-      "15": [
-        "feriado|Nsa. Sra. da Abadia"
-      ]
-    },
-    "Setembro": {
-      "7": [
-        "feriado|Independência do Brasil"
-      ]
-    },
-    "Outubro": {
-      "12": [
-        "feriado|Nsa Sra. Aparecida"
-      ]
-    },
-    "Novembro": {
-      "2": [
-        "feriado|Finados"
-      ],
-      "15": [
-        "feriado|Proclamação da República"
-      ],
-      "20": [
-        "feriado|Consciência Negra"
-      ]
-    },
-    "Dezembro": {
-      "25": [
-        "feriado|Natal"
-      ]
-    }
-  },
-  "Rafael Azevedo": {
-    "Janeiro": {
-      "1": [
-        "feriado|Ano Novo"
-      ]
-    },
-    "Fevereiro": {
-      "8": [
-        "feriado|Carnaval"
-      ],
-      "9": [
-        "feriado|Carnaval"
-      ],
-      "10": [
-        "feriado|Cinzas"
-      ]
-    },
-    "Março": {
-      "2": [
-        "feriado|Aniversário de Uberaba"
-      ],
-      "26": [
-        "feriado|Sexta-feira Santa"
-      ],
-      "28": [
-        "feriado|Páscoa"
-      ]
-    },
-    "Abril": {
-      "21": [
-        "feriado|Tiradentes"
-      ]
-    },
-    "Maio": {
-      "1": [
-        "feriado|Dia do Trabalhador"
-      ],
-      "27": [
-        "feriado|Corpus Christi"
-      ]
-    },
-    "Junho": {},
-    "Julho": {},
-    "Agosto": {
-      "15": [
-        "feriado|Nsa. Sra. da Abadia"
-      ]
-    },
-    "Setembro": {
-      "7": [
-        "feriado|Independência do Brasil"
-      ]
-    },
-    "Outubro": {
-      "12": [
-        "feriado|Nsa Sra. Aparecida"
-      ]
-    },
-    "Novembro": {
-      "2": [
-        "feriado|Finados"
-      ],
-      "15": [
-        "feriado|Proclamação da República"
-      ],
-      "20": [
-        "feriado|Consciência Negra"
-      ]
-    },
-    "Dezembro": {
-      "25": [
-        "feriado|Natal"
-      ]
-    }
-  },
-  "Rayce Ferreira": {
-    "Janeiro": {
-      "1": [
-        "feriado|Ano Novo"
-      ]
-    },
-    "Fevereiro": {
-      "8": [
-        "feriado|Carnaval"
-      ],
-      "9": [
-        "feriado|Carnaval"
-      ],
-      "10": [
-        "feriado|Cinzas"
-      ]
-    },
-    "Março": {
-      "2": [
-        "feriado|Aniversário de Uberaba"
-      ],
-      "26": [
-        "feriado|Sexta-feira Santa"
-      ],
-      "28": [
-        "feriado|Páscoa"
-      ]
-    },
-    "Abril": {
-      "21": [
-        "feriado|Tiradentes"
-      ]
-    },
-    "Maio": {
-      "1": [
-        "feriado|Dia do Trabalhador"
-      ],
-      "27": [
-        "feriado|Corpus Christi"
-      ]
-    },
-    "Junho": {},
-    "Julho": {},
-    "Agosto": {
-      "15": [
-        "feriado|Nsa. Sra. da Abadia"
-      ]
-    },
-    "Setembro": {
-      "7": [
-        "feriado|Independência do Brasil"
-      ]
-    },
-    "Outubro": {
-      "12": [
-        "feriado|Nsa Sra. Aparecida"
-      ]
-    },
-    "Novembro": {
-      "2": [
-        "feriado|Finados"
-      ],
-      "15": [
-        "feriado|Proclamação da República"
-      ],
-      "20": [
-        "feriado|Consciência Negra"
-      ]
-    },
-    "Dezembro": {
-      "25": [
-        "feriado|Natal"
-      ]
-    }
-  },
-  "Reginaldo Santos": {
-    "Janeiro": {
-      "1": [
-        "feriado|Ano Novo"
-      ]
-    },
-    "Fevereiro": {
-      "8": [
-        "feriado|Carnaval"
-      ],
-      "9": [
-        "feriado|Carnaval"
-      ],
-      "10": [
-        "feriado|Cinzas"
-      ]
-    },
-    "Março": {
-      "2": [
-        "feriado|Aniversário de Uberaba"
-      ],
-      "26": [
-        "feriado|Sexta-feira Santa"
-      ],
-      "28": [
-        "feriado|Páscoa"
-      ]
-    },
-    "Abril": {
-      "21": [
-        "feriado|Tiradentes"
-      ]
-    },
-    "Maio": {
-      "1": [
-        "feriado|Dia do Trabalhador"
-      ],
-      "27": [
-        "feriado|Corpus Christi"
-      ]
-    },
-    "Junho": {},
-    "Julho": {},
-    "Agosto": {
-      "15": [
-        "feriado|Nsa. Sra. da Abadia"
-      ]
-    },
-    "Setembro": {
-      "7": [
-        "feriado|Independência do Brasil"
-      ]
-    },
-    "Outubro": {
-      "12": [
-        "feriado|Nsa Sra. Aparecida"
-      ]
-    },
-    "Novembro": {
-      "2": [
-        "feriado|Finados"
-      ],
-      "15": [
-        "feriado|Proclamação da República"
-      ],
-      "20": [
-        "feriado|Consciência Negra"
-      ]
-    },
-    "Dezembro": {
-      "25": [
-        "feriado|Natal"
-      ]
-    }
-  },
-  "Ricardo Bertola": {
-    "Janeiro": {
-      "1": [
-        "feriado|Ano Novo"
-      ]
-    },
-    "Fevereiro": {
-      "8": [
-        "feriado|Carnaval"
-      ],
-      "9": [
-        "feriado|Carnaval"
-      ],
-      "10": [
-        "feriado|Cinzas"
-      ]
-    },
-    "Março": {
-      "2": [
-        "feriado|Aniversário de Uberaba"
-      ],
-      "26": [
-        "feriado|Sexta-feira Santa"
-      ],
-      "28": [
-        "feriado|Páscoa"
-      ]
-    },
-    "Abril": {
-      "21": [
-        "feriado|Tiradentes"
-      ]
-    },
-    "Maio": {
-      "1": [
-        "feriado|Dia do Trabalhador"
-      ],
-      "27": [
-        "feriado|Corpus Christi"
-      ]
-    },
-    "Junho": {},
-    "Julho": {},
-    "Agosto": {
-      "15": [
-        "feriado|Nsa. Sra. da Abadia"
-      ]
-    },
-    "Setembro": {
-      "7": [
-        "feriado|Independência do Brasil"
-      ]
-    },
-    "Outubro": {
-      "12": [
-        "feriado|Nsa Sra. Aparecida"
-      ]
-    },
-    "Novembro": {
-      "2": [
-        "feriado|Finados"
-      ],
-      "15": [
-        "feriado|Proclamação da República"
-      ],
-      "20": [
-        "feriado|Consciência Negra"
-      ]
-    },
-    "Dezembro": {
-      "25": [
-        "feriado|Natal"
-      ]
-    }
-  }
-};
+let AGENDA_2027 = {"Alexandre Scarpa": {"Janeiro": {"1": ["feriado|Ano Novo"]}, "Fevereiro": {"8": ["feriado|Carnaval"], "9": ["feriado|Carnaval"], "10": ["feriado|Cinzas"]}, "Março": {"2": ["feriado|Aniversário de Uberaba"], "26": ["feriado|Sexta-feira Santa"], "28": ["feriado|Páscoa"]}, "Abril": {"21": ["feriado|Tiradentes"]}, "Maio": {"1": ["feriado|Dia do Trabalhador"], "27": ["feriado|Corpus Christi"]}, "Junho": {}, "Julho": {}, "Agosto": {"15": ["feriado|Nsa. Sra. da Abadia"]}, "Setembro": {"7": ["feriado|Independência do Brasil"]}, "Outubro": {"12": ["feriado|Nsa Sra. Aparecida"]}, "Novembro": {"2": ["feriado|Finados"], "15": ["feriado|Proclamação da República"], "20": ["feriado|Consciência Negra"]}, "Dezembro": {"25": ["feriado|Natal"]}}, "Alice Arantes": {"Janeiro": {"1": ["feriado|Ano Novo"]}, "Fevereiro": {"8": ["feriado|Carnaval"], "9": ["feriado|Carnaval"], "10": ["feriado|Cinzas"]}, "Março": {"2": ["feriado|Aniversário de Uberaba"], "26": ["feriado|Sexta-feira Santa"], "28": ["feriado|Páscoa"]}, "Abril": {"21": ["feriado|Tiradentes"]}, "Maio": {"1": ["feriado|Dia do Trabalhador"], "27": ["feriado|Corpus Christi"]}, "Junho": {}, "Julho": {}, "Agosto": {"15": ["feriado|Nsa. Sra. da Abadia"]}, "Setembro": {"7": ["feriado|Independência do Brasil"]}, "Outubro": {"12": ["feriado|Nsa Sra. Aparecida"]}, "Novembro": {"2": ["feriado|Finados"], "15": ["feriado|Proclamação da República"], "20": ["feriado|Consciência Negra"]}, "Dezembro": {"25": ["feriado|Natal"]}}, "Ana Luíza": {"Janeiro": {"1": ["feriado|Ano Novo"]}, "Fevereiro": {"8": ["feriado|Carnaval"], "9": ["feriado|Carnaval"], "10": ["feriado|Cinzas"]}, "Março": {"2": ["feriado|Aniversário de Uberaba"], "26": ["feriado|Sexta-feira Santa"], "28": ["feriado|Páscoa"]}, "Abril": {"21": ["feriado|Tiradentes"]}, "Maio": {"1": ["feriado|Dia do Trabalhador"], "27": ["feriado|Corpus Christi"]}, "Agosto": {"15": ["feriado|Nsa. Sra. da Abadia"]}, "Setembro": {"7": ["feriado|Independência do Brasil"]}, "Outubro": {"12": ["feriado|Nsa Sra. Aparecida"]}, "Novembro": {"2": ["feriado|Finados"], "15": ["feriado|Proclamação da República"], "20": ["feriado|Consciência Negra"]}, "Dezembro": {"25": ["feriado|Natal"]}}, "Bianca": {"Janeiro": {"1": ["feriado|Ano Novo"]}, "Fevereiro": {"8": ["feriado|Carnaval"], "9": ["feriado|Carnaval"], "10": ["feriado|Cinzas"]}, "Março": {"2": ["feriado|Aniversário de Uberaba"], "26": ["feriado|Sexta-feira Santa"], "28": ["feriado|Páscoa"]}, "Abril": {"21": ["feriado|Tiradentes"]}, "Maio": {"1": ["feriado|Dia do Trabalhador"], "27": ["feriado|Corpus Christi"]}, "Junho": {}, "Julho": {}, "Agosto": {"15": ["feriado|Nsa. Sra. da Abadia"]}, "Setembro": {"7": ["feriado|Independência do Brasil"]}, "Outubro": {"12": ["feriado|Nsa Sra. Aparecida"]}, "Novembro": {"2": ["feriado|Finados"], "15": ["feriado|Proclamação da República"], "20": ["feriado|Consciência Negra"]}, "Dezembro": {"25": ["feriado|Natal"]}}, "Felipe Secco": {"Janeiro": {"1": ["feriado|Ano Novo"]}, "Fevereiro": {"8": ["feriado|Carnaval"], "9": ["feriado|Carnaval"], "10": ["feriado|Cinzas"]}, "Março": {"2": ["feriado|Aniversário de Uberaba"], "26": ["feriado|Sexta-feira Santa"], "28": ["feriado|Páscoa"]}, "Abril": {"21": ["feriado|Tiradentes"]}, "Maio": {"1": ["feriado|Dia do Trabalhador"], "27": ["feriado|Corpus Christi"]}, "Junho": {}, "Julho": {}, "Agosto": {"15": ["feriado|Nsa. Sra. da Abadia"]}, "Setembro": {"7": ["feriado|Independência do Brasil"]}, "Outubro": {"12": ["feriado|Nsa Sra. Aparecida"]}, "Novembro": {"2": ["feriado|Finados"], "15": ["feriado|Proclamação da República"], "20": ["feriado|Consciência Negra"]}, "Dezembro": {"25": ["feriado|Natal"]}}, "Fábio Fogaça": {"Janeiro": {"1": ["feriado|Ano Novo"]}, "Fevereiro": {"8": ["feriado|Carnaval"], "9": ["feriado|Carnaval"], "10": ["feriado|Cinzas"]}, "Março": {"2": ["feriado|Aniversário de Uberaba"], "26": ["feriado|Sexta-feira Santa"], "28": ["feriado|Páscoa"]}, "Abril": {"21": ["feriado|Tiradentes"]}, "Maio": {"1": ["feriado|Dia do Trabalhador"], "27": ["feriado|Corpus Christi"]}, "Junho": {}, "Julho": {}, "Agosto": {"15": ["feriado|Nsa. Sra. da Abadia"]}, "Setembro": {"7": ["feriado|Independência do Brasil"]}, "Outubro": {"12": ["feriado|Nsa Sra. Aparecida"]}, "Novembro": {"2": ["feriado|Finados"], "15": ["feriado|Proclamação da República"], "20": ["feriado|Consciência Negra"]}, "Dezembro": {"25": ["feriado|Natal"]}}, "Guilherme": {"Janeiro": {"1": ["feriado|Ano Novo"]}, "Fevereiro": {"8": ["feriado|Carnaval"], "9": ["feriado|Carnaval"], "10": ["feriado|Cinzas"]}, "Março": {"2": ["feriado|Aniversário de Uberaba"], "26": ["feriado|Sexta-feira Santa"], "28": ["feriado|Páscoa"]}, "Abril": {"21": ["feriado|Tiradentes"]}, "Maio": {"1": ["feriado|Dia do Trabalhador"], "27": ["feriado|Corpus Christi"]}, "Junho": {}, "Julho": {}, "Agosto": {"15": ["feriado|Nsa. Sra. da Abadia"]}, "Setembro": {"7": ["feriado|Independência do Brasil"]}, "Outubro": {"12": ["feriado|Nsa Sra. Aparecida"]}, "Novembro": {"2": ["feriado|Finados"], "15": ["feriado|Proclamação da República"], "20": ["feriado|Consciência Negra"]}, "Dezembro": {"25": ["feriado|Natal"]}}, "Itamar Aguiar": {"Janeiro": {"1": ["feriado|Ano Novo"]}, "Fevereiro": {"8": ["feriado|Carnaval"], "9": ["feriado|Carnaval"], "10": ["feriado|Cinzas"]}, "Março": {"2": ["feriado|Aniversário de Uberaba"], "26": ["feriado|Sexta-feira Santa"], "28": ["feriado|Páscoa"]}, "Abril": {"21": ["feriado|Tiradentes"]}, "Maio": {"1": ["feriado|Dia do Trabalhador"], "27": ["feriado|Corpus Christi"]}, "Junho": {}, "Julho": {}, "Agosto": {"15": ["feriado|Nsa. Sra. da Abadia"]}, "Setembro": {"7": ["feriado|Independência do Brasil"]}, "Outubro": {"12": ["feriado|Nsa Sra. Aparecida"]}, "Novembro": {"2": ["feriado|Finados"], "15": ["feriado|Proclamação da República"], "20": ["feriado|Consciência Negra"]}, "Dezembro": {"25": ["feriado|Natal"]}}, "Leite Geral": {"Janeiro": {"1": ["feriado|Ano Novo"]}, "Fevereiro": {"8": ["feriado|Carnaval"], "9": ["feriado|Carnaval"], "10": ["feriado|Cinzas"]}, "Março": {"2": ["feriado|Aniversário de Uberaba"], "26": ["feriado|Sexta-feira Santa"], "28": ["feriado|Páscoa"]}, "Abril": {"21": ["feriado|Tiradentes"]}, "Maio": {"1": ["feriado|Dia do Trabalhador"], "27": ["feriado|Corpus Christi"]}, "Agosto": {"15": ["feriado|Nsa. Sra. da Abadia"]}, "Setembro": {"7": ["feriado|Independência do Brasil"]}, "Outubro": {"12": ["feriado|Nsa Sra. Aparecida"]}, "Novembro": {"2": ["feriado|Finados"], "15": ["feriado|Proclamação da República"], "20": ["feriado|Consciência Negra"]}, "Dezembro": {"25": ["feriado|Natal"]}}, "Paula Tiveron": {"Janeiro": {"1": ["feriado|Ano Novo"]}, "Fevereiro": {"8": ["feriado|Carnaval"], "9": ["feriado|Carnaval"], "10": ["feriado|Cinzas"]}, "Março": {"2": ["feriado|Aniversário de Uberaba"], "26": ["feriado|Sexta-feira Santa"], "28": ["feriado|Páscoa"]}, "Abril": {"21": ["feriado|Tiradentes"]}, "Maio": {"1": ["feriado|Dia do Trabalhador"], "27": ["feriado|Corpus Christi"]}, "Junho": {}, "Julho": {}, "Agosto": {"15": ["feriado|Nsa. Sra. da Abadia"]}, "Setembro": {"7": ["feriado|Independência do Brasil"]}, "Outubro": {"12": ["feriado|Nsa Sra. Aparecida"]}, "Novembro": {"2": ["feriado|Finados"], "15": ["feriado|Proclamação da República"], "20": ["feriado|Consciência Negra"]}, "Dezembro": {"25": ["feriado|Natal"]}}, "Rafael Azevedo": {"Janeiro": {"1": ["feriado|Ano Novo"]}, "Fevereiro": {"8": ["feriado|Carnaval"], "9": ["feriado|Carnaval"], "10": ["feriado|Cinzas"]}, "Março": {"2": ["feriado|Aniversário de Uberaba"], "26": ["feriado|Sexta-feira Santa"], "28": ["feriado|Páscoa"]}, "Abril": {"21": ["feriado|Tiradentes"]}, "Maio": {"1": ["feriado|Dia do Trabalhador"], "27": ["feriado|Corpus Christi"]}, "Junho": {}, "Julho": {}, "Agosto": {"15": ["feriado|Nsa. Sra. da Abadia"]}, "Setembro": {"7": ["feriado|Independência do Brasil"]}, "Outubro": {"12": ["feriado|Nsa Sra. Aparecida"]}, "Novembro": {"2": ["feriado|Finados"], "15": ["feriado|Proclamação da República"], "20": ["feriado|Consciência Negra"]}, "Dezembro": {"25": ["feriado|Natal"]}}, "Rayce Ferreira": {"Janeiro": {"1": ["feriado|Ano Novo"]}, "Fevereiro": {"8": ["feriado|Carnaval"], "9": ["feriado|Carnaval"], "10": ["feriado|Cinzas"]}, "Março": {"2": ["feriado|Aniversário de Uberaba"], "26": ["feriado|Sexta-feira Santa"], "28": ["feriado|Páscoa"]}, "Abril": {"21": ["feriado|Tiradentes"]}, "Maio": {"1": ["feriado|Dia do Trabalhador"], "27": ["feriado|Corpus Christi"]}, "Junho": {}, "Julho": {}, "Agosto": {"15": ["feriado|Nsa. Sra. da Abadia"]}, "Setembro": {"7": ["feriado|Independência do Brasil"]}, "Outubro": {"12": ["feriado|Nsa Sra. Aparecida"]}, "Novembro": {"2": ["feriado|Finados"], "15": ["feriado|Proclamação da República"], "20": ["feriado|Consciência Negra"]}, "Dezembro": {"25": ["feriado|Natal"]}}, "Reginaldo Santos": {"Janeiro": {"1": ["feriado|Ano Novo"]}, "Fevereiro": {"8": ["feriado|Carnaval"], "9": ["feriado|Carnaval"], "10": ["feriado|Cinzas"]}, "Março": {"2": ["feriado|Aniversário de Uberaba"], "26": ["feriado|Sexta-feira Santa"], "28": ["feriado|Páscoa"]}, "Abril": {"21": ["feriado|Tiradentes"]}, "Maio": {"1": ["feriado|Dia do Trabalhador"], "27": ["feriado|Corpus Christi"]}, "Junho": {}, "Julho": {}, "Agosto": {"15": ["feriado|Nsa. Sra. da Abadia"]}, "Setembro": {"7": ["feriado|Independência do Brasil"]}, "Outubro": {"12": ["feriado|Nsa Sra. Aparecida"]}, "Novembro": {"2": ["feriado|Finados"], "15": ["feriado|Proclamação da República"], "20": ["feriado|Consciência Negra"]}, "Dezembro": {"25": ["feriado|Natal"]}}, "Ricardo Bertola": {"Janeiro": {"1": ["feriado|Ano Novo"]}, "Fevereiro": {"8": ["feriado|Carnaval"], "9": ["feriado|Carnaval"], "10": ["feriado|Cinzas"]}, "Março": {"2": ["feriado|Aniversário de Uberaba"], "26": ["feriado|Sexta-feira Santa"], "28": ["feriado|Páscoa"]}, "Abril": {"21": ["feriado|Tiradentes"]}, "Maio": {"1": ["feriado|Dia do Trabalhador"], "27": ["feriado|Corpus Christi"]}, "Junho": {}, "Julho": {}, "Agosto": {"15": ["feriado|Nsa. Sra. da Abadia"]}, "Setembro": {"7": ["feriado|Independência do Brasil"]}, "Outubro": {"12": ["feriado|Nsa Sra. Aparecida"]}, "Novembro": {"2": ["feriado|Finados"], "15": ["feriado|Proclamação da República"], "20": ["feriado|Consciência Negra"]}, "Dezembro": {"25": ["feriado|Natal"]}}};
 const DIAS_MES_2027 = {"Janeiro": 31, "Fevereiro": 28, "Março": 31, "Abril": 30, "Maio": 31, "Junho": 30, "Julho": 31, "Agosto": 31, "Setembro": 30, "Outubro": 31, "Novembro": 30, "Dezembro": 31};
 const PRIMEIRO_DIA_2027 = {"Janeiro": 5, "Fevereiro": 1, "Março": 1, "Abril": 4, "Maio": 6, "Junho": 2, "Julho": 4, "Agosto": 0, "Setembro": 3, "Outubro": 5, "Novembro": 1, "Dezembro": 3};
 const PRIMEIRO_DIA = {Janeiro:4,Fevereiro:0,Março:0,Abril:3,Maio:5,Junho:1,Julho:3,Agosto:6,Setembro:2,Outubro:4,Novembro:0,Dezembro:2}; // 2026
@@ -12241,9 +11027,28 @@ function registrarFeriadoRemovido(ano, tec, mes, dia, evento) {
   }
 }
 
+// Acha o índice (0-based, Janeiro=0) do primeiro mês em que o técnico já tem
+// alguma atividade REAL (não-feriado) lançada naquele ano. -1 se não tiver
+// nenhuma — aí é um técnico novo com a agenda ainda vazia, e semeia feriados
+// o ano inteiro (comportamento de sempre, sem restrição).
+function _primeiroMesReal(base, tec) {
+  for (let i = 0; i < MESES.length; i++) {
+    const dias = (base[tec] && base[tec][MESES[i]]) || {};
+    for (const dia in dias) {
+      if (dias[dia].some(function(e) { return e.indexOf('feriado|') !== 0; })) return i;
+    }
+  }
+  return -1;
+}
+
 // Garante a lista completa de feriados para todos os técnicos, nos dois anos.
+// Não semeia feriado em mês anterior à primeira atividade real do técnico
+// naquele ano — e limpa quem já tiver entrado assim por uma sincronização
+// antiga. Sem isso, um técnico que só entrou em julho (ex: Guilherme, Ricardo
+// Bertola) acabava com "Ano Novo" pendurado sozinho em janeiro, sem nenhuma
+// outra atividade no mês — feriado de time que ele nem fazia parte ainda.
 function sincronizarFeriados() {
-  let inseridos = 0, corrigidos = 0;
+  let inseridos = 0, corrigidos = 0, removidosPorAusencia = 0;
   const removidos = _lerRemovidos();
   const tecnicos = Object.keys(AGENDA).concat(Object.keys(AGENDA_2027))
     .filter((t, i, arr) => arr.indexOf(t) === i);
@@ -12252,11 +11057,31 @@ function sincronizarFeriados() {
     const ano = par[0], base = par[1], tpl = par[2];
     tecnicos.forEach(function(tec) {
       if (!base[tec]) base[tec] = {};
+      const primeiroReal = _primeiroMesReal(base, tec);
       for (const mes in tpl) {
+        const mesIdx = MESES.indexOf(mes);
+        const antesDoInicio = primeiroReal !== -1 && mesIdx < primeiroReal;
         for (const dia in tpl[mes]) {
           const nome = tpl[mes][dia][0].split('|')[1];
           if (removidos.indexOf(_chaveRemocao(ano, tec, mes, dia, nome)) !== -1) continue;
           const chaves = FERIADO_CHAVES[nome] || [_semAcento(nome)];
+
+          if (antesDoInicio) {
+            // Mês anterior ao início real do técnico: não insere feriado
+            // novo aqui, e remove um que já tenha entrado por engano.
+            const diaAtual = base[tec][mes] && base[tec][mes][dia];
+            if (diaAtual) {
+              for (let i = diaAtual.length - 1; i >= 0; i--) {
+                const txt = _semAcento(String(diaAtual[i]).split('|').pop());
+                if (diaAtual[i].indexOf('feriado|') === 0 && chaves.some(function(k) { return txt.indexOf(k) !== -1; })) {
+                  diaAtual.splice(i, 1); removidosPorAusencia++;
+                }
+              }
+              if (!diaAtual.length) delete base[tec][mes][dia];
+            }
+            continue;
+          }
+
           if (!base[tec][mes]) base[tec][mes] = {};
           if (!base[tec][mes][dia]) base[tec][mes][dia] = [];
           const lista = base[tec][mes][dia];
@@ -12277,32 +11102,42 @@ function sincronizarFeriados() {
       }
     });
   });
-  return { inseridos: inseridos, corrigidos: corrigidos };
+  return { inseridos: inseridos, corrigidos: corrigidos, removidosPorAusencia: removidosPorAusencia };
 }
 
 // Botão manual no modo edição
 function conferirFeriados() {
   const r = sincronizarFeriados();
-  if (r.inseridos || r.corrigidos) {
+  if (r.inseridos || r.corrigidos || r.removidosPorAusencia) {
     saveLocal(); rebuildSel(); render();
-    showToast(`Feriados: ${r.inseridos} inseridos, ${r.corrigidos} corrigidos ✓`, 'success');
+    let msg = `Feriados: ${r.inseridos} inseridos, ${r.corrigidos} corrigidos`;
+    if (r.removidosPorAusencia) msg += `, ${r.removidosPorAusencia} removidos (mês anterior ao início do técnico)`;
+    showToast(msg + ' ✓', 'success');
   } else {
     showToast('Feriados já estão completos ✓', 'success');
   }
 }
 
 // Categorias para colorir os chips
-const CAT_LABEL = {atendimento:'Atendimento',homeoffice:'Home office',deslocamento:'Deslocamento',reuniao:'Reunião',treinamento:'Treinamento',evento:'Evento',ferias:'Férias',feriado:'Feriado',livre:'Dia livre',particular:'Particular',outros:'Outros'};
-const CAT_ACCENT = {atendimento:'#16a34a',homeoffice:'#4f46e5',deslocamento:'#f59e0b',reuniao:'#0d9488',treinamento:'#8b5cf6',evento:'#ec4899',ferias:'#0ea5e9',feriado:'#ef4444',livre:'#84cc16',particular:'#a8a29e',outros:'#64748b'};
+const CAT_LABEL = {atendimento:'Atendimento',homeoffice:'Home office',deslocamento:'Deslocamento',reuniao:'Reunião',treinamento:'Treinamento',evento:'Evento',ferias:'Férias',feriado:'Feriado',livre:'Dia livre',particular:'Particular',outros:'Outros',aniversario:'Aniversário'};
+const CAT_ACCENT = {atendimento:'#16a34a',homeoffice:'#4f46e5',deslocamento:'#f59e0b',reuniao:'#0d9488',treinamento:'#8b5cf6',evento:'#ec4899',ferias:'#0ea5e9',feriado:'#ef4444',livre:'#84cc16',particular:'#a8a29e',outros:'#64748b',aniversario:'#eab308'};
 const CAT_MAP = {
   'ferias':'chip-ferias','particular':'chip-particular','homeoffice':'chip-homeoffice',
   'deslocamento':'chip-deslocamento','atendimento':'chip-atendimento','treinamento':'chip-treinamento',
   'feriado':'chip-feriado','evento':'chip-evento','reuniao':'chip-reuniao',
-  'livre':'chip-livre','outros':'chip-outros'
+  'livre':'chip-livre','outros':'chip-outros','aniversario':'chip-aniversario'
+};
+// Emoji por categoria — só um toque visual antes do texto do chip (ver chipIcon).
+const CAT_ICON = {
+  aniversario:'🎂', atendimento:'🐄', homeoffice:'🏠', deslocamento:'🚗', reuniao:'🤝',
+  treinamento:'🎓', evento:'🎪', ferias:'🏖️', feriado:'🎉', livre:'☀️', particular:'🔒', outros:''
 };
 // Adivinha a CATEGORIA a partir do texto (palavras-chave). Retorna a chave (ex: 'atendimento').
 function guessCat(texto) {
   const e = (texto || '').toLowerCase();
+  // "Niver X" = aniversário. Checado ANTES de tudo, mas com startsWith (não includes),
+  // para não capturar "Dia livre Niver" (que é folga, categoria 'livre', não aniversário).
+  if (e.startsWith('niver ')) return 'aniversario';
   if (e.includes('férias')) return 'ferias';
   if (e.includes('particular')) return 'particular';
   if (e.includes('home office')) return 'homeoffice';
@@ -12332,9 +11167,20 @@ function chipClass(ev) {
   // Dados sem prefixo: adivinha pela palavra-chave
   return CAT_MAP[guessCat(ev)] || 'chip-outros';
 }
+// Escapa texto livre (nomes/eventos digitados) antes de jogar em innerHTML,
+// pra caracteres como <, >, &, " não quebrarem a tela nem virarem HTML/script.
+function escapeHtml(str) {
+  return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
 // Exibe o nome do evento sem o prefixo de categoria
 function chipLabel(ev) {
   return ev.includes('|') ? ev.split('|')[1] : ev;
+}
+// Emoji da categoria do evento, para exibir antes do texto no chip (com espaço já incluso).
+function chipIcon(ev) {
+  const cat = ev.includes('|') ? ev.split('|')[0] : guessCat(ev);
+  const ic = CAT_ICON[cat];
+  return ic ? ic + ' ' : '';
 }
 
 // Preencher select de técnicos (legado - mantido para compatibilidade)
@@ -12403,9 +11249,20 @@ function render() {
     catCount[c] = (catCount[c] || 0) + 1;
   }));
   const resumoItens = Object.entries(catCount).sort((a,b)=>b[1]-a[1])
-    .map(([c,n]) => `<span class="ms-item"><span class="ms-dot" style="background:${CAT_ACCENT[c]||'#64748b'}"></span>${CAT_LABEL[c]||c} <b>${n}</b></span>`).join('');
+    .map(([c,n]) => `<span class="ms-item"><span class="ms-dot" style="background:${CAT_ACCENT[c]||'#64748b'}"></span>${CAT_ICON[c]||''} ${CAT_LABEL[c]||c} <b>${n}</b></span>`).join('');
   const summaryHtml = resumoItens
     ? `<div class="month-summary"><span class="ms-label">Resumo do mês</span>${resumoItens}</div>` : '';
+
+  // Aniversariantes do mês — destaque separado, lendo quem caiu na categoria 'aniversario'
+  const aniversariantes = [];
+  Object.values(dados).forEach(arr => arr.forEach(ev => {
+    const c = ev.includes('|') ? ev.split('|')[0] : guessCat(ev);
+    if (c !== 'aniversario') return;
+    const nome = chipLabel(ev).replace(/^niver\s+/i, '').trim();
+    if (nome) aniversariantes.push(nome);
+  }));
+  const aniversariantesHtml = aniversariantes.length
+    ? `<div class="mes-aniversariantes">🎂 <b>Aniversariantes do mês:</b> ${aniversariantes.map(escapeHtml).join(', ')}</div>` : '';
 
   let cells = '';
 
@@ -12426,20 +11283,24 @@ function render() {
     const isWeekend = diaSemana === 0 || diaSemana === 6;
     const eventos = dados[d] || [];
     const isToday = ehMesAtual && hoje.getDate() === d;
-    let cls = 'day-cell' + (isWeekend ? ' weekend-day' : '') + (isToday ? ' today' : '') + (eventos.length ? '' : ' no-events');
+    const catsDoDia = eventos.map(ev => ev.includes('|') ? ev.split('|')[0] : guessCat(ev));
+    const hasFeriado = catsDoDia.includes('feriado');
+    const hasAniversarioHoje = isToday && catsDoDia.includes('aniversario');
+    let cls = 'day-cell' + (isWeekend ? ' weekend-day' : '') + (isToday ? ' today' : '') + (eventos.length ? '' : ' no-events') + (hasFeriado ? ' has-feriado' : '') + (hasAniversarioHoje ? ' has-aniversario-hoje' : '');
     const chipsHtml = eventos.map((ev, idx) =>
-      `<span class="event-chip ${chipClass(ev)}" title="${chipLabel(ev)}">` +
+      `<span class="event-chip ${chipClass(ev)}" title="${escapeHtml(chipLabel(ev))}">` +
       (editMode
-        ? `<span class="chip-label" onclick="editEvt(event,${d},${idx})">${chipLabel(ev)}</span>` +
+        ? `<span class="chip-label" onclick="editEvt(event,${d},${idx})">${chipIcon(ev)}${escapeHtml(chipLabel(ev))}</span>` +
           `<span class="chip-copy" onclick="copyEvt(event,${d},${idx})" title="Copiar">⧉</span>` +
           `<span class="chip-del" onclick="delEvt(event,${d},${idx})" title="Remover">✕</span>`
-        : chipLabel(ev)) +
+        : chipIcon(ev) + escapeHtml(chipLabel(ev))) +
       '</span>'
     ).join('');
-    const pasteBtn = (editMode && clipboardEvt) ? `<button class="btn-paste-event" onclick="pasteEvt(event,${d})">📋 Colar "${chipLabel(clipboardEvt).slice(0,18)}${chipLabel(clipboardEvt).length>18?'…':''}"</button>` : '';
+    const pasteBtn = (editMode && clipboardEvt) ? `<button class="btn-paste-event" onclick="pasteEvt(event,${d})">📋 Colar "${escapeHtml(chipLabel(clipboardEvt).slice(0,18))}${chipLabel(clipboardEvt).length>18?'…':''}"</button>` : '';
     const addBtn = editMode ? `<button class="btn-add-event" onclick="openEvt(event,${d})">+ Adicionar</button>` : '';
     cells += `<div class="${cls}" data-dia="${d}" ${editMode ? `onclick="dayCellClick(event,${d})"` : ''}>
-      <div class="day-num"><span>${d}</span><span class="day-weekday">${DIAS_SEM[diaSemana]}</span></div>
+      <div class="day-num"><span>${d}</span><span class="day-weekday">${DIAS_SEM[diaSemana]}</span>${isToday ? '<span class="today-badge">HOJE</span>' : ''}</div>
+      ${hasAniversarioHoje ? '<div class="aniversario-hoje-banner">🎉 Aniversário hoje!</div>' : ''}
       <div class="day-events">${chipsHtml}${pasteBtn}${addBtn}</div>
     </div>`;
   }
@@ -12455,11 +11316,12 @@ function render() {
         <div class="calendar-header-left">
           ${geralAtivo
             ? `<span class="ch-eyebrow">Calendário geral</span><h2>Agenda Geral do Leite</h2><p>Eventos gerais · Programas e Serviços · Leite</p>`
-            : `<span class="ch-eyebrow">Técnico(a)</span><h2>${tec}</h2><p>Programas e Serviços · Leite</p>`}
+            : `<span class="ch-eyebrow">Técnico(a)</span><h2>${escapeHtml(tec)}</h2><p>Programas e Serviços · Leite</p>`}
         </div>
         <span class="month-badge">${mes} ${ano}</span>
       </div>
       ${summaryHtml}
+      ${aniversariantesHtml}
       <div class="weekdays">
         <div class="weekday weekend">Dom</div>
         <div class="weekday">Seg</div><div class="weekday">Ter</div>
@@ -12512,9 +11374,12 @@ function toggleEdit() {
     render(); showToast('Modo edição desativado','');
   }
 }
-function tryLogin() {
+async function tryLogin() {
   if (document.getElementById('login-pwd').value === EDIT_PASSWORD) {
-    closeLogin(); setEditUI(true);
+    closeLogin();
+    showToast('Carregando versão mais recente do site...', '');
+    await carregarBaseEdicao();
+    setEditUI(true);
     refreshDelSel(); render(); showToast('Modo edição ativo ✓','success');
   } else {
     document.getElementById('login-err').classList.add('visible');
@@ -12830,7 +11695,7 @@ function delTec() {
 }
 function refreshDelSel() {
   const s = document.getElementById('del-tec');
-  s.innerHTML = Object.keys(AGENDA).filter(t => t !== 'Leite Geral').sort().map(t=>`<option value="${t}">${t}</option>`).join('');
+  s.innerHTML = Object.keys(AGENDA).filter(t => t !== 'Leite Geral').sort().map(t=>`<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join('');
 }
 
 // ── PERSIST ──
@@ -12856,7 +11721,13 @@ function saveLocal() {
   } catch(e) {}
 }
 function loadLocal() {
-  // Visitantes do link público NÃO carregam localStorage, evitando versão antiga no navegador.
+  // Mantida por compatibilidade: é o corpo que o próprio "Publicar no GitHub"
+  // injeta na versão pública do arquivo, para garantir que visitantes nunca
+  // leiam localStorage. Não é mais chamada durante o carregamento normal da
+  // página — isso fazia essa função nunca rodar de verdade (editMode ainda
+  // era false nesse momento), então rascunhos salvos no navegador nunca
+  // voltavam ao reabrir o modo edição. Ver carregarBaseEdicao(), chamada no
+  // login, que substitui esse papel corretamente.
   if (!editMode) return;
   try {
     const s = localStorage.getItem('agenda_alta_2026');
@@ -12864,6 +11735,76 @@ function loadLocal() {
     const s2 = localStorage.getItem('agenda_alta_2027');
     if (s2) Object.assign(AGENDA_2027, JSON.parse(s2));
   } catch(e) {}
+}
+
+// Lê AGENDA/AGENDA_2027 a partir do texto-fonte de um index.html (o mesmo
+// formato que publicarGitHub() escreve). Usada para saber o que está
+// publicado agora, sem depender do que ficou em memória desde que a aba
+// foi aberta (que pode estar desatualizado por cache do navegador/CDN).
+function extrairAgendaDoHTML(html) {
+  const mA = html.match(/const\s+AGENDA\s*=\s*([\s\S]*?);\s*\/\/ Configuração dos meses/);
+  const mB = html.match(/let\s+AGENDA_2027\s*=\s*([\s\S]*?);\s*const\s+DIAS_MES_2027/);
+  if (!mA || !mB) return null;
+  try {
+    return { agenda: JSON.parse(mA[1]), agenda2027: JSON.parse(mB[1]) };
+  } catch(e) { return null; }
+}
+
+// Busca a página pública AGORA MESMO (sem cache, sem precisar de token —
+// é a mesma página que qualquer visitante vê) e extrai os dados dela.
+async function buscarPublicadoAgora() {
+  try {
+    const res = await fetch(location.pathname + '?nocache=' + Date.now(), { cache: 'no-store' });
+    if (!res.ok) return null;
+    return extrairAgendaDoHTML(await res.text());
+  } catch(e) { return null; }
+}
+
+function contarEventos(agendaObj) {
+  let n = 0;
+  Object.values(agendaObj || {}).forEach(porMes => {
+    Object.values(porMes || {}).forEach(porDia => { n += (porDia || []).length; });
+  });
+  return n;
+}
+
+// Chamada ao entrar em modo edição (ver tryLogin). Decide, COM a pessoa que
+// está editando, se continua um rascunho salvo neste navegador ou parte da
+// versão publicada agora mesmo — em vez de escolher isso sozinha em
+// silêncio, que é o que causava edições sendo perdidas.
+async function carregarBaseEdicao() {
+  const draftRaw = localStorage.getItem('agenda_alta_2026');
+  const draftTs = localStorage.getItem('agenda_alta_2026_updated');
+  const publicado = await buscarPublicadoAgora();
+
+  if (draftRaw) {
+    const quando = draftTs ? fmtDate(new Date(draftTs)) : 'data desconhecida';
+    const continuar = confirm(
+      'Encontrei alterações salvas neste navegador (' + quando + ') que ainda não foram publicadas no site.\n\n' +
+      'OK = continuar esse rascunho\n' +
+      'Cancelar = descartar o rascunho e carregar a versão publicada agora no site'
+    );
+    if (continuar) {
+      try {
+        Object.assign(AGENDA, JSON.parse(draftRaw));
+        const s2 = localStorage.getItem('agenda_alta_2027');
+        if (s2) Object.assign(AGENDA_2027, JSON.parse(s2));
+        return;
+      } catch(e) { /* rascunho corrompido — cai para a versão publicada abaixo */ }
+    } else {
+      localStorage.removeItem('agenda_alta_2026');
+      localStorage.removeItem('agenda_alta_2027');
+      localStorage.removeItem('agenda_alta_2026_updated');
+    }
+  }
+
+  if (publicado) {
+    Object.keys(AGENDA).forEach(k => delete AGENDA[k]);
+    Object.assign(AGENDA, publicado.agenda);
+    Object.keys(AGENDA_2027).forEach(k => delete AGENDA_2027[k]);
+    Object.assign(AGENDA_2027, publicado.agenda2027);
+  }
+  // Se a busca falhar (ex.: offline), mantém o que já estava carregado na página.
 }
 function exportJSON() {
   // Backup completo: 2026 + 2027 + feriados removidos de propósito.
@@ -12951,6 +11892,26 @@ async function publicarGitHub() {
     htmlAtual = htmlAtual.replace(/const\s+_t\s*=\s*\[[^\]]*\]\s*;\s*const\s+TOKEN\s*=\s*_t\.join\([^)]*\)\s*;/g, '');
     htmlAtual = htmlAtual.replace(/ghp_[A-Za-z0-9]{20,}/g, 'TOKEN_REMOVIDO');
 
+    // 1.5. Trava de segurança: compara com o que está publicado AGORA (o arquivo
+    // que acabamos de buscar) antes de sobrescrever. Se o que vamos publicar tem
+    // bem menos eventos do que o que já está no ar, é sinal de que estamos
+    // prestes a apagar edição de outra pessoa (ou um rascunho antigo) — pede
+    // confirmação em vez de publicar isso em silêncio.
+    const remoto = extrairAgendaDoHTML(htmlAtual);
+    if (remoto) {
+      const antesN = contarEventos(remoto.agenda) + contarEventos(remoto.agenda2027);
+      const depoisN = contarEventos(AGENDA) + contarEventos(AGENDA_2027);
+      if (depoisN < antesN - 15) {
+        const ok = confirm(
+          'Atenção: o site publicado agora tem ' + antesN + ' eventos, e o que você vai publicar tem ' + depoisN +
+          ' (' + (antesN - depoisN) + ' a menos).\n\n' +
+          'Isso pode ser uma exclusão que você fez de propósito — ou pode ser edição de outra pessoa sendo apagada por engano.\n\n' +
+          'Publicar mesmo assim?'
+        );
+        if (!ok) { showToast('Publicação cancelada', ''); return; }
+      }
+    }
+
     // 2. Injeta os dados atuais da agenda diretamente no HTML publicado
     const agendaJSON = JSON.stringify(AGENDA, null, 2);
     const agenda2027JSON = JSON.stringify(AGENDA_2027, null, 2);
@@ -12969,6 +11930,37 @@ async function publicarGitHub() {
     htmlAtual = htmlAtual.replace(
       /function\s+loadLocal\(\)\s*\{[\s\S]*?\n\}/,
       `function loadLocal() {\n  // Visitantes do link público NÃO carregam localStorage, evitando versão antiga no navegador.\n  if (!editMode) return;\n  try {\n    const s = localStorage.getItem('agenda_alta_2026');\n    if (s) Object.assign(AGENDA, JSON.parse(s));\n    const s2 = localStorage.getItem('agenda_alta_2027');\n    if (s2) Object.assign(AGENDA_2027, JSON.parse(s2));\n  } catch(e) {}\n}`
+    );
+
+    // 3.5. Confere que a injeção acima realmente entrou no texto, em vez de
+    // supor que funcionou. replace() não avisa quando não encontra o trecho
+    // esperado — ele só devolve o texto igual, sem erro nenhum. Se isso
+    // acontecer (por exemplo, porque uma edição de layout mudou os marcadores
+    // que o código procura), a publicação seguiria em frente reescrevendo o
+    // arquivo com os DADOS ANTIGOS por baixo do capô, mostrando "sucesso" —
+    // e foi exatamente esse tipo de falha silenciosa que fazia atualizações
+    // sumirem sem erro nenhum aparecer na tela.
+    const agendaEntrou = htmlAtual.includes(agendaJSON.slice(0, 60));
+    const agenda27Entrou = agenda2027JSON.trim() === '{}' || htmlAtual.includes(agenda2027JSON.slice(0, 60));
+    if (!agendaEntrou || !agenda27Entrou) {
+      alert(
+        'Publicação cancelada por segurança.\n\n' +
+        'Não consegui confirmar que os dados novos entraram no arquivo — a estrutura do index.html pode ter mudado ' +
+        '(provavelmente numa edição de layout recente) e o publicador não reconheceu mais onde os dados ficam.\n\n' +
+        'Nada foi publicado. Avise o Rafael antes de tentar de novo.'
+      );
+      showToast('Publicação cancelada — estrutura do arquivo mudou', 'error');
+      return;
+    }
+
+    // 3.6. Atualiza a data mostrada no rodapé para quem só visualiza o site.
+    // Antes esse texto ficava travado no que foi digitado manualmente da
+    // última vez (ex.: "junho/2026") — quem só visualiza nunca escreve no
+    // localStorage, então updateDateDisplay() nunca tinha o que mostrar e o
+    // rodapé ficava permanentemente desatualizado, mesmo logo após publicar.
+    htmlAtual = htmlAtual.replace(
+      /<span id="last-update">[^<]*<\/span>/,
+      '<span id="last-update">Atualizado em: ' + fmtDate(new Date()) + '</span>'
     );
 
     // 4. Converte para base64 e publica
@@ -13016,7 +12008,8 @@ function rebuildSel() {
   });
   s.value = cur;
 }
-loadLocal();
+// (o carregamento de rascunho local acontece em carregarBaseEdicao(), chamada no login —
+// ver comentário em loadLocal() logo acima na seção PERSIST)
 sincronizarFeriados();  // garante feriados completos para TODOS os técnicos, sempre
 updateDateDisplay(); rebuildSel();
 MESES.forEach(m => {
