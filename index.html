@@ -801,7 +801,7 @@
 
 <footer>
   <span>Alta Genetics Brasil · Programas e Serviços · Leite</span>
-  <span id="last-update">Atualizado em: 14/set/2026 às 10:13</span>
+  <span id="last-update">Atualizado em: 14/set/2026 às 10:59</span>
 </footer>
 
 <script>
@@ -809,7 +809,7 @@
 // publicarGitHub(). Usado por verificarAtualizacao() pra saber se a página
 // aberta no celular (ou "salva como app" na tela inicial) está desatualizada,
 // mesmo quando o navegador não fez uma requisição nova pra pegar isso sozinho.
-const BUILD_ID = '2026-09-14T13:13:50.123Z';
+const BUILD_ID = '2026-09-14T13:59:21.630Z';
 
 // ═══════════════════════════════════════════════════════
 //  DADOS 2026
@@ -1462,10 +1462,13 @@ const AGENDA = {
         "Particular"
       ],
       "3": [
-        "Particular"
+        "evento|Curso Milk + Nutrição"
       ],
       "4": [
-        "Particular"
+        "evento|Curso Milk + Nutrição"
+      ],
+      "5": [
+        "evento|Curso Milk + Nutrição"
       ],
       "7": [
         "feriado|Independência do Brasil"
@@ -1474,12 +1477,10 @@ const AGENDA = {
         "Particular"
       ],
       "9": [
-        "Particular",
-        "treinamento|Treinamento NEDAP",
-        "deslocamento|Deslocamento"
+        "deslocamento|Deslocamento",
+        "treinamento|Treinamento NEDAP"
       ],
       "10": [
-        "Particular",
         "treinamento|Treinamento NEDAP",
         "deslocamento|Deslocamento"
       ],
@@ -1564,12 +1565,10 @@ const AGENDA = {
       ],
       "14": [
         "Niver Bianca",
-        "Deslocamento",
-        "IntegraLeite"
+        "Particular"
       ],
       "15": [
-        "IntegraLeite",
-        "Deslocamento"
+        "Particular"
       ],
       "16": [
         "Particular"
@@ -2377,7 +2376,7 @@ const AGENDA = {
         "Home office"
       ],
       "4": [
-        "Home office"
+        "atendimento|Atendimento Online SJ Rio Preto - Corte"
       ],
       "7": [
         "feriado|Independência do Brasil"
@@ -2580,20 +2579,16 @@ const AGENDA = {
         "feriado|Consciência Negra"
       ],
       "23": [
-        "Home office",
-        "Padronização Alta CRIA Beef"
+        "Home office"
       ],
       "24": [
-        "Home office",
-        "Padronização Alta CRIA Beef"
+        "Home office"
       ],
       "25": [
-        "Home office",
-        "Padronização Alta CRIA Beef"
+        "Home office"
       ],
       "26": [
-        "Home office",
-        "Padronização Alta CRIA Beef"
+        "Home office"
       ],
       "27": [
         "Dia livre Niver"
@@ -2679,12 +2674,48 @@ const AGENDA = {
     }
   },
   "Ana Luíza": {
-    "Janeiro": {},
-    "Fevereiro": {},
-    "Março": {},
-    "Abril": {},
-    "Maio": {},
-    "Junho": {},
+    "Janeiro": {
+      "1": [
+        "feriado|Ano Novo"
+      ]
+    },
+    "Fevereiro": {
+      "16": [
+        "feriado|Carnaval"
+      ],
+      "17": [
+        "feriado|Carnaval"
+      ],
+      "18": [
+        "feriado|Cinzas"
+      ]
+    },
+    "Março": {
+      "2": [
+        "feriado|Aniversário de Uberaba"
+      ]
+    },
+    "Abril": {
+      "3": [
+        "feriado|Sexta-feira Santa"
+      ],
+      "5": [
+        "feriado|Páscoa"
+      ],
+      "21": [
+        "feriado|Tiradentes"
+      ]
+    },
+    "Maio": {
+      "1": [
+        "feriado|Dia do Trabalhador"
+      ]
+    },
+    "Junho": {
+      "4": [
+        "feriado|Corpus Christi"
+      ]
+    },
     "Agosto": {
       "15": [
         "feriado|Nsa. Sra. da Abadia",
@@ -2772,7 +2803,8 @@ const AGENDA = {
         "homeoffice|Home Office"
       ],
       "18": [
-        "homeoffice|Home Office"
+        "homeoffice|Home Office",
+        "Envio de relatórios Alta CRIA Leite"
       ],
       "21": [
         "deslocamento|Deslocamento",
@@ -3021,9 +3053,27 @@ const AGENDA = {
     }
   },
   "Bianca": {
-    "Janeiro": {},
-    "Fevereiro": {},
-    "Março": {},
+    "Janeiro": {
+      "1": [
+        "feriado|Ano Novo"
+      ]
+    },
+    "Fevereiro": {
+      "16": [
+        "feriado|Carnaval"
+      ],
+      "17": [
+        "feriado|Carnaval"
+      ],
+      "18": [
+        "feriado|Cinzas"
+      ]
+    },
+    "Março": {
+      "2": [
+        "feriado|Aniversário de Uberaba"
+      ]
+    },
     "Abril": {
       "3": [
         "feriado|Sexta-feira Santa"
@@ -3400,19 +3450,13 @@ const AGENDA = {
       "28": [
         "Home office"
       ],
-      "29": [
-        "Expointer"
-      ],
-      "30": [
-        "Expointer"
-      ],
       "31": [
         "evento|Palestra em Frederico"
       ]
     },
     "Setembro": {
       "1": [
-        "atendimento|Atendimento Frederico"
+        "Home office"
       ],
       "2": [
         "livre|Dia livre"
@@ -3454,22 +3498,20 @@ const AGENDA = {
         "reuniao|Concept Plus"
       ],
       "18": [
-        "Home office",
         "atendimento|Reunião COTRIJAL"
       ],
       "21": [
-        "deslocamento|Deslocamento",
-        "atendimento|Atendimento ACW Lucas Pastore"
-      ],
-      "22": [
-        "atendimento|Atendimento ACW Lucas Pastores",
         "deslocamento|Deslocamento"
       ],
+      "22": [
+        "atendimento|Atendimento ACW Lucas Pastores"
+      ],
       "23": [
-        "Home office"
+        "deslocamento|Deslocamento"
       ],
       "24": [
-        "Home office"
+        "Home office",
+        "outros|Envio Relatórios Alta CRIA"
       ],
       "25": [
         "Home office"
@@ -3511,14 +3553,14 @@ const AGENDA = {
         "feriado|Nsa Sra. Aparecida"
       ],
       "13": [
-        "Deslocamento"
+        "Home office"
       ],
       "14": [
         "Niver Bianca",
-        "IntegraLeite"
+        "Home office"
       ],
       "15": [
-        "IntegraLeite"
+        "Home office"
       ],
       "16": [
         "Deslocamento"
@@ -3707,8 +3749,22 @@ const AGENDA = {
     }
   },
   "Felipe Secco": {
-    "Janeiro": {},
-    "Fevereiro": {},
+    "Janeiro": {
+      "1": [
+        "feriado|Ano Novo"
+      ]
+    },
+    "Fevereiro": {
+      "16": [
+        "feriado|Carnaval"
+      ],
+      "17": [
+        "feriado|Carnaval"
+      ],
+      "18": [
+        "feriado|Cinzas"
+      ]
+    },
     "Março": {
       "2": [
         "feriado|Aniversário de Uberaba"
@@ -4243,20 +4299,20 @@ const AGENDA = {
       ],
       "12": [
         "feriado|Nsa Sra. Aparecida",
-        "Deslocamento"
+        "Particular"
       ],
       "13": [
-        "Pré-IntegraLeite"
+        "Particular"
       ],
       "14": [
         "Niver Bianca",
-        "IntegraLeite"
+        "Particular"
       ],
       "15": [
-        "IntegraLeite"
+        "Particular"
       ],
       "16": [
-        "Deslocamento"
+        "Particular"
       ],
       "19": [
         "Particular"
@@ -5085,7 +5141,9 @@ const AGENDA = {
         "deslocamento|Deslocamento"
       ],
       "31": [
-        "Home office"
+        "deslocamento|Deslocamento",
+        "atendimento|Atendimento AUDAX",
+        "deslocamento|Deslocamento"
       ]
     },
     "Setembro": {
@@ -5396,12 +5454,48 @@ const AGENDA = {
     }
   },
   "Guilherme": {
-    "Janeiro": {},
-    "Fevereiro": {},
-    "Março": {},
-    "Abril": {},
-    "Maio": {},
-    "Junho": {},
+    "Janeiro": {
+      "1": [
+        "feriado|Ano Novo"
+      ]
+    },
+    "Fevereiro": {
+      "16": [
+        "feriado|Carnaval"
+      ],
+      "17": [
+        "feriado|Carnaval"
+      ],
+      "18": [
+        "feriado|Cinzas"
+      ]
+    },
+    "Março": {
+      "2": [
+        "feriado|Aniversário de Uberaba"
+      ]
+    },
+    "Abril": {
+      "3": [
+        "feriado|Sexta-feira Santa"
+      ],
+      "5": [
+        "feriado|Páscoa"
+      ],
+      "21": [
+        "feriado|Tiradentes"
+      ]
+    },
+    "Maio": {
+      "1": [
+        "feriado|Dia do Trabalhador"
+      ]
+    },
+    "Junho": {
+      "4": [
+        "feriado|Corpus Christi"
+      ]
+    },
     "Julho": {
       "15": [
         "evento|Exposição Pompéu - Superleite"
@@ -6161,42 +6255,38 @@ const AGENDA = {
         "feriado|Independência do Brasil"
       ],
       "8": [
-        "Home office",
-        "Análise de dados Alta CRIA Leite"
+        "Home office"
       ],
       "9": [
+        "deslocamento|Deslocamento",
         "treinamento|Treinamento NEDAP"
       ],
       "10": [
-        "treinamento|Treinamento NEDAP"
+        "treinamento|Treinamento NEDAP",
+        "deslocamento|Deslocamento"
       ],
       "11": [
-        "Home office",
-        "Análise de dados Alta CRIA Leite"
+        "Home office"
       ],
       "14": [
-        "Home office",
-        "Análise de dados Alta CRIA Leite"
+        "Home office"
       ],
       "15": [
         "Home office",
-        "Análise de dados Alta CRIA Leite",
         "Niver Naiara"
       ],
       "16": [
-        "Home office",
-        "Análise de dados Alta CRIA Leite"
+        "Home office"
       ],
       "17": [
-        "Home office",
-        "Envio de relatórios Alta CRIA Leite"
+        "Home office"
       ],
       "18": [
-        "Home office",
-        "Envio de relatórios Alta CRIA Leite"
+        "Home office"
       ],
       "21": [
-        "Home office"
+        "Home office",
+        "outros|Envio Relatórios Alta CRIA"
       ],
       "22": [
         "Home office"
@@ -6444,12 +6534,48 @@ const AGENDA = {
     }
   },
   "Leite Geral": {
-    "Janeiro": {},
-    "Fevereiro": {},
-    "Março": {},
-    "Abril": {},
-    "Maio": {},
-    "Junho": {},
+    "Janeiro": {
+      "1": [
+        "feriado|Ano Novo"
+      ]
+    },
+    "Fevereiro": {
+      "16": [
+        "feriado|Carnaval"
+      ],
+      "17": [
+        "feriado|Carnaval"
+      ],
+      "18": [
+        "feriado|Cinzas"
+      ]
+    },
+    "Março": {
+      "2": [
+        "feriado|Aniversário de Uberaba"
+      ]
+    },
+    "Abril": {
+      "3": [
+        "feriado|Sexta-feira Santa"
+      ],
+      "5": [
+        "feriado|Páscoa"
+      ],
+      "21": [
+        "feriado|Tiradentes"
+      ]
+    },
+    "Maio": {
+      "1": [
+        "feriado|Dia do Trabalhador"
+      ]
+    },
+    "Junho": {
+      "4": [
+        "feriado|Corpus Christi"
+      ]
+    },
     "Julho": {
       "2": [
         "evento|Exposição Madre de Deus"
@@ -7508,14 +7634,14 @@ const AGENDA = {
         "Home office"
       ],
       "17": [
-        "Home office",
-        "Envio de relatórios Alta CRIA Leite"
+        "Home office"
       ],
       "18": [
         "particular|Particular"
       ],
       "21": [
-        "Home office"
+        "Home office",
+        "outros|Envio Relatório Alta CRIA"
       ],
       "22": [
         "deslocamento|Deslocamento",
@@ -7549,8 +7675,8 @@ const AGENDA = {
         "Home office"
       ],
       "5": [
-        "Home office",
-        "Niver Paula"
+        "Niver Paula",
+        "Reunião Q4 Uberaba"
       ],
       "6": [
         "Reunião Q4 Uberaba"
@@ -8444,29 +8570,33 @@ const AGENDA = {
         "Análise Geral Alta CRIA Leite"
       ],
       "9": [
-        "treinamento|Treinamento NEDAP"
+        "Home office",
+        "Análise Geral Alta CRIA Leite"
       ],
       "10": [
-        "treinamento|Treinamento NEDAP"
+        "Home office",
+        "Análise Geral Alta CRIA Leite"
       ],
       "11": [
         "Home office",
         "Análise Geral Alta CRIA Leite"
       ],
       "14": [
-        "atendimento|Atendimento Elisio"
+        "deslocamento|Deslocamento",
+        "atendimento|Atendimento Elisio",
+        "deslocamento|Deslocamento"
       ],
       "15": [
         "Home office",
-        "Niver Naiara",
-        "Análise Geral Alta CRIA Leite"
+        "Análise Geral Alta CRIA Leite",
+        "Niver Naiara"
       ],
       "16": [
-        "Deslocamento"
+        "deslocamento|Deslocamento"
       ],
       "17": [
-        "Atendimento Figueiredo",
-        "Deslocamento"
+        "atendimento|Atendimento Figueiredo",
+        "deslocamento|Deslocamento"
       ],
       "18": [
         "Home office",
@@ -8511,8 +8641,8 @@ const AGENDA = {
         "Home office"
       ],
       "5": [
-        "Home office",
-        "Niver Paula"
+        "Niver Paula",
+        "Reunião Q4 Uberaba"
       ],
       "6": [
         "Reunião Q4 Uberaba"
@@ -9403,7 +9533,8 @@ const AGENDA = {
         "Home office"
       ],
       "17": [
-        "Home office"
+        "Home office",
+        "Envio de relatórios Alta CRIA Leite"
       ],
       "18": [
         "livre|Dia livre"
@@ -9412,11 +9543,9 @@ const AGENDA = {
         "Deslocamento"
       ],
       "21": [
-        "Envio de relatórios Alta CRIA Leite",
         "Atendimento Recife"
       ],
       "22": [
-        "Envio de relatórios Alta CRIA Leite",
         "Atendimento Recife"
       ],
       "23": [
@@ -10289,38 +10418,36 @@ const AGENDA = {
         "Home office"
       ],
       "7": [
-        "feriado|Independência do Brasil"
+        "feriado|Independência do Brasil",
+        "Deslocamento"
       ],
       "8": [
-        "Home office"
+        "atendimento|Atendimento Campo Grande"
       ],
       "9": [
-        "treinamento|Treinamento NEDAP"
+        "atendimento|Atendimento Campo Grande"
       ],
       "10": [
-        "treinamento|Treinamento NEDAP"
+        "atendimento|Atendimento Campo Grande"
       ],
       "11": [
-        "Home office"
-      ],
-      "13": [
         "Deslocamento"
       ],
       "14": [
-        "Atendimento Adv. Corte"
+        "Home office"
       ],
       "15": [
         "Niver Naiara",
-        "Atendimento Adv. Corte"
+        "Home office"
       ],
       "16": [
-        "Atendimento Adv. Corte"
+        "treinamento|Visita UNINCOR"
       ],
       "17": [
-        "Atendimento Adv. Corte"
+        "Home office"
       ],
       "18": [
-        "Deslocamento"
+        "Home office"
       ],
       "21": [
         "Home office"
@@ -10563,12 +10690,48 @@ const AGENDA = {
     }
   },
   "Ricardo Bertola": {
-    "Janeiro": {},
-    "Fevereiro": {},
-    "Março": {},
-    "Abril": {},
-    "Maio": {},
-    "Junho": {},
+    "Janeiro": {
+      "1": [
+        "feriado|Ano Novo"
+      ]
+    },
+    "Fevereiro": {
+      "16": [
+        "feriado|Carnaval"
+      ],
+      "17": [
+        "feriado|Carnaval"
+      ],
+      "18": [
+        "feriado|Cinzas"
+      ]
+    },
+    "Março": {
+      "2": [
+        "feriado|Aniversário de Uberaba"
+      ]
+    },
+    "Abril": {
+      "3": [
+        "feriado|Sexta-feira Santa"
+      ],
+      "5": [
+        "feriado|Páscoa"
+      ],
+      "21": [
+        "feriado|Tiradentes"
+      ]
+    },
+    "Maio": {
+      "1": [
+        "feriado|Dia do Trabalhador"
+      ]
+    },
+    "Junho": {
+      "4": [
+        "feriado|Corpus Christi"
+      ]
+    },
     "Julho": {
       "14": [
         "homeoffice|Home Office"
@@ -10723,13 +10886,13 @@ const AGENDA = {
         "homeoffice|Home Office"
       ],
       "15": [
-        "atendimento|Visita Felipe Baeta"
+        "atendimento|Atendimento Felipe Baeta"
       ],
       "16": [
-        "homeoffice|Home Office"
+        "atendimento|Atendimento Edson Gontijo"
       ],
       "17": [
-        "atendimento|Atendimento Edson Gontijo"
+        "homeoffice|Home Office"
       ],
       "18": [
         "homeoffice|Home Office"
@@ -10780,19 +10943,20 @@ const AGENDA = {
         "evento|WDE Madison"
       ],
       "5": [
-        "homeoffice|Home Office"
+        "deslocamento|Deslocamento",
+        "reuniao|Reunião Q4"
       ],
       "6": [
         "reuniao|Reunião Q4"
       ],
       "7": [
-        "homeoffice|Home Office"
+        "outros|Uberaba"
       ],
       "8": [
-        "homeoffice|Home Office"
+        "outros|Uberaba"
       ],
       "9": [
-        "homeoffice|Home Office"
+        "deslocamento|Deslocamento"
       ],
       "12": [
         "feriado|Nsa Sra. Aparecida"
@@ -11007,7 +11171,11 @@ const DIAS_MES = {Janeiro:31,Fevereiro:28,Março:31,Abril:30,Maio:31,Junho:30,Ju
 // ═══════════════════════════════════════════════════════
 let AGENDA_2027 = {
   "Alexandre Scarpa": {
-    "Janeiro": {},
+    "Janeiro": {
+      "1": [
+        "feriado|Ano Novo"
+      ]
+    },
     "Fevereiro": {
       "8": [
         "feriado|Carnaval"
@@ -11022,19 +11190,19 @@ let AGENDA_2027 = {
         "deslocamento|Deslocamento"
       ],
       "15": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "16": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "17": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "18": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "19": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "20": [
         "deslocamento|Deslocamento"
@@ -11099,7 +11267,11 @@ let AGENDA_2027 = {
     }
   },
   "Alice Arantes": {
-    "Janeiro": {},
+    "Janeiro": {
+      "1": [
+        "feriado|Ano Novo"
+      ]
+    },
     "Fevereiro": {
       "8": [
         "feriado|Carnaval"
@@ -11191,7 +11363,11 @@ let AGENDA_2027 = {
     }
   },
   "Ana Luíza": {
-    "Janeiro": {},
+    "Janeiro": {
+      "1": [
+        "feriado|Ano Novo"
+      ]
+    },
     "Fevereiro": {
       "8": [
         "feriado|Carnaval"
@@ -11206,19 +11382,19 @@ let AGENDA_2027 = {
         "deslocamento|Deslocamento"
       ],
       "15": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "16": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "17": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "18": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "19": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "20": [
         "deslocamento|Deslocamento"
@@ -11281,7 +11457,11 @@ let AGENDA_2027 = {
     }
   },
   "Bianca": {
-    "Janeiro": {},
+    "Janeiro": {
+      "1": [
+        "feriado|Ano Novo"
+      ]
+    },
     "Fevereiro": {
       "8": [
         "feriado|Carnaval"
@@ -11291,27 +11471,6 @@ let AGENDA_2027 = {
       ],
       "10": [
         "feriado|Cinzas"
-      ],
-      "14": [
-        "deslocamento|Deslocamento"
-      ],
-      "15": [
-        "reuniao|Convenção anual"
-      ],
-      "16": [
-        "reuniao|Convenção anual"
-      ],
-      "17": [
-        "reuniao|Convenção anual"
-      ],
-      "18": [
-        "reuniao|Convenção anual"
-      ],
-      "19": [
-        "reuniao|Convenção anual"
-      ],
-      "20": [
-        "deslocamento|Deslocamento"
       ]
     },
     "Março": {
@@ -11448,7 +11607,11 @@ let AGENDA_2027 = {
     }
   },
   "Fábio Fogaça": {
-    "Janeiro": {},
+    "Janeiro": {
+      "1": [
+        "feriado|Ano Novo"
+      ]
+    },
     "Fevereiro": {
       "8": [
         "feriado|Carnaval"
@@ -11463,19 +11626,19 @@ let AGENDA_2027 = {
         "deslocamento|Deslocamento"
       ],
       "15": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "16": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "17": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "18": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "19": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "20": [
         "deslocamento|Deslocamento"
@@ -11554,6 +11717,21 @@ let AGENDA_2027 = {
       ],
       "10": [
         "feriado|Cinzas"
+      ],
+      "15": [
+        "reuniao|Convenção Anual"
+      ],
+      "16": [
+        "reuniao|Convenção Anual"
+      ],
+      "17": [
+        "reuniao|Convenção Anual"
+      ],
+      "18": [
+        "reuniao|Convenção Anual"
+      ],
+      "19": [
+        "reuniao|Convenção Anual"
       ]
     },
     "Março": {
@@ -11615,7 +11793,11 @@ let AGENDA_2027 = {
     }
   },
   "Itamar Aguiar": {
-    "Janeiro": {},
+    "Janeiro": {
+      "1": [
+        "feriado|Ano Novo"
+      ]
+    },
     "Fevereiro": {
       "8": [
         "feriado|Carnaval"
@@ -11630,19 +11812,19 @@ let AGENDA_2027 = {
         "deslocamento|Deslocamento"
       ],
       "15": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "16": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "17": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "18": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "19": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "20": [
         "deslocamento|Deslocamento"
@@ -11707,7 +11889,11 @@ let AGENDA_2027 = {
     }
   },
   "Leite Geral": {
-    "Janeiro": {},
+    "Janeiro": {
+      "1": [
+        "feriado|Ano Novo"
+      ]
+    },
     "Fevereiro": {
       "8": [
         "feriado|Carnaval"
@@ -11717,21 +11903,6 @@ let AGENDA_2027 = {
       ],
       "10": [
         "feriado|Cinzas"
-      ],
-      "15": [
-        "reuniao|Convenção anual"
-      ],
-      "16": [
-        "reuniao|Convenção anual"
-      ],
-      "17": [
-        "reuniao|Convenção anual"
-      ],
-      "18": [
-        "reuniao|Convenção anual"
-      ],
-      "19": [
-        "reuniao|Convenção anual"
       ]
     },
     "Março": {
@@ -11791,7 +11962,11 @@ let AGENDA_2027 = {
     }
   },
   "Paula Tiveron": {
-    "Janeiro": {},
+    "Janeiro": {
+      "1": [
+        "feriado|Ano Novo"
+      ]
+    },
     "Fevereiro": {
       "8": [
         "feriado|Carnaval"
@@ -11802,26 +11977,20 @@ let AGENDA_2027 = {
       "10": [
         "feriado|Cinzas"
       ],
-      "14": [
-        "deslocamento|Deslocamento"
-      ],
       "15": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "16": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "17": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "18": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "19": [
-        "reuniao|Convenção anual"
-      ],
-      "20": [
-        "deslocamento|Deslocamento"
+        "reuniao|Convenção Anual"
       ]
     },
     "Março": {
@@ -11883,7 +12052,11 @@ let AGENDA_2027 = {
     }
   },
   "Rafael Azevedo": {
-    "Janeiro": {},
+    "Janeiro": {
+      "1": [
+        "feriado|Ano Novo"
+      ]
+    },
     "Fevereiro": {
       "8": [
         "feriado|Carnaval"
@@ -11898,19 +12071,19 @@ let AGENDA_2027 = {
         "deslocamento|Deslocamento"
       ],
       "15": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "16": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "17": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "18": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "19": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "20": [
         "deslocamento|Deslocamento"
@@ -12026,7 +12199,11 @@ let AGENDA_2027 = {
     }
   },
   "Rayce Ferreira": {
-    "Janeiro": {},
+    "Janeiro": {
+      "1": [
+        "feriado|Ano Novo"
+      ]
+    },
     "Fevereiro": {
       "8": [
         "feriado|Carnaval"
@@ -12037,26 +12214,20 @@ let AGENDA_2027 = {
       "10": [
         "feriado|Cinzas"
       ],
-      "14": [
-        "deslocamento|Deslocamento"
-      ],
       "15": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "16": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "17": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "18": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "19": [
-        "reuniao|Convenção anual"
-      ],
-      "20": [
-        "deslocamento|Deslocamento"
+        "reuniao|Convenção Anual"
       ]
     },
     "Março": {
@@ -12118,7 +12289,11 @@ let AGENDA_2027 = {
     }
   },
   "Reginaldo Santos": {
-    "Janeiro": {},
+    "Janeiro": {
+      "1": [
+        "feriado|Ano Novo"
+      ]
+    },
     "Fevereiro": {
       "8": [
         "feriado|Carnaval"
@@ -12129,26 +12304,20 @@ let AGENDA_2027 = {
       "10": [
         "feriado|Cinzas"
       ],
-      "14": [
-        "deslocamento|Deslocamento"
-      ],
       "15": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "16": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "17": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "18": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "19": [
-        "reuniao|Convenção anual"
-      ],
-      "20": [
-        "deslocamento|Deslocamento"
+        "reuniao|Convenção Anual"
       ]
     },
     "Março": {
@@ -12271,19 +12440,19 @@ let AGENDA_2027 = {
         "deslocamento|Deslocamento"
       ],
       "15": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "16": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "17": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "18": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "19": [
-        "reuniao|Convenção anual"
+        "reuniao|Convenção Anual"
       ],
       "20": [
         "deslocamento|Deslocamento"
@@ -12321,15 +12490,24 @@ let AGENDA_2027 = {
       ]
     },
     "Setembro": {
-      "5": [
-        "ferias|Férias"
-      ],
       "6": [
         "ferias|Férias"
       ],
       "7": [
-        "ferias|Férias",
-        "feriado|Independência do Brasil"
+        "feriado|Independência do Brasil",
+        "ferias|Férias"
+      ],
+      "8": [
+        "ferias|Férias"
+      ],
+      "9": [
+        "ferias|Férias"
+      ],
+      "10": [
+        "ferias|Férias"
+      ],
+      "11": [
+        "ferias|Férias"
       ],
       "12": [
         "ferias|Férias"
