@@ -12947,6 +12947,7 @@ function setEditUI(active) {
   document.getElementById('manage-panel').classList.toggle('visible', editMode);
   if (!editMode) clipboardEvt = null;
   updateClipBar();
+  updateDateDisplay(); // o rodapé muda de conteúdo entre visualizar e editar
 }
 
 // initPublicOrEditLink removido — botão visível para todos
@@ -13289,11 +13290,29 @@ function fmtDate(d) {
   const meses = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
   return `${String(d.getDate()).padStart(2,'0')}/${meses[d.getMonth()]}/${d.getFullYear()} às ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
 }
+// Texto que veio gravado no arquivo publicado. Capturado antes de qualquer
+// alteração, na primeira chamada de updateDateDisplay() (no carregamento).
+let _textoPublicado = null;
+
+// BUG CORRIGIDO: esta função trocava o rodapé pela data do RASCUNHO salvo no
+// navegador, mesmo fora do modo edição. Quem tinha um rascunho antigo via no
+// rodapé a data desse rascunho e concluía que o site tinha voltado atrás —
+// quando na verdade a página mostrava os dados publicados corretos e só o
+// texto do rodapé estava errado. Ctrl+Shift+R não resolvia porque isso é
+// localStorage, não cache. Agora: fora do modo edição o rodapé mostra SEMPRE
+// a data da publicação; no modo edição mostra as duas coisas, separadas.
 function updateDateDisplay() {
   try {
-    const ts = localStorage.getItem('agenda_alta_2026_updated');
     const el = document.getElementById('last-update');
-    if (ts && el) el.textContent = 'Atualizado em: ' + fmtDate(new Date(ts));
+    if (!el) return;
+    if (_textoPublicado === null) _textoPublicado = el.textContent;
+
+    if (!editMode) { el.textContent = _textoPublicado; return; }
+
+    const ts = localStorage.getItem('agenda_alta_2026_updated');
+    el.textContent = ts
+      ? _textoPublicado + ' · rascunho neste navegador: ' + fmtDate(new Date(ts)) + ' (ainda não publicado)'
+      : _textoPublicado;
   } catch(e) {}
 }
 function saveLocal() {
@@ -13302,8 +13321,7 @@ function saveLocal() {
     localStorage.setItem('agenda_alta_2027', JSON.stringify(AGENDA_2027));
     const now = new Date().toISOString();
     localStorage.setItem('agenda_alta_2026_updated', now);
-    const el = document.getElementById('last-update');
-    if (el) el.textContent = 'Atualizado em: ' + fmtDate(new Date(now));
+    updateDateDisplay(); // não sobrescreve a data da publicação; ver updateDateDisplay()
   } catch(e) {}
 }
 function loadLocal() {
@@ -13359,6 +13377,11 @@ function _buildIdDoHTML(html) {
 
 // Lê a versão que está NO REPOSITÓRIO agora mesmo. Só cai para a página
 // publicada se o repositório estiver inacessível, e nesse caso diz de onde veio.
+// Retrato do repositório no momento em que esta pessoa entrou no modo edição.
+// É a referência para saber, na hora de publicar, se alguém publicou no meio
+// do caminho — e o que essa outra publicação trouxe.
+let _baseEdicao = null;
+
 async function buscarDoRepositorio() {
   let txt = await _baixarTexto(REPO_RAW);
   let fonte = 'repositorio';
@@ -13555,6 +13578,13 @@ async function carregarBaseEdicao() {
           'Para não correr o risco de publicar dados antigos por cima dos novos, edite só quando a conexão voltar. ' +
           'Se editar assim mesmo, exporte o Backup JSON antes de publicar.');
   } else {
+    try {
+      _baseEdicao = {
+        buildId: base.buildId,
+        agenda: JSON.parse(JSON.stringify(base.agenda)),
+        agenda2027: JSON.parse(JSON.stringify(base.agenda2027))
+      };
+    } catch(e) { _baseEdicao = null; }
     salvarSnapshot(base.fonte === 'repositorio' ? 'versão oficial do repositório' : 'versão do site publicado',
                    base.agenda, base.agenda2027);
     if (base.fonte === 'site') {
@@ -13722,6 +13752,37 @@ async function publicarGitHub() {
     // prestes a apagar edição de outra pessoa (ou um rascunho antigo) — pede
     // confirmação em vez de publicar isso em silêncio.
     const remoto = extrairAgendaDoHTML(htmlAtual);
+
+    // Alguém publicou entre o momento em que você entrou no modo edição e
+    // agora? A trava de perdas abaixo diz O QUE some; esta diz QUEM mexeu e
+    // QUANDO — que é a informação que faltava para decidir com segurança.
+    const buildRemoto = (htmlAtual.match(/const BUILD_ID = '([^']+)'/) || [])[1];
+    if (_baseEdicao && _baseEdicao.buildId && buildRemoto && buildRemoto !== _baseEdicao.buildId) {
+      let quando = buildRemoto;
+      try { quando = fmtDate(new Date(buildRemoto)); } catch(e) {}
+
+      let detalhe = '';
+      if (remoto) {
+        const novos26 = _diffPorTecnico(remoto.agenda, _baseEdicao.agenda);
+        const novos27 = _diffPorTecnico(remoto.agenda2027, _baseEdicao.agenda2027);
+        const novos = {};
+        Object.keys(novos26).forEach(function(k) { novos[k] = (novos[k] || 0) + novos26[k]; });
+        Object.keys(novos27).forEach(function(k) { novos[k] = (novos[k] || 0) + novos27[k]; });
+        const total = Object.keys(novos).reduce(function(s, k) { return s + novos[k]; }, 0);
+        if (total) detalhe = 'Nessa publicação entraram ' + total + ' evento(s):\n' + _resumirPerdas(novos) + '\n\n';
+      }
+
+      const seguir = confirm(
+        'ATENÇÃO: alguém publicou depois que você entrou no modo edição.\n\n' +
+        'Publicação mais recente: ' + quando + '\n\n' + detalhe +
+        'Se você continuar, o que está na sua tela substitui o site inteiro — inclusive essas alterações da outra pessoa.\n\n' +
+        'O mais seguro é CANCELAR: seu trabalho não se perde (fica como rascunho deste navegador e no botão "Versões"). ' +
+        'Saia do modo edição, entre de novo e o app mostra as duas versões lado a lado para você decidir.\n\n' +
+        'Publicar mesmo assim?'
+      );
+      if (!seguir) { showToast('Publicação cancelada', ''); return; }
+    }
+
     if (remoto) {
       const ganhos26 = _diffPorTecnico(AGENDA, remoto.agenda);
       const ganhos27 = _diffPorTecnico(AGENDA_2027, remoto.agenda2027);
@@ -13834,6 +13895,16 @@ async function publicarGitHub() {
     });
 
     if (putRes.ok) {
+      // A partir daqui, a referência desta sessão é o que acabou de ser
+      // publicado — senão a própria pessoa receberia o aviso de "alguém
+      // publicou" na segunda publicação seguida dela mesma.
+      try {
+        _baseEdicao = {
+          buildId: novoBuildId,
+          agenda: JSON.parse(JSON.stringify(AGENDA)),
+          agenda2027: JSON.parse(JSON.stringify(AGENDA_2027))
+        };
+      } catch(e) {}
       salvarSnapshot('publicado no repositório');
       showToast('Salvo no repositório ✓ — aguardando o site publicar...', 'success');
       const siteOk = await aguardarSitePublicar(novoBuildId);
