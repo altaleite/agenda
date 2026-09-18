@@ -13757,16 +13757,12 @@ async function publicarGitHub() {
     });
     const j = await r.json().catch(() => ({}));
     if (r.status === 409 && j.conflict) {
-      alert('A agenda foi alterada por outra publicação enquanto você editava.
-
-Nada foi sobrescrito. Saia do modo edição e entre novamente para carregar a versão mais recente.');
+      alert('A agenda foi alterada por outra publicação enquanto você editava.\n\nNada foi sobrescrito. Saia do modo edição e entre novamente para carregar a versão mais recente.');
       showToast('Salvamento cancelado por conflito', 'error');
       return;
     }
     if (!r.ok || !j.ok) {
-      alert('Não foi possível salvar.
-
-' + (j.error || 'Erro no serviço de edição.'));
+      alert('Não foi possível salvar.\n\n' + (j.error || 'Erro no serviço de edição.'));
       showToast('Alterações não foram publicadas', 'error');
       return;
     }
@@ -13779,11 +13775,7 @@ Nada foi sobrescrito. Saia do modo edição e entre novamente para carregar a ve
     localStorage.removeItem('agenda_alta_2027');
     localStorage.removeItem('agenda_alta_2026_updated');
     showToast('✅ Alterações salvas e backup criado', 'success');
-    alert('Alterações salvas com segurança.
-
-Foi criado um backup automático antes da publicação.
-
-O GitHub Pages pode levar alguns instantes para refletir a nova versão.');
+    alert('Alterações salvas com segurança.\n\nFoi criado um backup automático antes da publicação.\n\nO GitHub Pages pode levar alguns instantes para refletir a nova versão.');
   } catch (e) {
     console.error(e);
     showToast('Erro de conexão com o serviço de edição', 'error');
