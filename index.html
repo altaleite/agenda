@@ -749,7 +749,7 @@
     <button class="btn btn-secondary" onclick="abrirSnapshots()" style="font-size:12px;padding:6px 12px;flex-shrink:0;">🕘 Versões</button>
     <button class="btn btn-secondary" onclick="document.getElementById('file-import').click()" style="font-size:12px;padding:6px 12px;flex-shrink:0;">⬆ Restaurar</button>
     <input type="file" id="file-import" accept="application/json" style="display:none" onchange="importJSON(this)">
-    <button class="btn btn-primary" onclick="publicarGitHub()" style="font-size:12px;padding:6px 14px;flex-shrink:0;">🚀 Publicar no site</button>
+    <button class="btn btn-primary" onclick="publicarGitHub()" style="font-size:12px;padding:6px 14px;flex-shrink:0;">💾 Salvar alterações</button>
   </div>
 </div>
 
@@ -12961,7 +12961,10 @@ function render() {
 // ── EDIT MODE ──
 // Link público: https://altaleite.github.io/agenda/
 // Link de edição: https://altaleite.github.io/agenda/?edit=1
-const EDIT_PASSWORD = "Alta2026";
+// API segura: a senha e o token do GitHub NÃO ficam no HTML.
+// Troque apenas esta URL pelo endereço do Cloudflare Worker.
+const AGENDA_API = 'https://agenda-alta-api.rafaelzoufmg.workers.dev';
+let _editPassword = null;
 let editMode = false;
 let _dia, _tec, _mes, _ano;
 
@@ -12988,13 +12991,22 @@ function toggleEdit() {
   }
 }
 async function tryLogin() {
-  if (document.getElementById('login-pwd').value === EDIT_PASSWORD) {
+  const pwd = document.getElementById('login-pwd').value;
+  if (!pwd) return;
+  try {
+    const r = await fetch(AGENDA_API + '/login', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({password: pwd})
+    });
+    if (!r.ok) throw new Error('Senha incorreta');
+    _editPassword = pwd;
     closeLogin();
     showToast('Carregando versão mais recente do site...', '');
     await carregarBaseEdicao();
     setEditUI(true);
     refreshDelSel(); render(); showToast('Modo edição ativo ✓','success');
-  } else {
+  } catch (e) {
+    document.getElementById('login-err').textContent = 'Senha incorreta ou serviço de edição indisponível.';
     document.getElementById('login-err').classList.add('visible');
     document.getElementById('login-pwd').value = '';
     document.getElementById('login-pwd').focus();
@@ -13723,242 +13735,58 @@ async function aguardarSitePublicar(buildId) {
   return false;
 }
 
-// Token guardado só em memória, durante a sessão. NUNCA é gravado no arquivo publicado.
-let _ghToken = null;
+// Publicação segura: o token do GitHub fica no servidor (Cloudflare Worker).
 async function publicarGitHub() {
-  const REPO = 'altaleite/agenda';
-  const FILE = 'index.html';
-
-  // Pede o token uma vez por sessão. Não fica salvo em lugar nenhum.
-  if (!_ghToken) {
-    const t = prompt('Cole o token de publicação do GitHub (fica só nesta sessão, não é salvo):');
-    if (!t) { showToast('Publicação cancelada', ''); return; }
-    // Limpa espaços, quebras de linha e aspas que vêm junto na cópia/cola
-    const limpo = t.replace(/[\s"'`]/g, '');
-    if (!limpo) { showToast('Token vazio', 'error'); return; }
-    if (!/^(ghp_|github_pat_|gho_)/.test(limpo)) {
-      if (!confirm('Esse texto não parece um token do GitHub (deve começar com ghp_ ou github_pat_). Tentar mesmo assim?')) return;
-    }
-    _ghToken = limpo;
+  if (!_editPassword) {
+    showToast('Entre no modo edição antes de salvar.', 'error');
+    return;
   }
-  const TOKEN = _ghToken;
-
-  showToast('Publicando no site...', '');
-
+  const expectedBuildId = (_baseEdicao && _baseEdicao.buildId) || BUILD_ID;
+  salvarSnapshot('antes de salvar');
+  showToast('Salvando alterações...', '');
   try {
-    // 1. Pega o arquivo atual no GitHub
-    const getRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}?t=${Date.now()}`, {
-      headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github.v3+json' }
+    const r = await fetch(AGENDA_API + '/save', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        password: _editPassword,
+        expectedBuildId,
+        agenda: AGENDA,
+        agenda2027: AGENDA_2027
+      })
     });
-    const getJson = await getRes.json().catch(() => ({}));
-    if (!getRes.ok || !getJson.content || !getJson.sha) {
-      // Diagnóstico: quase sempre é problema de token. Zera para pedir de novo.
-      _ghToken = null;
-      let msg;
-      if (getRes.status === 401)      msg = 'Token inválido ou expirado — gere um novo e tente outra vez.';
-      else if (getRes.status === 403) msg = 'Token sem permissão de escrita neste repositório (precisa de Contents: Read and write).';
-      else if (getRes.status === 404) msg = 'Token sem acesso ao repositório altaleite/agenda — confirme se você é colaboradora e se o token dá acesso a ele.';
-      else if (!getJson.content)      msg = 'Arquivo lido, mas sem conteúdo (arquivo grande demais?). Avise o Rafael.';
-      else                            msg = 'Erro ' + getRes.status + ' ao ler o GitHub: ' + (getJson.message || 'tente novamente');
-      alert('Não foi possível publicar.\n\n' + msg);
-      showToast('Publicação falhou — veja a mensagem', 'error');
+    const j = await r.json().catch(() => ({}));
+    if (r.status === 409 && j.conflict) {
+      alert('A agenda foi alterada por outra publicação enquanto você editava.
+
+Nada foi sobrescrito. Saia do modo edição e entre novamente para carregar a versão mais recente.');
+      showToast('Salvamento cancelado por conflito', 'error');
       return;
     }
+    if (!r.ok || !j.ok) {
+      alert('Não foi possível salvar.
 
-    const sha = getJson.sha;
-    let htmlAtual = decodeURIComponent(escape(atob(getJson.content.replace(/\n/g, ''))));
-
-    // Segurança: remove qualquer token que ainda exista na versão remota do arquivo.
-    htmlAtual = htmlAtual.replace(/const\s+_t\s*=\s*\[[^\]]*\]\s*;\s*const\s+TOKEN\s*=\s*_t\.join\([^)]*\)\s*;/g, '');
-    htmlAtual = htmlAtual.replace(/ghp_[A-Za-z0-9]{20,}/g, 'TOKEN_REMOVIDO');
-
-    // 1.5. Trava de segurança: compara com o que está publicado AGORA (o arquivo
-    // que acabamos de buscar) antes de sobrescrever. Se o que vamos publicar tem
-    // bem menos eventos do que o que já está no ar, é sinal de que estamos
-    // prestes a apagar edição de outra pessoa (ou um rascunho antigo) — pede
-    // confirmação em vez de publicar isso em silêncio.
-    const remoto = extrairAgendaDoHTML(htmlAtual);
-
-    // Alguém publicou entre o momento em que você entrou no modo edição e
-    // agora? A trava de perdas abaixo diz O QUE some; esta diz QUEM mexeu e
-    // QUANDO — que é a informação que faltava para decidir com segurança.
-    const buildRemoto = (htmlAtual.match(/const BUILD_ID = '([^']+)'/) || [])[1];
-    if (_baseEdicao && _baseEdicao.buildId && buildRemoto && buildRemoto !== _baseEdicao.buildId) {
-      let quando = buildRemoto;
-      try { quando = fmtDate(new Date(buildRemoto)); } catch(e) {}
-
-      let detalhe = '';
-      if (remoto) {
-        const novos26 = _diffPorTecnico(remoto.agenda, _baseEdicao.agenda);
-        const novos27 = _diffPorTecnico(remoto.agenda2027, _baseEdicao.agenda2027);
-        const novos = {};
-        Object.keys(novos26).forEach(function(k) { novos[k] = (novos[k] || 0) + novos26[k]; });
-        Object.keys(novos27).forEach(function(k) { novos[k] = (novos[k] || 0) + novos27[k]; });
-        const total = Object.keys(novos).reduce(function(s, k) { return s + novos[k]; }, 0);
-        if (total) detalhe = 'Nessa publicação entraram ' + total + ' evento(s):\n' + _resumirPerdas(novos) + '\n\n';
-      }
-
-      const seguir = confirm(
-        'ATENÇÃO: alguém publicou depois que você entrou no modo edição.\n\n' +
-        'Publicação mais recente: ' + quando + '\n\n' + detalhe +
-        'Se você continuar, o que está na sua tela substitui o site inteiro — inclusive essas alterações da outra pessoa.\n\n' +
-        'O mais seguro é CANCELAR: seu trabalho não se perde (fica como rascunho deste navegador e no botão "Versões"). ' +
-        'Saia do modo edição, entre de novo e o app mostra as duas versões lado a lado para você decidir.\n\n' +
-        'Publicar mesmo assim?'
-      );
-      if (!seguir) { showToast('Publicação cancelada', ''); return; }
-    }
-
-    if (remoto) {
-      const ganhos26 = _diffPorTecnico(AGENDA, remoto.agenda);
-      const ganhos27 = _diffPorTecnico(AGENDA_2027, remoto.agenda2027);
-      const totalGanho = Object.keys(ganhos26).reduce(function(s, k) { return s + ganhos26[k]; }, 0)
-                       + Object.keys(ganhos27).reduce(function(s, k) { return s + ganhos27[k]; }, 0);
-      const perdas26 = _diffPorTecnico(remoto.agenda, AGENDA);
-      const perdas27 = _diffPorTecnico(remoto.agenda2027, AGENDA_2027);
-      const perdas = {};
-      Object.keys(perdas26).forEach(function(k) { perdas[k] = (perdas[k] || 0) + perdas26[k]; });
-      Object.keys(perdas27).forEach(function(k) { perdas[k] = (perdas[k] || 0) + perdas27[k]; });
-      const totalPerdido = Object.keys(perdas).reduce(function(s, k) { return s + perdas[k]; }, 0);
-
-      // Qualquer evento que existe no repositório e não existe aqui vai sumir
-      // do site. Antes essa trava só disparava acima de 15 eventos — perdas
-      // menores, que são as mais comuns, passavam em silêncio.
-      if (totalPerdido > 0) {
-        const ok = confirm(
-          'ATENÇÃO: esta publicação vai APAGAR ' + totalPerdido + ' evento(s) que estão hoje no site.\n\n' +
-          _resumirPerdas(perdas) + '\n\n' +
-          'Ela acrescenta ' + totalGanho + ' evento(s) novo(s). (Feriados não entram nesta conta — são ajustados automaticamente.)\n\n' +
-          'Se você apagou esses eventos de propósito, pode continuar. Se não reconhece essa lista, ' +
-          'provavelmente é edição de outra pessoa — cancele, saia do modo edição e entre de novo ' +
-          'para carregar a versão oficial.\n\n' +
-          'Publicar mesmo assim?'
-        );
-        if (!ok) { showToast('Publicação cancelada', ''); return; }
-      }
-    }
-
-    // Guarda o estado imediatamente anterior à publicação.
-    salvarSnapshot('antes de publicar');
-
-    // 2. Injeta os dados atuais da agenda diretamente no HTML publicado
-    const agendaJSON = JSON.stringify(AGENDA, null, 2);
-    const agenda2027JSON = JSON.stringify(AGENDA_2027, null, 2);
-
-    htmlAtual = htmlAtual.replace(
-      /const\s+AGENDA\s*=\s*[\s\S]*?;\s*\/\/ Configuração dos meses/,
-      'const AGENDA = ' + agendaJSON + ';\n\n// Configuração dos meses'
-    );
-
-    htmlAtual = htmlAtual.replace(
-      /let\s+AGENDA_2027\s*=\s*[\s\S]*?;\s*const\s+DIAS_MES_2027/,
-      'let AGENDA_2027 = ' + agenda2027JSON + ';\nconst DIAS_MES_2027'
-    );
-
-    // 3. Garante que a versão pública nunca carregue dados antigos do localStorage
-    htmlAtual = htmlAtual.replace(
-      /function\s+loadLocal\(\)\s*\{[\s\S]*?\n\}/,
-      `function loadLocal() {\n  // Visitantes do link público NÃO carregam localStorage, evitando versão antiga no navegador.\n  if (!editMode) return;\n  try {\n    const s = localStorage.getItem('agenda_alta_2026');\n    if (s) Object.assign(AGENDA, JSON.parse(s));\n    const s2 = localStorage.getItem('agenda_alta_2027');\n    if (s2) Object.assign(AGENDA_2027, JSON.parse(s2));\n  } catch(e) {}\n}`
-    );
-
-    // 3.5. Confere que a injeção acima realmente entrou no texto, em vez de
-    // supor que funcionou. replace() não avisa quando não encontra o trecho
-    // esperado — ele só devolve o texto igual, sem erro nenhum. Se isso
-    // acontecer (por exemplo, porque uma edição de layout mudou os marcadores
-    // que o código procura), a publicação seguiria em frente reescrevendo o
-    // arquivo com os DADOS ANTIGOS por baixo do capô, mostrando "sucesso" —
-    // e foi exatamente esse tipo de falha silenciosa que fazia atualizações
-    // sumirem sem erro nenhum aparecer na tela.
-    const agendaEntrou = htmlAtual.includes(agendaJSON.slice(0, 60));
-    const agenda27Entrou = agenda2027JSON.trim() === '{}' || htmlAtual.includes(agenda2027JSON.slice(0, 60));
-    if (!agendaEntrou || !agenda27Entrou) {
-      alert(
-        'Publicação cancelada por segurança.\n\n' +
-        'Não consegui confirmar que os dados novos entraram no arquivo — a estrutura do index.html pode ter mudado ' +
-        '(provavelmente numa edição de layout recente) e o publicador não reconheceu mais onde os dados ficam.\n\n' +
-        'Nada foi publicado. Avise o Rafael antes de tentar de novo.'
-      );
-      showToast('Publicação cancelada — estrutura do arquivo mudou', 'error');
+' + (j.error || 'Erro no serviço de edição.'));
+      showToast('Alterações não foram publicadas', 'error');
       return;
     }
+    _baseEdicao = {
+      buildId: j.buildId,
+      agenda: JSON.parse(JSON.stringify(AGENDA)),
+      agenda2027: JSON.parse(JSON.stringify(AGENDA_2027))
+    };
+    localStorage.removeItem('agenda_alta_2026');
+    localStorage.removeItem('agenda_alta_2027');
+    localStorage.removeItem('agenda_alta_2026_updated');
+    showToast('✅ Alterações salvas e backup criado', 'success');
+    alert('Alterações salvas com segurança.
 
-    // 3.6. Atualiza a data mostrada no rodapé para quem só visualiza o site.
-    // Antes esse texto ficava travado no que foi digitado manualmente da
-    // última vez (ex.: "junho/2026") — quem só visualiza nunca escreve no
-    // localStorage, então updateDateDisplay() nunca tinha o que mostrar e o
-    // rodapé ficava permanentemente desatualizado, mesmo logo após publicar.
-    htmlAtual = htmlAtual.replace(
-      /<span id="last-update">[^<]*<\/span>/,
-      '<span id="last-update">Atualizado em: ' + fmtDate(new Date()) + '</span>'
-    );
+Foi criado um backup automático antes da publicação.
 
-    // 3.7. Grava um novo BUILD_ID no arquivo publicado — é o que
-    // verificarAtualizacao() compara pra saber, na tela de cada técnico
-    // (inclusive quem salvou o site como app na tela inicial), se o que
-    // está aberto no aparelho ficou pra trás desta publicação.
-    const novoBuildId = new Date().toISOString();
-    htmlAtual = htmlAtual.replace(
-      /const BUILD_ID = '[^']*'/,
-      "const BUILD_ID = '" + novoBuildId + "'"
-    );
-    if (!htmlAtual.includes("const BUILD_ID = '" + novoBuildId + "'")) {
-      alert(
-        'Publicação cancelada por segurança.\n\n' +
-        'Não consegui gravar o identificador de versão (BUILD_ID) no arquivo — a estrutura pode ter mudado.\n\n' +
-        'Nada foi publicado. Avise o Rafael antes de tentar de novo.'
-      );
-      showToast('Publicação cancelada — estrutura do arquivo mudou', 'error');
-      return;
-    }
-
-    // 4. Converte para base64 e publica
-    const base64 = btoa(unescape(encodeURIComponent(htmlAtual)));
-    const now = new Date().toLocaleString('pt-BR');
-    const putRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}`, {
-      method: 'PUT',
-      headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: `Agenda atualizada em ${now}`, content: base64, sha })
-    });
-
-    if (putRes.ok) {
-      // A partir daqui, a referência desta sessão é o que acabou de ser
-      // publicado — senão a própria pessoa receberia o aviso de "alguém
-      // publicou" na segunda publicação seguida dela mesma.
-      try {
-        _baseEdicao = {
-          buildId: novoBuildId,
-          agenda: JSON.parse(JSON.stringify(AGENDA)),
-          agenda2027: JSON.parse(JSON.stringify(AGENDA_2027))
-        };
-      } catch(e) {}
-      salvarSnapshot('publicado no repositório');
-      showToast('Salvo no repositório ✓ — aguardando o site publicar...', 'success');
-      const siteOk = await aguardarSitePublicar(novoBuildId);
-      if (siteOk) {
-        showToast('✅ Publicado e no ar', 'success');
-      } else {
-        mostrarAvisoPagesAtrasado();
-        alert('Seus dados FORAM salvos no GitHub — nada foi perdido.\n\n' +
-              'Mas o site público ainda não publicou esta versão. Isso é falha do GitHub Pages, não da agenda.\n\n' +
-              'O que fazer: no GitHub, abra a aba Actions, clique na execução mais recente e use "Re-run failed jobs". ' +
-              'Em 1 a 2 minutos o site fica igual ao repositório.\n\n' +
-              'Pode continuar editando normalmente: quem entrar em modo edição carrega do repositório, não do site.');
-        showToast('Salvo no repositório — site ainda não publicou', 'error');
-      }
-    } else {
-      _ghToken = null; // token pode estar errado/expirado — pede de novo na próxima
-      const err = await putRes.json().catch(() => ({}));
-      const detalhe = putRes.status === 403
-        ? 'Token sem permissão de escrita (Contents: Read and write).'
-        : putRes.status === 409
-        ? 'Alguém publicou no mesmo instante. Recarregue a página e publique de novo.'
-        : (err.message || 'tente novamente');
-      alert('Erro ao gravar no GitHub (' + putRes.status + ').\n\n' + detalhe);
-      showToast('Erro ao publicar', 'error');
-    }
-  } catch(e) {
+O GitHub Pages pode levar alguns instantes para refletir a nova versão.');
+  } catch (e) {
     console.error(e);
-    showToast('Erro de conexão/publicação.', 'error');
+    showToast('Erro de conexão com o serviço de edição', 'error');
   }
 }
 
